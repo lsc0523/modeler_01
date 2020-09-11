@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<title>Home</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="app/css/app.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+ <style type="text/css">
+
+  body , html{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+
+    ul.main {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #10ad73;
+    }
+   
+    ul.main:after{
+     content:'';
+     display: block;
+     clear:both;
+    }
+  
+  li.main {
+     float: left;
+  }
+  
+  li.main a {
+     display: block;
+     color: white;
+     text-align: center;
+     padding: 14px 16px;
+     text-decoration: none;
+     width:150px;
+     
+  }
+  li.main a:hover:not(.active) {
+    /*background-color: #4CAF50;*/
+    text-decoration: underline;
+  }
+  .active {
+    text-decoration: underline;
+    /*background-color: #4CAF50;*/
+  }
+
+  .topcontainer {
+    background-color: #10ad73;
+    font-size: 50px;
+    text-align: center;
+    color: white;
+    height: 300px;
+    line-height: 250px;
+  }
+  </style>
+
+
+</head>
+
+<body>
+
+  <ul class='main'>
+    <li class='main'><a class="active" href="home">Home</a></li>
+    <li class='main'><a href="viewer" >Viewer</a></li>
+    <li class='main'><a href="modeler">Modeler</a></li>
+    <li class='main'><a href="about">About</a></li>
+  </ul>
+
+<div class = topcontainer>LG CNS Web based Tooling Modeler</div>
+<div class="container">
+<br>
+<br>
+<br>
+<h3>MODELER LIST</h3>
+
+<a href="/modeler">추가</a>
+<br>
+<br>
+<p>Modler List ...</p>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+		<th>모델ID</th>
+		<th>모델명</th>
+    <th>열기</th>
+		<th>수정</th>
+		<th>삭제</th>
+		</tr>
+	</thead>
+
+	<tbody>
+	
+	<% for(var i=0; i < data.length; i++){ %>
+	<tr>
+		<td>
+		<%= data[i].MODELID %>
+		</td>
+
+		<td>
+		<%= data[i].PROCESSID %>
+		</td>
+
+    <td>
+    <a href="/viewer?id=<%= data[i].MODELID %>">열기</a>
+    </td>
+
+		<td>
+		<a href="/modeler?id=<%= data[i].MODELID %>">수정</a>
+		</td>
+
+		<td>
+		<a href="/delete/<%= data[i].MODELID %>">삭제</a>
+		</td>
+
+	</tr>
+
+	<% } %>
+	</tbody>
+
+
+
+</body>
+
+</html>
+
+
