@@ -138,30 +138,28 @@ $(function() {
   downloadLink.click(async function(e){
     console.log("download xml...");
     var xml = await bpmnModeler.saveXML({ format: true });
-    //var encodedData = encodeURIComponent(data);
-    //(this).addClass('active').attr({'href' : 'home?xmlID=' + xml});
-    //downloadLink.prop("href", "home");
-    //var data = { data : encodedData};
-    //window.location.href = 'home?id='+ data;
- 
+    var xmlData = xml.xml.replace( '<?xml version="1.0" encoding="UTF-8"?>', '');
+
       $.ajax({
             url:'/insert',
-            type:'GET',
+            type:'POST',
             data:{ 
-                   id: xml
+                   id: xmlData.replace(/(\r\n|\n|\r)/gm, "")
                   },
             success:function(result){
                 if(result){
-                  alert(xml);
+                  //alert(result);
                 }
-                //$('#btn_list').trigger('click');
+
+                window.location.href = 'home';
             }
           });
   });
 
   function setEncoded(link, name, data) {
     var encodedData = encodeURIComponent(data);
-
+    link.addClass('active')
+    /*
     if (data) {
       link.addClass('active').attr({
         'href': 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
@@ -172,6 +170,8 @@ $(function() {
     } else {
       link.removeClass('active');
     }
+    */
+    
   }
 
   var exportArtifacts = debounce(async function() {

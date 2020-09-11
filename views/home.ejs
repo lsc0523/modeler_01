@@ -6,11 +6,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="app/css/app.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
 
  <style type="text/css">
 
@@ -83,8 +80,6 @@
 <div class = topcontainer>LG CNS Web based Tooling Modeler</div>
 <div class="container">
 <br>
-<br>
-<br>
 <h3>MODELER LIST</h3>
 
 <a href="/modeler">추가</a>
@@ -92,14 +87,16 @@
 <br>
 <p>Modler List ...</p>
 
-<table class="table table-striped">
+<table class="table table-striped" style="width: 1200px">
 	<thead>
 		<tr>
-		<th>모델ID</th>
-		<th>모델명</th>
-    <th>열기</th>
-		<th>수정</th>
-		<th>삭제</th>
+		<th style="width: 20%">Model ID</th>
+		<th style="width: 15%">Process ID</th>
+    <th style="width: 15%">Model Name</th>
+    <th style="width: 35%">Model Detail Name</th>
+    <th style="width: 5%">열기</th>
+		<th style="width: 5%">수정</th>
+		<th style="width: 5%">삭제</th>
 		</tr>
 	</thead>
 
@@ -114,6 +111,14 @@
 		<td>
 		<%= data[i].PROCESSID %>
 		</td>
+
+    <td>
+    <%= data[i].MODELNAME %>
+    </td>
+
+    <td>
+    <%= data[i].MODELDESC %>
+    </td>
 
     <td>
     <a href="/viewer?id=<%= data[i].MODELID %>">열기</a>

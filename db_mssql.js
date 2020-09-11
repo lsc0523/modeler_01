@@ -1,5 +1,7 @@
 
 var sql = require("mssql"); 
+//var convert = require('xml-js');
+var dateFormat = require('dateformat');
 
 var dbConnectionConfig = { 
 		 
@@ -16,33 +18,20 @@ var dbConnectionConfig = {
 
 sql.on('error', err => {
     // ... error handler
-})
-
-
-//function callbackTest(sqlQurey, callback)
-//{
-//	sql.connect(dbConnectionConfig, function(err) {
-//	    var request = new sql.Request();
-//	    request.query(sqlQurey, function(err, recordsets) {
-//	    	  if(err){
-//	    	      console.log(err);
-//	    	      return;
-//	    	  } else {	
-//	    		  callback(recordsets);
-//	    	  }	      	  
-//	    });
-//	});	
-//
-//}
-
+});
 
 
  var ModeltableName = "PROCESSMODEL"; 
- var xmlColumn = 'MODEL_XML';
-
+ var now = new Date();
+ 
+//sql Qurey
  var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@id' ; 
- var sqlUpdateModelQuery = 'update from ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@id';
-
+ var sqlUpdateModelQuery = 'update ' + ModeltableName +' set MODEL_XML=@XML where MODELID=@id';
+ var sqlInsertModelQuery = 'insert into ' + ModeltableName +'(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM, REPOSIGRUPID)'
+ + ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM, @REPOSIGRUPID)';
+ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))'
+                              + ' order by (MODELID)' 
+ 
  function ExcuteSQLSelectByModelID(id, callback)
  {	 
 	 var connection = sql.connect(dbConnectionConfig, function(err) {		 		 
@@ -51,10 +40,8 @@ sql.on('error', err => {
 			 }
 		 
 		 var ps = new sql.PreparedStatement(connection);	     
-//		 ps.input('modelxml', sql.XML);
 		 ps.input('id', sql.NVarChar(50));
-		 
-		 //console.log(sqlModelSelectQurey);		 
+	 
 		 ps.prepare(sqlSelectModelQurey, function(err, recordsets) {		 
 	            ps.execute({id:id} ,function (err, recordset) {
 	                ps.unprepare(function (err) {
@@ -68,37 +55,190 @@ sql.on('error', err => {
 	 });
  }
  
- function ExcuteSQLUpdateModel(XML, id, callback)
- {	 
+ function getNewModelID(callback)
+ { 	 
+	
+	 	ExecuteNonQuery(sqlSelectModelIDQurey,function(result){
+	 	if (result.rowsAffected != 0)
+ 		{
+		 	//console.log(result);
+			var data = result.recordset[0].MODELID;
+			
+			var temp = data.split('_');
+			
+			//console.log(temp);
+			
+			var cnt = temp[0].substring(0,7);
+			cnt = temp[0].split('MOD');
+ 		}
+	 	else	 		
+ 		{
+ 			var cnt = '00001'
+ 		}
+		
+		var zero5 = new Padder(5);		
+		var newcnt = zero5.pad(Number(cnt[1])+1);
+		var day = dateFormat(now, "yyyy-mm-dd h:MM:ss");
+		var newID = "MOD" + newcnt + '_' + day;	
+		
+		console.log(newID);
+		
+		return callback(newID);
+		
+	 });
+	 	
+	 	//return callback(newModelID);
+	//	return  callback();
+
+ }
+ 
+
+ 
+//  Number.prototype.padLeft = function (n,str){
+//	    return Array(n-String(this).length+1).join(str||'0')+this;
+//	}
+ function Padder(len, pad) {
+	  if (len === undefined) {
+	    len = 1;
+	  } else if (pad === undefined) {
+	    pad = '0';
+	  }
+
+	  var pads = '';
+	  while (pads.length < len) {
+	    pads += pad;
+	  }
+
+	  this.pad = function (what) {
+	    var s = what.toString();
+	    return pads.substring(0, pads.length - s.length) + s;
+	  };
+	}
+  
+
+ 
+ function ExcuteSQLUpdateModel(xml, id, callback) 
+ { 	 
 	 var connection = sql.connect(dbConnectionConfig, function(err) {		 		 
 		 if (err) {
 			 return console.error('error is', err);
 			 }
 		 
 		 var ps = new sql.PreparedStatement(connection);	     
-		 ps.input('XML', sql.Xml, '<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.1.1"></bpmn:definitions>');
-		 ps.input('id', sql.NVarChar(50), id);
+		 ps.input('XML', sql.Xml);
+		 ps.input('id', sql.NVarChar);	
 		 
-		 console.log(sqlUpdateModelQuery);		 
-		// console.log(ps.parameters);	
-		// console.log(XML);
-
-		 ps.prepare(sqlUpdateModelQuery, function(err, recordsets) {		 
-	            ps.execute({XML:''},{id:id} ,function (err, recordset) {
+		 // Xml TO Json
+//		 var xmlToJson = convert.xml2json(XML, {compact: true, spaces: 4});
+//		 console.log(xmlToJson);
+		 
+		 ps.prepare(sqlUpdateModelQuery, function(err) {
+	            ps.execute({XML:xml, id:id}, function(err, result) {
 	                ps.unprepare(function (err) {
 	                	if (err !== null){
 	                		console.log(err);
 	                	}
-	                });
-	                console.log(recordset);
-	                return callback(recordset);
+				   });
+	                return callback(result);
 	            });
 		 });
 	 });
  }
-	 
  
-function ExecuteNonQuery(sqlQurey, callback)
+ function ExcuteSQLInsertModel(parms, callback) 
+ { 	 
+	// console.log(parms);
+	 var connection = sql.connect(dbConnectionConfig, function(err) {		 		 
+		 if (err) {
+			 return console.error('error is', err);
+			 }
+		 
+		 var ps = new sql.PreparedStatement(connection);	     
+			 ps.input('MODELCATID', sql.NVarChar);
+			 ps.input('MODELID', sql.NVarChar);
+			 ps.input('PROCESSID', sql.NVarChar);
+			 ps.input('MODEL_XML', sql.Xml);
+			 ps.input('INSUSER', sql.NVarChar);
+			 ps.input('INSDTTM', sql.DateTimeOffset);
+			 ps.input('UPDUSER', sql.NVarChar);
+			 ps.input('UPDDTTM', sql.DateTimeOffset);
+			 ps.input('REPOSIGRUPID', sql.NVarChar);
+	
+	
+			 getNewModelID(function(result){
+				 console.log(result);
+			 });
+			 
+			 
+				 ps.prepare(sqlUpdateModelQuery, function(err) {
+			            ps.execute({MODELCATID:parms.MODELCATID, MODELID:result, PROCESSID:parms.PROCESSID, MODEL_XML:parms.MODEL_XML,
+			            			INSUSER:parms.INSUSER,INSDTTM:now,UPDUSER:parms.UPDUSER,UPDDTTM:now,REPOSIGRUPID:''}, function(err, result) {
+			                ps.unprepare(function (err) {
+			                	if (err !== null){
+			                		console.log(err);
+			                	}
+						   });
+			                return callback(result);
+			            });
+				 });
+				 
+			
+			 
+		// parms.MODELID = getNewModelID();
+
+		// console.log(parms.MODELID);
+	 
+
+	 });
+ }
+ 
+ function ExcuteSQLInsertModelbyPromises(parms, callback)
+ {   	 
+	 getNewModelID(function(result){
+//	 console.log(result);    
+		 sql.connect(dbConnectionConfig).then(pool => {
+			    // Query		    
+			    return pool.request()
+			 .input('MODELCATID', sql.NVarChar, parms.MODELCATID)
+			 .input('MODELID', sql.NVarChar, result)
+			 .input('PROCESSID', sql.NVarChar, parms.PROCESSID)
+			 .input('MODEL_XML', sql.Xml, parms.MODEL_XML)
+			 .input('INSUSER', sql.NVarChar, parms.INSUSER)
+			 .input('INSDTTM', sql.DateTimeOffset, now)
+			 .input('UPDUSER', sql.NVarChar, parms.UPDUSER)
+			 .input('UPDDTTM', sql.DateTimeOffset, now) 	
+			 .input('REPOSIGRUPID', sql.NVarChar, "") 	
+	         .query(sqlInsertModelQuery)            
+	         
+			}).then(result => {
+			   // console.dir(result);
+			    return callback(result);
+			}).catch(err => {
+				console.dir(err);
+			  // ... error checks
+			});
+	    });
+ } 
+  
+ function ExcuteSQLUpdateModelbyPromises(xml, id, callback)
+ {   
+	 
+	 sql.connect(dbConnectionConfig).then(pool => {
+		    // Query		    
+		    return pool.request()
+		        .input('XML', sql.Xml, xml)
+  		        .input('id', sql.NVarChar, id)		        
+		        .query('update PROCESSMODEL set MODEL_XML=@XML where MODELID=@id')
+		}).then(result => {
+		    console.dir(result);
+		    return callback(result.rowsAffected);
+		}).catch(err => {
+			console.dir(err);
+		  // ... error checks
+		});
+ }
+ 
+ function ExecuteNonQuery(sqlQurey, callback)
 {
 	sql.connect(dbConnectionConfig).then(pool => {
 	    
@@ -112,10 +252,10 @@ function ExecuteNonQuery(sqlQurey, callback)
 	})
 }
 
-
- module.exports = {
-		 ExecuteNonQuery : ExecuteNonQuery,
-		 ExcuteSQLSelectByModelID : ExcuteSQLSelectByModelID,
-		 ExcuteSQLUpdateModel : ExcuteSQLUpdateModel,
+module.exports = {
+		 NonQuery : ExecuteNonQuery,
+		 SelectByModelID : ExcuteSQLSelectByModelID,
+		 UpdateModel : ExcuteSQLUpdateModelbyPromises,
+		 InsertModel : ExcuteSQLInsertModelbyPromises,
 };
 

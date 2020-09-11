@@ -29,10 +29,15 @@ var sqlQurey = 'select * from PROCESSMODEL';
 server.engine('html', require('ejs').renderFile);
 server.set('view engine', 'ejs');
 
+//Call Post Util..
+var bodyParser = require('body-parser')
+server.use(bodyParser.urlencoded({extended: false}))
+
+
 server.get('/home' , function(req , res){
 	console.log("home...");
-	Mssql.ExecuteNonQuery(sqlQurey,function(result){
-		console.log(result);
+	Mssql.NonQuery(sqlQurey,function(result){
+		//console.log(result);
 		res.render('home' , { data : result.recordset});
 	});
 });
@@ -45,7 +50,7 @@ server.get('/viewer' , function(req , res){
 		res.render('viewer', {name : ""});
 	}
 	else{
-		Mssql.ExcuteSQLSelectByModelID(req.query.id, function(result){
+		Mssql.SelectByModelID(req.query.id, function(result){
 			xmlData = result.recordset[0].MODEL_XML;
 			console.log(xmlData);
 			res.render('viewer', {name : xmlData});
@@ -61,7 +66,7 @@ server.get('/modeler' , function(req , res){
 		res.render('modeler', {name : ""});
 	}
 	else{
-		Mssql.ExcuteSQLSelectByModelID(req.query.id, function(result){
+		Mssql.SelectByModelID(req.query.id, function(result){
 			xmlData = result.recordset[0].MODEL_XML;
 			res.render('modeler', {name : xmlData});
 		});
@@ -74,10 +79,40 @@ server.get('/about' , function(req , res){
 	res.send('about directory.. LG CNS modeler...');
 });
 
-server.get('/insert' , function(req , res){
+server.post('/update' , function(req , res){
+	console.log("update...");
+	//console.log(req.body);
+	console.log(req.body.id);
+
+	Mssql.UpdateModel(req.body.id, "MOD0002_20200911", function(result){
+		console.log(result);		
+	});
+
+});
+
+
+
+
+
+
+server.post('/insert' , function(req , res){
 	console.log("insert...");
-	console.log(req.query.id);
-	//res.send('home');
+	//console.log(req.body);
+	console.log(req.body.id);
+
+	var params = { MODELCATID : 'LGC_MOD001_20200828',
+				   PROCESSID : 'PROD0003',
+				   MODEL_XML : req.body.id,
+				   INSUSER : 'gschun',
+				   UPDUSER : 'gschun'}
+				   ;
+
+	Mssql.InsertModel(params, function(result){
+		console.log(result);	
+
+		res.send({ result : "success"});	
+	});
+
 });
 
 // server.get('/modeler/:id' , function(req , res){
