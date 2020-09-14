@@ -10,24 +10,24 @@
   <link rel="stylesheet" href="vendor/bpmn-js-properties-panel/assets/bpmn-js-properties-panel.css" />
   <link rel="stylesheet" href="css/app.css" />
   <style type="text/css">
-ul.main {
+ ul.main {
     list-style-type: none;
     margin: 0;
     padding: 0;
     background-color: #10ad73;
     }
    
-ul.main:after{
+ ul.main:after{
      content:'';
      display: block;
      clear:both;
     }
   
-li.main {
+ li.main {
      float: left;
   }
   
-li.main a {
+ li.main a {
      display: block;
      color: white;
      text-align: center;
@@ -58,6 +58,8 @@ li.main a {
 
 
  <p id="xmlData" style="display:none;"><%=name%></p>
+ <p id="modelID" style="display:none;"><%=modelID%></p>
+
  <div class="content with-diagram" id="js-drop-zone">
   
     <div class="message intro">
@@ -85,16 +87,16 @@ li.main a {
 
   <ul class="buttons">
     <li>
-      download
+      
     </li>
     <li>
       <a id="js-download-diagram" href title="download BPMN diagram">
-        BPMN diagram
+        SAVE BPMN
       </a>
     </li>
     <li>
       <a id="js-download-svg" href title="download as SVG image">
-        SVG image
+        SAVE SVG
       </a>
     </li>
   </ul>
