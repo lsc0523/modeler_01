@@ -26,11 +26,11 @@ sql.on('error', err => {
  
 //sql Qurey
  var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@id' ; 
- var sqlUpdateModelQuery = 'update ' + ModeltableName +' set MODEL_XML=@XML where MODELID=@id';
- var sqlInsertModelQuery = 'insert into ' + ModeltableName +'(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM, REPOSIGRUPID)'
- + ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM, @REPOSIGRUPID)';
- var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))'
-                              + ' order by (MODELID)' 
+var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@id';
+var sqlDeleteModelQuery = 'delete from' + ModeltableName + ' where MODELID=@id';
+var sqlInsertModelQuery = 'insert into ' + ModeltableName +'(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM, REPOSIGRUPID)'
+						 + ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM, @REPOSIGRUPID)';
+var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID)' 
  
  function ExcuteSQLSelectByModelID(id, callback)
  {	 
@@ -237,6 +237,22 @@ sql.on('error', err => {
 		  // ... error checks
 		});
  }
+
+function ExcuteSQLDeleteModelbyPromises(id, callback) {
+
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			.input('id', sql.NVarChar, id)
+			.query(sqlDeleteModelQuery)
+	}).then(result => {
+		console.dir(result);
+		return callback(result.rowsAffected);
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	});
+}
  
  function ExecuteNonQuery(sqlQurey, callback)
 {
@@ -253,9 +269,11 @@ sql.on('error', err => {
 }
 
 module.exports = {
-		 NonQuery : ExecuteNonQuery,
-		 SelectByModelID : ExcuteSQLSelectByModelID,
-		 UpdateModel : ExcuteSQLUpdateModelbyPromises,
-		 InsertModel : ExcuteSQLInsertModelbyPromises,
+	NonQuery : ExecuteNonQuery,
+	SelectByModelID: ExcuteSQLSelectByModelID,
+	UpdateModel : ExcuteSQLUpdateModelbyPromises,
+	InsertModel : ExcuteSQLInsertModelbyPromises,
+	DeleteModel: ExcuteSQLDeleteModelbyPromises
+
 };
 
