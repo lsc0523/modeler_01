@@ -27,7 +27,7 @@ sql.on('error', err => {
 //sql Qurey
  var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@id' ; 
 var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@id';
-var sqlDeleteModelQuery = 'delete from' + ModeltableName + ' where MODELID=@id';
+var sqlDeleteModelQuery = 'delete from ' + ModeltableName + ' where MODELID=@id';
 var sqlInsertModelQuery = 'insert into ' + ModeltableName +'(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM, REPOSIGRUPID)'
 						 + ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM, @REPOSIGRUPID)';
 var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID)' 

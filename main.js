@@ -117,6 +117,18 @@ server.post('/insert' , function(req , res){
 
 });
 
+server.get('/delete' , function(req , res){
+	console.log("delete...");
+	console.log(req.query.id);
+
+	Mssql.DeleteModel(req.query.id , function(result){
+		console.log(result);
+	});
+
+	res.send({ result : "success deleting bpmn.."});
+});
+
+
 server.listen(3000, () => {
     console.log("Server is Listening")
 });
