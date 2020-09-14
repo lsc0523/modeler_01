@@ -78,7 +78,7 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 		
 		var zero5 = new Padder(5);		
 		var newcnt = zero5.pad(Number(cnt[1])+1);
-		var day = dateFormat(now, "yyyy-mm-dd h:MM:ss");
+		var day = dateFormat(now, "yyyymmddhMMss");
 		var newID = "MOD" + newcnt + '_' + day;	
 		
 		console.log(newID);
