@@ -62,13 +62,17 @@ server.get('/modeler' , function(req , res){
 	console.log('modeler...');
 	console.log(req.query.id);
 	var xmldata = "";
+	var modelID = "";
 	if(req.query.id == "" || req.query.id == undefined){
-		res.render('modeler', {name : ""});
+		res.render('modeler', {name : "" , modelID : ""});
 	}
 	else{
 		Mssql.SelectByModelID(req.query.id, function(result){
+			console.log(result);
 			xmlData = result.recordset[0].MODEL_XML;
-			res.render('modeler', {name : xmlData});
+			modelID = result.recordset[0].MODELID;
+			console.log(modelID);
+			res.render('modeler', {name : xmlData, modelID : modelID});
 		});
 	}
 
@@ -83,17 +87,15 @@ server.post('/update' , function(req , res){
 	console.log("update...");
 	//console.log(req.body);
 	console.log(req.body.id);
+	console.log(req.body.modelID);
 
-	Mssql.UpdateModel(req.body.id, "MOD0002_20200911", function(result){
+	Mssql.UpdateModel(req.body.id, req.body.modelID, function(result){
 		console.log(result);		
 	});
 
+	res.send({result : req.body.modelID});
+
 });
-
-
-
-
-
 
 server.post('/insert' , function(req , res){
 	console.log("insert...");
@@ -108,28 +110,12 @@ server.post('/insert' , function(req , res){
 				   ;
 
 	Mssql.InsertModel(params, function(result){
-		console.log(result);	
-
-		res.send({ result : "success"});	
+		console.log(result);		
 	});
 
-});
+	res.send({result : "OK"});
 
-// server.get('/modeler/:id' , function(req , res){
-// 	console.log(req.params.id);
-// 	//var sqlModelQurey = 'SELECT * FROM PROCESSMODEL WHERE MODELID = "MOD001_20200828" ';
-// 	//var sqlSelectModelQurey = 'select * from PROCESSMODEL where MODELID=@id' ;
-// 	//console.log(sqlSelectModelQurey);
-// 	Mssql.ExecuteNonQuery(sqlQurey, function(result){
-// 		//console.log(result);
-// 		//console.log(result.recordset[0]);
-// 		//console.log(result.recordset[0].MODEL_XML);
-// 		console.log(result);
-// 		console.log(1);
-// 		console.log(result.recordset[0].MODEL_XML);
-// 		res.render('modeler', {name :result.recordset[0].MODEL_XML});
-// 	});
-// });
+});
 
 server.listen(3000, () => {
     console.log("Server is Listening")
