@@ -137,22 +137,39 @@ $(function() {
 
   downloadLink.click(async function(e){
     console.log("download xml...");
+    var modelID = $("#modelID");
+    console.log(modelID[0].innerText);
+
     var xml = await bpmnModeler.saveXML({ format: true });
     var xmlData = xml.xml.replace( '<?xml version="1.0" encoding="UTF-8"?>', '');
+    var urlLink = '';
+
+    if(modelID[0].innerText == "" || modelID[0].innerText == undefined || modelID[0].innerText == 'undefined'){
+      urlLink = '/insert';
+    }else{
+      urlLink = '/update';
+    }
+
+    console.log(urlLink); 
 
       $.ajax({
-            url:'/insert',
+            url: urlLink,
             type:'POST',
             data:{ 
-                   id: xmlData.replace(/(\r\n|\n|\r)/gm, "")
+                   id: xmlData.replace(/(\r\n|\n|\r)/gm, ""),
+                   modelID : modelID[0].innerText
                   },
-            success:function(result){
-                if(result){
-                  //alert(result);
+                error : function(error) {
+                  alert("Error!");
+                },
+                success : function(data) {
+                    alert("저장이 완료 되었습니다.");
+                    window.location.href = 'home';
+                },
+                complete : function() {
+                    //window.location.href = 'home';
+                    //alert("complete!");    
                 }
-
-                window.location.href = 'home';
-            }
           });
   });
 
