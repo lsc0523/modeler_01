@@ -54,6 +54,22 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 		 });
 	 });
  }
+
+function ExcuteSQLSelectByModelIDPromises(parms, callback) {
+
+		sql.connect(dbConnectionConfig).then(pool => {
+			// Query		    
+			return pool.request()
+				.input('MODELCATID', sql.NVarChar, parms.MODELCATID)
+				.query(sqlSelectModelQurey)
+
+		}).then(result => {
+			// console.dir(result);
+			return callback(result);
+		}).catch(err => {
+			console.dir(err);
+			// ... error checks
+} 
  
  function getNewModelID(callback)
  { 	 
@@ -78,7 +94,7 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 		
 		var zero5 = new Padder(5);		
 		var newcnt = zero5.pad(Number(cnt[1])+1);
-		var day = dateFormat(now, "yyyymmddhMMss");
+		var day = dateFormat(now, "yyyymmdd-hMMss");
 		var newID = "MOD" + newcnt + '_' + day;	
 		
 		console.log(newID);
@@ -92,7 +108,6 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 
  }
  
-
  
 //  Number.prototype.padLeft = function (n,str){
 //	    return Array(n-String(this).length+1).join(str||'0')+this;
@@ -115,8 +130,6 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 	  };
 	}
   
-
- 
  function ExcuteSQLUpdateModel(xml, id, callback) 
  { 	 
 	 var connection = sql.connect(dbConnectionConfig, function(err) {		 		 
@@ -144,6 +157,23 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 		 });
 	 });
  }
+
+function ExcuteSQLUpdateModelbyPromises(xml, id, callback) {
+
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			.input('XML', sql.Xml, xml)
+			.input('id', sql.NVarChar, id)
+			.query('update PROCESSMODEL set MODEL_XML=@XML where MODELID=@id')
+	}).then(result => {
+		console.dir(result);
+		return callback(result.rowsAffected);
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	});
+}
  
  function ExcuteSQLInsertModel(parms, callback) 
  { 	 
@@ -219,24 +249,7 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 			});
 	    });
  } 
-  
- function ExcuteSQLUpdateModelbyPromises(xml, id, callback)
- {   
-	 
-	 sql.connect(dbConnectionConfig).then(pool => {
-		    // Query		    
-		    return pool.request()
-		        .input('XML', sql.Xml, xml)
-  		        .input('id', sql.NVarChar, id)		        
-		        .query('update PROCESSMODEL set MODEL_XML=@XML where MODELID=@id')
-		}).then(result => {
-		    console.dir(result);
-		    return callback(result.rowsAffected);
-		}).catch(err => {
-			console.dir(err);
-		  // ... error checks
-		});
- }
+
 
 function ExcuteSQLDeleteModelbyPromises(id, callback) {
 
@@ -270,7 +283,7 @@ function ExcuteSQLDeleteModelbyPromises(id, callback) {
 
 module.exports = {
 	NonQuery : ExecuteNonQuery,
-	SelectByModelID: ExcuteSQLSelectByModelID,
+	SelectModel: ExcuteSQLSelectByModelIDPromises,
 	UpdateModel : ExcuteSQLUpdateModelbyPromises,
 	InsertModel : ExcuteSQLInsertModelbyPromises,
 	DeleteModel: ExcuteSQLDeleteModelbyPromises

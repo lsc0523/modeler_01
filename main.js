@@ -50,7 +50,7 @@ server.get('/viewer' , function(req , res){
 		res.render('viewer', {name : ""});
 	}
 	else{
-		Mssql.SelectByModelID(req.query.id, function(result){
+		Mssql.SelectModel(req.query.id, function(result){
 			xmlData = result.recordset[0].MODEL_XML;
 			console.log(xmlData);
 			res.render('viewer', {name : xmlData});
