@@ -55,12 +55,12 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 	 });
  }
 
-function ExcuteSQLSelectByModelIDPromises(parms, callback) {
+function ExcuteSQLSelectByModelIDPromises(id, callback) {
 
 		sql.connect(dbConnectionConfig).then(pool => {
 			// Query		    
 			return pool.request()
-				.input('MODELCATID', sql.NVarChar, parms.MODELCATID)
+				.input('MODELCATID', sql.NVarChar, id)
 				.query(sqlSelectModelQurey)
 
 		}).then(result => {
@@ -69,7 +69,9 @@ function ExcuteSQLSelectByModelIDPromises(parms, callback) {
 		}).catch(err => {
 			console.dir(err);
 			// ... error checks
-} 
+		})
+}
+
  
  function getNewModelID(callback)
  { 	 
