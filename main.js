@@ -67,7 +67,7 @@ server.get('/modeler' , function(req , res){
 		res.render('modeler', {name : "" , modelID : ""});
 	}
 	else{
-		Mssql.SelectByModelID(req.query.id, function(result){
+		Mssql.SelectModel(req.query.id, function(result){
 			console.log(result);
 			xmlData = result.recordset[0].MODEL_XML;
 			modelID = result.recordset[0].MODELID;
