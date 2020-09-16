@@ -3,17 +3,23 @@ import $ from 'jquery';
 //port bpmnJs from 'bpmn-js';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/bpmn';
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda.json';
 import minimapModule from 'diagram-js-minimap';
 import diagramXML from '../resources/newDiagram.bpmn';
 import CliModule from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
 import BpmnViewer from 'bpmn-js/lib/Viewer';
+import tooltips from "diagram-js/lib/features/tooltips";
+
+import {
+    registerBpmnJSPlugin
+  } from 'camunda-modeler-plugin-helpers';
+  
+  import plugin from './TooltipInfoService';
 
 var container = $('#js-drop-zone');
-
 var canvas = $('#js-canvas');
-
 var customTranslateModule = {
   translate: [ 'value', customTranslate ]
 };
@@ -25,14 +31,19 @@ var bpmnModeler = new BpmnModeler({
     parent: '#js-properties-panel'
   },
   additionalModules: [
-    minimapModule,
-    propertiesPanelModule,
-    propertiesProviderModule,
-    CliModule,
-    customTranslateModule
+  minimapModule,
+  propertiesPanelModule,
+  propertiesProviderModule,
+  CliModule,
+  customTranslateModule,
+  //tooltips,
+  plugin
   ],
   cli: {
     bindTo: 'cli'
+  },
+  moddleExtensions: {
+    camunda: camundaModdleDescriptor
   }
 });
 
@@ -51,23 +62,38 @@ async function openDiagram(xml) {
     await bpmnModeler.importXML(xml);
 
     container
-      .removeClass('with-error')
-      .addClass('with-diagram');
+    .removeClass('with-error')
+    .addClass('with-diagram');
 
     //bpmnModeler.get('minimap').open();
     bpmnModeler.get('minimap').open();
-    console.log('Awesome! Ready to navigate!');
+    /*
+    var elementRegistry = bpmnModeler.get("elementRegistry");
+    var tooltips = bpmnModeler.get("tooltips");
 
-  } catch (err) {
+    var startEvent = elementRegistry.get("StartEvent_1");
+    tooltips.add({
+    position: {
+      x: startEvent.x,
+      y: startEvent.y - 20
+    },
+    html:
+      '<div style="width: 100px; background: fuchsia; color: white;">TOOL TIP</div>'
+  });
+  */
+  
+  console.log('Awesome! Ready to navigate!');
 
-    container
-      .removeClass('with-diagram')
-      .addClass('with-error');
+} catch (err) {
 
-    container.find('.error pre').text(err.message);
+  container
+  .removeClass('with-diagram')
+  .addClass('with-error');
 
-    console.error(err);
-  }
+  container.find('.error pre').text(err.message);
+
+  console.error(err);
+}
 }
 
 
@@ -134,48 +160,96 @@ $(function() {
     }
   });
 
+/*
+  $('input[type="file"]').change(function(e){
+       //var fileName = e.target.files[0].name;
+       //alert('The file "' + fileName +  '" has been selected.');
 
-  downloadLink.click(async function(e){
-    console.log("download xml...");
-    var modelID = $("#modelID");
-    console.log(modelID[0].innerText);
+       var form = $('#fileForm')[0];
+       var formData = new FormData(form);
 
-    var xml = await bpmnModeler.saveXML({ format: true });
-    var xmlData = xml.xml.replace( '<?xml version="1.0" encoding="UTF-8"?>', '');
-    var urlLink = '';
+       $.ajax({
+        type: 'post',
+        url: '/upload',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+          $('#filePath').val(data);
+        },
+        error: function (err) {
+          console.log(err);
+        }
+      });
 
-    if(modelID[0].innerText == "" || modelID[0].innerText == undefined || modelID[0].innerText == 'undefined'){
-      urlLink = '/insert';
-    }else{
-      urlLink = '/update';
-    }
 
-    console.log(urlLink); 
+     });
+     */
+
+     $('#fileInput').on('change', function (){
+      var form = $('#fileForm')[0];
+      var formData = new FormData(form);
 
       $.ajax({
-            url: urlLink,
-            type:'POST',
-            data:{ 
-                   id: xmlData.replace(/(\r\n|\n|\r)/gm, ""),
-                   modelID : modelID[0].innerText
-                  },
-                error : function(error) {
-                  alert("Error!");
-                },
-                success : function(data) {
-                    alert("저장이 완료 되었습니다.");
-                    window.location.href = 'home';
-                },
-                complete : function() {
+        type: 'post',
+        url: '/upload',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+          alert("success file upload..");
+          //$('#filePath').val(data);
+        },
+        error: function (err) {
+          console.log(err);
+        }
+      });
+    });
+
+
+     downloadLink.click(async function(e){
+      console.log("download xml...");
+      var modelID = $("#modelID");
+      console.log(modelID[0].innerText);
+
+      var xml = await bpmnModeler.saveXML({ format: true });
+      var xmlData = xml.xml.replace( '<?xml version="1.0" encoding="UTF-8"?>', '');
+      var urlLink = '';
+
+      if(modelID[0].innerText == "" || modelID[0].innerText == undefined || modelID[0].innerText == 'undefined'){
+        urlLink = '/insert';
+      }else{
+        urlLink = '/update';
+      }
+
+      console.log(urlLink);
+      var selectedElements = bpmnModeler.get('selection').get(); 
+      console.log(selectedElements);
+
+      $.ajax({
+        url: urlLink,
+        type:'POST',
+        data:{ 
+         id: xmlData.replace(/(\r\n|\n|\r)/gm, ""),
+         modelID : modelID[0].innerText
+       },
+       error : function(error) {
+        alert("Error!");
+      },
+      success : function(data) {
+        alert("저장이 완료 되었습니다.");
+        window.location.href = 'home';
+      },
+      complete : function() {
                     //window.location.href = 'home';
                     //alert("complete!");    
-                }
-          });
-  });
+                  }
+                });
+    });
 
-  function setEncoded(link, name, data) {
-    var encodedData = encodeURIComponent(data);
-    link.addClass('active')
+     function setEncoded(link, name, data) {
+      var encodedData = encodeURIComponent(data);
+      link.addClass('active')
     /*
     if (data) {
       link.addClass('active').attr({

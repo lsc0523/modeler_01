@@ -9,42 +9,43 @@
   <link rel="stylesheet" href="vendor/diagram-js-minimap/assets/diagram-js-minimap.css" />
   <link rel="stylesheet" href="vendor/bpmn-js-properties-panel/assets/bpmn-js-properties-panel.css" />
   <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/style.css" />
   <style type="text/css">
- ul.main {
+   ul.main {
     list-style-type: none;
     margin: 0;
     padding: 0;
     background-color: #10ad73;
-    }
-   
- ul.main:after{
-     content:'';
-     display: block;
-     clear:both;
-    }
-  
+  }
+
+  ul.main:after{
+   content:'';
+   display: block;
+   clear:both;
+ }
+
  li.main {
-     float: left;
-  }
-  
+   float: left;
+ }
+
  li.main a {
-     display: block;
-     color: white;
-     text-align: center;
-     padding: 14px 16px;
-     text-decoration: none;
-     width:150px;
-     
-  }
-  li.main a:hover:not(.active) {
-    /*background-color: #4CAF50;*/
-    text-decoration: underline;
-  }
-  .active {
-    text-decoration: underline;
-    /*background-color: #4CAF50;*/
-  }
-  </style>
+   display: block;
+   color: white;
+   text-align: center;
+   padding: 14px 16px;
+   text-decoration: none;
+   width:150px;
+
+ }
+ li.main a:hover:not(.active) {
+  /*background-color: #4CAF50;*/
+  text-decoration: underline;
+}
+.active {
+  text-decoration: underline;
+  /*background-color: #4CAF50;*/
+}
+</style>
 </head>
 <body>
  <div>
@@ -57,48 +58,53 @@
 </div>
 
 
- <p id="xmlData" style="display:none;"><%=name%></p>
- <p id="modelID" style="display:none;"><%=modelID%></p>
+<p id="xmlData" style="display:none;"><%=name%></p>
+<p id="modelID" style="display:none;"><%=modelID%></p>
 
- <div class="content with-diagram" id="js-drop-zone">
-  
-    <div class="message intro">
-      <div class="note">
-        Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
-      </div>
+<div class="content with-diagram" id="js-drop-zone">
+
+  <div class="message intro">
+    <div class="note">
+      Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
     </div>
-
-    <div class="message error">
-      <div class="note">
-        <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
-
-        <div class="details">
-          <span>Import Error Details</span>
-          <pre></pre>
-        </div>
-      </div>
-    </div>
-  
-
-
-   <div class="canvas" id="js-canvas"></div>
-   <div class="properties-panel-parent" id="js-properties-panel"></div>
   </div>
 
-  <ul class="buttons">
-    <li>
-      
-    </li>
-    <li>
-      <a id="js-download-diagram" href title="download BPMN diagram">
-        SAVE BPMN
-      </a>
-    </li>
-    <li>
-      <a id="js-download-svg" href title="download as SVG image">
-        SAVE SVG
-      </a>
-    </li>
-  </ul>
-  <script type="text/javascript" src="modeler.app.js"></script>
+  <div class="message error">
+    <div class="note">
+      <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+
+      <div class="details">
+        <span>Import Error Details</span>
+        <pre></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas" id="js-canvas"></div>
+  <div class="properties-panel-parent" id="js-properties-panel"></div>
+</div>
+
+<ul class="buttons">
+  <li>
+
+  </li>
+  <li>
+    <a id="js-download-diagram" href title="download BPMN diagram">
+      SAVE BPMN
+    </a>
+  </li>
+  <li>
+    <a id="js-download-svg" href title="download as SVG image">
+      SAVE SVG
+    </a>
+  </li>
+
+  <li>
+    <form action="/upload" method="post" enctype="multipart/form-data" id="fileForm">
+      <input type="file" id="fileInput" name="fileInput">
+    </form>
+  </li>
+</ul>
+
+<script type="text/javascript" src="modeler.app.js"></script>
 </html>

@@ -2,44 +2,44 @@
 <html lang="ko">
 
 <head>
-<title>Home</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Gugi&amp;subset=korean" rel="stylesheet">
+  <title>Home</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Gugi&amp;subset=korean" rel="stylesheet">
 
 
- <style type="text/css">
+  <style type="text/css">
 
-  body , html{
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-  }
+    body , html{
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
 
 
     ul.main {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: #10ad73;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      background-color: #10ad73;
     }
-   
+    
     ul.main:after{
      content:'';
      display: block;
      clear:both;
-    }
-  
-  li.main {
+   }
+   
+   li.main {
      float: left;
-  }
-  
-  li.main a {
+   }
+   
+   li.main a {
      display: block;
      color: white;
      text-align: center;
@@ -47,8 +47,8 @@
      text-decoration: none;
      width:150px;
      
-  }
-  li.main a:hover:not(.active) {
+   }
+   li.main a:hover:not(.active) {
     /*background-color: #4CAF50;*/
     text-decoration: underline;
   }
@@ -65,7 +65,7 @@
     height: 300px;
     line-height: 250px;
   }
-  </style>
+</style>
 
 
 </head>
@@ -79,65 +79,65 @@
     <li class='main'><a href="about">About</a></li>
   </ul>
 
-<div class = topcontainer>BPMN Modeler</div>
-<div class="container">
-<br>
-<h3>MODELER LIST</h3>
+  <div class = topcontainer>BPMN Modeler</div>
+  <div class="container">
+    <br>
+    <h3>MODELER LIST</h3>
 
-<a href="/modeler">추가</a>
-<br>
-<br>
-<p>Modler List ...</p>
+    <a href="/modeler">추가</a>
+    <br>
+    <br>
+    <p>Modler List ...</p>
 
-<table class="table table-striped" style="width: 1200px">
-	<thead>
-		<tr>
-		<th style="width: 20%">Model ID</th>
-		<th style="width: 15%">Process ID</th>
-    <th style="width: 15%">Model Name</th>
-    <th style="width: 35%">Model Detail Name</th>
-    <th style="width: 5%">열기</th>
-		<th style="width: 5%">수정</th>
-		<th style="width: 5%">삭제</th>
-		</tr>
-	</thead>
+    <table class="table table-striped" style="width: 1200px">
+     <thead>
+      <tr>
+        <th style="width: 20%">Model ID</th>
+        <th style="width: 15%">Process ID</th>
+        <th style="width: 15%">Model Name</th>
+        <th style="width: 35%">Model Detail Name</th>
+        <th style="width: 5%">열기</th>
+        <th style="width: 5%">수정</th>
+        <th style="width: 5%">삭제</th>
+      </tr>
+    </thead>
 
-	<tbody>
-	
-	<% for(var i=0; i < data.length; i++){ %>
-	<tr>
-		<td>
-		<%= data[i].MODELID %>
-		</td>
+    <tbody>
+     
+     <% for(var i=0; i < data.length; i++){ %>
+     <tr>
+      <td>
+        <%= data[i].MODELID %>
+      </td>
 
-		<td>
-		<%= data[i].PROCESSID %>
-		</td>
+      <td>
+        <%= data[i].PROCESSID %>
+      </td>
 
-    <td>
-    <%= data[i].MODELNAME %>
-    </td>
+      <td>
+        <%= data[i].MODELNAME %>
+      </td>
 
-    <td>
-    <%= data[i].MODELDESC %>
-    </td>
+      <td>
+        <%= data[i].MODELDESC %>
+      </td>
 
-    <td>
-    <a href="/viewer?id=<%= data[i].MODELID %>">열기</a>
-    </td>
+      <td>
+        <a href="/viewer?id=<%= data[i].MODELID %>">열기</a>
+      </td>
 
-		<td>
-		<a href="/modeler?id=<%= data[i].MODELID %>">수정</a>
-		</td>
+      <td>
+        <a href="/modeler?id=<%= data[i].MODELID %>">수정</a>
+      </td>
 
-		<td>
-		<a href="/delete?id=<%= data[i].MODELID %>">삭제</a>
-		</td>
+      <td>
+        <a href="/delete?id=<%= data[i].MODELID %>">삭제</a>
+      </td>
 
-	</tr>
+    </tr>
 
-	<% } %>
-	</tbody>
+    <% } %>
+  </tbody>
 
 
 
