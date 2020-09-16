@@ -83,25 +83,23 @@ function ExcuteSQLSelectModelbyPromises(id, callback) {
  
 function getNewModelID(callback)
  { 	 
-		var now = new Date();
 	 	ExecuteNonQuery(sqlSelectModelIDQurey,function(result){
-	 	if (result.rowsAffected != 0)
- 		{
-		 	//console.log(result);
-			var data = result.recordset[0].MODELID;
-			
-			var temp = data.split('_');
-			
-			//console.log(temp);
-			
-			var cnt = temp[0].substring(0,7);
-			cnt = temp[0].split('MOD');
- 		}
-	 	else	 		
- 		{
- 			var cnt = '00001'
- 		}
-		
+			  if (result.rowsAffected != 0) {
+				  //console.log(result);
+				  var data = result.recordset[0].MODELID;
+
+				  var temp = data.split('_');
+
+				  //console.log(temp);
+
+				  var cnt = temp[0].substring(0, 7);
+				  cnt = temp[0].split('MOD');
+			  }
+			  else {
+				  var cnt = '00001'
+			  }	  
+
+		var now = new Date();
 		var zero5 = new Padder(5);		
 		var newcnt = zero5.pad(Number(cnt[1])+1);
 		var day = dateFormat(now, "yyyymmdd-hhMMss");
