@@ -212,8 +212,11 @@ function ExcuteSQLInsertModel(parms, callback)
 			 });
 			 
 			 
-				 ps.prepare(sqlUpdateModelQuery, function(err) {
-			            ps.execute({MODELCATID:parms.MODELCATID, MODELID:result, PROCESSID:parms.PROCESSID, MODEL_XML:parms.MODEL_XML,
+		 ps.prepare(sqlUpdateModelQuery, function (err) {
+			 
+				 var now = new Date();
+			 ps.execute({
+				 MODELCATID: parms.MODELCATID, MODELID: result, PROCESSID: parms.PROCESSID, MODEL_XML: parms.MODEL_XML,
 			            			INSUSER:parms.INSUSER,INSDTTM:now,UPDUSER:parms.UPDUSER,UPDDTTM:now,REPOSIGRUPID:''}, function(err, result) {
 			                ps.unprepare(function (err) {
 			                	if (err !== null){
@@ -238,6 +241,7 @@ function ExcuteSQLInsertModelbyPromises(parms, callback)
  {   	 
 	 getNewModelID(function(result){
 //	 console.log(result);    
+		 var now = new Date();
 		 sql.connect(dbConnectionConfig).then(pool => {
 			    // Query		    
 			    return pool.request()
