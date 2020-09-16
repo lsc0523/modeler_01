@@ -13,10 +13,10 @@ import BpmnViewer from 'bpmn-js/lib/Viewer';
 import tooltips from "diagram-js/lib/features/tooltips";
 
 import {
-    registerBpmnJSPlugin
-  } from 'camunda-modeler-plugin-helpers';
-  
-  import plugin from './TooltipInfoService';
+  registerBpmnJSPlugin
+} from 'camunda-modeler-plugin-helpers';
+
+import plugin from './TooltipInfoService';
 
 var container = $('#js-drop-zone');
 var canvas = $('#js-canvas');
@@ -152,7 +152,6 @@ $(function() {
   var downloadLink = $('#js-download-diagram');
   var downloadSvgLink = $('#js-download-svg');
 
-
   $('.buttons a').click(function(e) {
     if (!$(this).is('.active')) {
       e.preventDefault();
@@ -160,96 +159,71 @@ $(function() {
     }
   });
 
-/*
-  $('input[type="file"]').change(function(e){
-       //var fileName = e.target.files[0].name;
-       //alert('The file "' + fileName +  '" has been selected.');
 
-       var form = $('#fileForm')[0];
-       var formData = new FormData(form);
+  $('#fileInput').on('change', function (){
+    var form = $('#fileForm')[0];
+    var formData = new FormData(form);
 
-       $.ajax({
-        type: 'post',
-        url: '/upload',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-          $('#filePath').val(data);
-        },
-        error: function (err) {
-          console.log(err);
-        }
-      });
-
-
-     });
-     */
-
-     $('#fileInput').on('change', function (){
-      var form = $('#fileForm')[0];
-      var formData = new FormData(form);
-
-      $.ajax({
-        type: 'post',
-        url: '/upload',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-          alert("success file upload..");
+    $.ajax({
+      type: 'post',
+      url: '/upload',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+        alert("success file upload..");
           //$('#filePath').val(data);
         },
         error: function (err) {
           console.log(err);
         }
       });
-    });
+  });
 
 
-     downloadLink.click(async function(e){
-      console.log("download xml...");
-      var modelID = $("#modelID");
-      console.log(modelID[0].innerText);
+  downloadLink.click(async function(e){
+    console.log("download xml...");
+    var modelID = $("#modelID");
+    console.log(modelID[0].innerText);
 
-      var xml = await bpmnModeler.saveXML({ format: true });
-      var xmlData = xml.xml.replace( '<?xml version="1.0" encoding="UTF-8"?>', '');
-      var urlLink = '';
+    var xml = await bpmnModeler.saveXML({ format: true });
+    var xmlData = xml.xml.replace( '<?xml version="1.0" encoding="UTF-8"?>', '');
+    var urlLink = '';
 
-      if(modelID[0].innerText == "" || modelID[0].innerText == undefined || modelID[0].innerText == 'undefined'){
-        urlLink = '/insert';
-      }else{
-        urlLink = '/update';
-      }
+    if(modelID[0].innerText == "" || modelID[0].innerText == undefined || modelID[0].innerText == 'undefined'){
+      urlLink = '/insert';
+    }else{
+      urlLink = '/update';
+    }
 
-      console.log(urlLink);
-      var selectedElements = bpmnModeler.get('selection').get(); 
-      console.log(selectedElements);
+    console.log(urlLink);
+    var selectedElements = bpmnModeler.get('selection').get(); 
+    console.log(selectedElements);
 
-      $.ajax({
-        url: urlLink,
-        type:'POST',
-        data:{ 
-         id: xmlData.replace(/(\r\n|\n|\r)/gm, ""),
-         modelID : modelID[0].innerText
-       },
-       error : function(error) {
-        alert("Error!");
-      },
-      success : function(data) {
-        alert("저장이 완료 되었습니다.");
-        window.location.href = 'home';
-      },
-      complete : function() {
+    $.ajax({
+      url: urlLink,
+      type:'POST',
+      data:{ 
+       id: xmlData.replace(/(\r\n|\n|\r)/gm, ""),
+       modelID : modelID[0].innerText
+     },
+     error : function(error) {
+      alert("Error!");
+    },
+    success : function(data) {
+      alert("저장이 완료 되었습니다.");
+      window.location.href = 'home';
+    },
+    complete : function() {
                     //window.location.href = 'home';
                     //alert("complete!");    
                   }
                 });
-    });
+  });
 
-     function setEncoded(link, name, data) {
-      var encodedData = encodeURIComponent(data);
-      link.addClass('active')
+  function setEncoded(link, name, data) {
+    var encodedData = encodeURIComponent(data);
+    link.addClass('active')
     /*
     if (data) {
       link.addClass('active').attr({

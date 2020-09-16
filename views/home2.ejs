@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <title>Home</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- <link href="https://fonts.googleapis.com/css?family=Gugi&amp;subset=korean" rel="stylesheet">  -->
+
+
+  <style type="text/css">
+
+    @font-face{ 
+      font-family:'LGSmHaTR'; 
+      src:url('fonts/LGSmHaTR.eot'); 
+      src:url('fonts/LGSmHaTR.eot?#iefix') format(‘embedded-opentype’), 
+      url('fonts/LGSmHaTR.woff') format(‘woff’), 
+      url('fonts/LGSmHaTR.ttf') format('truetype'), 
+      url('fonts/LGSmHaTR.svg') format('svg'); 
+    }
+
+
+    body , html
+    {
+      font-family: 'LGSmHaTR';
+      font-weight: normal;
+      font-style: normal;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+
+    ul.main {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      background-color: #10ad73;
+    }
+    
+    ul.main:after{
+     content:'';
+     display: block;
+     clear:both;
+   }
+   
+   li.main {
+     float: left;
+   }
+   
+   li.main a {
+     display: block;
+     color: white;
+     text-align: center;
+     padding: 14px 16px;
+     text-decoration: none;
+     width:150px;
+     
+   }
+   li.main a:hover:not(.active) {
+    /*background-color: #4CAF50;*/
+    text-decoration: underline;
+  }
+  .active {
+    text-decoration: underline;
+    /*background-color: #4CAF50;*/
+  }
+
+  .topcontainer {
+    background-color: #10ad73;
+    font-size: 50px;
+    text-align: center;
+    color: white;
+    height: 300px;
+    line-height: 250px;
+  }
+</style>
+
+
+</head>
+
+<body>
+
+  <ul class='main'>
+    <li class='main'><a class="active" href="home">Home</a></li>
+    <li class='main'><a href="viewer" >Viewer</a></li>
+    <li class='main'><a href="modeler">Modeler</a></li>
+    <li class='main'><a href="about">About</a></li>
+  </ul>
+
+  <div class = topcontainer>BPMN Modeler</div>
+  <div class="container" style="height: 80px"> </div>
+  <div style="height: 80px;">
+    <div style="display: inline-block; width: 300px;"></div>
+    <div style="display: inline-block; width: 700px;">
+      <p><img src="/bpmn-js.gif"/ style="width: 600px;"></p>
+    </div>
+    <div style="display: inline-block; width: 700px; height: 400px; vertical-align: top;">
+      <h2>모델러 작성</h2>
+      <br>
+      BPMN 국제 표준 기호를 가지고 프로세스 모델링 <br>
+      Simple Shape & Activity 도구를 사용하여 쉽고 빠르게 작성 <br>
+      사용자 편의 기능 및 타 계열사와의 표준 프로세스 적립
+      <br><br><br><br><br>
+      <a href="modeler" class="btn btn-primary" style="">사용하기</a>
+    </div>
+
+  </div>
+  
+
+
+
+</body>
+
+</html>
+
+
