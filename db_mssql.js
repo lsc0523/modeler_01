@@ -22,17 +22,26 @@ sql.on('error', err => {
 
 
 var ModeltableName = "PROCESSMODEL"; 
-var now = new Date();
+ 
+
  
 //sql Qurey
 var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@id' ; 
 var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@id';
+
+var sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID,   where MODELID=@id';
+
+
 var sqlDeleteModelQuery = 'delete from ' + ModeltableName + ' where MODELID=@id';
 var sqlInsertModelQuery = 'insert into ' + ModeltableName +'(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
 						 + ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
-var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID) DESC' 
+var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID) DESC'
+
+var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MODELTYPE, MODELID, MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+	+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
+
  
-function ExcuteSQLSelectByModelID(id, callback)
+function ExcuteSQLSelectModel(id, callback)
  {	 
 	 var connection = sql.connect(dbConnectionConfig, function(err) {		 		 
 		 if (err) {
@@ -55,7 +64,7 @@ function ExcuteSQLSelectByModelID(id, callback)
 	 });
  }
 
-function ExcuteSQLSelectByModelIDPromises(id, callback) {
+function ExcuteSQLSelectModelbyPromises(id, callback) {
 
 		sql.connect(dbConnectionConfig).then(pool => {
 			// Query		    
@@ -74,7 +83,7 @@ function ExcuteSQLSelectByModelIDPromises(id, callback) {
  
 function getNewModelID(callback)
  { 	 
-	
+		var now = new Date();
 	 	ExecuteNonQuery(sqlSelectModelIDQurey,function(result){
 	 	if (result.rowsAffected != 0)
  		{
@@ -175,6 +184,10 @@ function ExcuteSQLUpdateModelbyPromises(xml, id, callback) {
 		// ... error checks
 	});
 }
+
+
+
+
  
 function ExcuteSQLInsertModel(parms, callback) 
  { 	 
@@ -282,7 +295,7 @@ function ExecuteNonQuery(sqlQurey, callback)
 
 module.exports = {
 	NonQuery : ExecuteNonQuery,
-	SelectModel: ExcuteSQLSelectByModelIDPromises,
+	SelectModel: ExcuteSQLSelectModelbyPromises,
 	UpdateModel : ExcuteSQLUpdateModelbyPromises,
 	InsertModel : ExcuteSQLInsertModelbyPromises,
 	DeleteModel: ExcuteSQLDeleteModelbyPromises
