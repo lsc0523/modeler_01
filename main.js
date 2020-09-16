@@ -6,16 +6,15 @@ var webpack = require('webpack')
 
 // webpack의 output 장소인 dist를 express static으로 등록한다.
 const staticMiddleWare = express.static("public");
-
 // webpack 설정
 const config = require("./webpack.config.js");
 const compiler = webpack(config);
 
 // 웹팩을 미들웨어로 등록해서 사용하기 위한 모듈
 const webpackDevMiddleware = require("webpack-dev-middleware")(
-    compiler,
-    config.devServer
-)
+	compiler,
+	config.devServer
+	)
 
 // 웹팩미들웨어가 static 미들웨어 이전에 위치!
 server.use(webpackDevMiddleware);
@@ -34,6 +33,11 @@ var bodyParser = require('body-parser')
 server.use(bodyParser.urlencoded({extended: false}))
 
 
+server.get('/home2' , function(req , res){
+	console.log("home2...");
+	res.render('home2');
+});
+
 server.get('/home' , function(req , res){
 	console.log("home...");
 	Mssql.NonQuery(sqlQurey,function(result){
@@ -44,7 +48,7 @@ server.get('/home' , function(req , res){
 
 server.get('/viewer' , function(req , res){
 	console.log("viewer...");
-    console.log(req.query.id);
+	console.log(req.query.id);
 	var xmldata = "";
 	if(req.query.id == "" || req.query.id == undefined){
 		res.render('viewer', {name : ""});
@@ -103,11 +107,11 @@ server.post('/insert' , function(req , res){
 	console.log(req.body.id);
 
 	var params = { MODELCATID : 'LGC_MOD001_20200828',
-				   PROCESSID : 'PROD0003',
-				   MODEL_XML : req.body.id,
-				   INSUSER : 'gschun',
-				   UPDUSER : 'gschun'}
-				   ;
+	PROCESSID : 'PROD0003',
+	MODEL_XML : req.body.id,
+	INSUSER : 'gschun',
+	UPDUSER : 'gschun'}
+	;
 
 	Mssql.InsertModel(params, function(result){
 		console.log(result);		
@@ -129,6 +133,28 @@ server.get('/delete' , function(req , res){
 });
 
 
+//File Logic..
+var fs = require('fs');
+var multiparty = require('multiparty');
+
+server.post('/upload', function (req, res) {
+    var form = new multiparty.Form({
+        autoFiles: false,                // 요청이 들어오면 파일을 자동으로 저장할 것인가
+        uploadDir: 'uploads/',           // 파일이 저장되는 경로(프로젝트 내의 temp 폴더에 저장됩니다.)
+        maxFilesSize: 1024 * 1024 * 1024 // 허용 파일 사이즈 최대치
+    });
+ 
+    form.parse(req, function (error, fields, files) {
+        // 파일 전송이 요청되면 이곳으로 온다.
+        // 에러와 필드 정보, 파일 객체가 넘어온다.
+        var path = files.fileInput[0].path;
+        console.log(path);
+        res.send(path); // 파일과 예외 처리를 한 뒤 브라우저로 응답해준다.
+    });
+});
+
+
+
 server.listen(3000, () => {
-    console.log("Server is Listening")
+	console.log("Server is Listening")
 });
