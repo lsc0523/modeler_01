@@ -21,18 +21,18 @@ sql.on('error', err => {
 });
 
 
- var ModeltableName = "PROCESSMODEL"; 
- var now = new Date();
+var ModeltableName = "PROCESSMODEL"; 
+var now = new Date();
  
 //sql Qurey
- var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@id' ; 
+var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@id' ; 
 var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@id';
 var sqlDeleteModelQuery = 'delete from ' + ModeltableName + ' where MODELID=@id';
-var sqlInsertModelQuery = 'insert into ' + ModeltableName +'(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM, REPOSIGRUPID)'
-						 + ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM, @REPOSIGRUPID)';
+var sqlInsertModelQuery = 'insert into ' + ModeltableName +'(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+						 + ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
 var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID)' 
  
- function ExcuteSQLSelectByModelID(id, callback)
+function ExcuteSQLSelectByModelID(id, callback)
  {	 
 	 var connection = sql.connect(dbConnectionConfig, function(err) {		 		 
 		 if (err) {
@@ -60,20 +60,19 @@ function ExcuteSQLSelectByModelIDPromises(id, callback) {
 		sql.connect(dbConnectionConfig).then(pool => {
 			// Query		    
 			return pool.request()
-				.input('MODELCATID', sql.NVarChar, id)
+				.input('id', sql.NVarChar, id)
 				.query(sqlSelectModelQurey)
 
 		}).then(result => {
-			// console.dir(result);
+			// console.dir(result);¤·
 			return callback(result);
 		}).catch(err => {
 			console.dir(err);
 			// ... error checks
 		})
 }
-
  
- function getNewModelID(callback)
+function getNewModelID(callback)
  { 	 
 	
 	 	ExecuteNonQuery(sqlSelectModelIDQurey,function(result){
@@ -96,7 +95,7 @@ function ExcuteSQLSelectByModelIDPromises(id, callback) {
 		
 		var zero5 = new Padder(5);		
 		var newcnt = zero5.pad(Number(cnt[1])+1);
-		var day = dateFormat(now, "yyyymmdd-hMMss");
+		var day = dateFormat(now, "yyyymmdd-hhMMss");
 		var newID = "MOD" + newcnt + '_' + day;	
 		
 		console.log(newID);
@@ -114,7 +113,7 @@ function ExcuteSQLSelectByModelIDPromises(id, callback) {
 //  Number.prototype.padLeft = function (n,str){
 //	    return Array(n-String(this).length+1).join(str||'0')+this;
 //	}
- function Padder(len, pad) {
+function Padder(len, pad) {
 	  if (len === undefined) {
 	    len = 1;
 	  } else if (pad === undefined) {
@@ -132,7 +131,7 @@ function ExcuteSQLSelectByModelIDPromises(id, callback) {
 	  };
 	}
   
- function ExcuteSQLUpdateModel(xml, id, callback) 
+function ExcuteSQLUpdateModel(xml, id, callback) 
  { 	 
 	 var connection = sql.connect(dbConnectionConfig, function(err) {		 		 
 		 if (err) {
@@ -177,7 +176,7 @@ function ExcuteSQLUpdateModelbyPromises(xml, id, callback) {
 	});
 }
  
- function ExcuteSQLInsertModel(parms, callback) 
+function ExcuteSQLInsertModel(parms, callback) 
  { 	 
 	// console.log(parms);
 	 var connection = sql.connect(dbConnectionConfig, function(err) {		 		 
@@ -224,7 +223,7 @@ function ExcuteSQLUpdateModelbyPromises(xml, id, callback) {
 	 });
  }
  
- function ExcuteSQLInsertModelbyPromises(parms, callback)
+function ExcuteSQLInsertModelbyPromises(parms, callback)
  {   	 
 	 getNewModelID(function(result){
 //	 console.log(result);    
@@ -239,7 +238,6 @@ function ExcuteSQLUpdateModelbyPromises(xml, id, callback) {
 			 .input('INSDTTM', sql.DateTimeOffset, now)
 			 .input('UPDUSER', sql.NVarChar, parms.UPDUSER)
 			 .input('UPDDTTM', sql.DateTimeOffset, now) 	
-			 .input('REPOSIGRUPID', sql.NVarChar, "") 	
 	         .query(sqlInsertModelQuery)            
 	         
 			}).then(result => {
@@ -251,7 +249,6 @@ function ExcuteSQLUpdateModelbyPromises(xml, id, callback) {
 			});
 	    });
  } 
-
 
 function ExcuteSQLDeleteModelbyPromises(id, callback) {
 
@@ -269,7 +266,7 @@ function ExcuteSQLDeleteModelbyPromises(id, callback) {
 	});
 }
  
- function ExecuteNonQuery(sqlQurey, callback)
+function ExecuteNonQuery(sqlQurey, callback)
 {
 	sql.connect(dbConnectionConfig).then(pool => {
 	    
@@ -291,4 +288,3 @@ module.exports = {
 	DeleteModel: ExcuteSQLDeleteModelbyPromises
 
 };
-
