@@ -159,7 +159,6 @@ $(function() {
     }
   });
 
-
   $('#fileInput').on('change', function (){
     var form = $('#fileForm')[0];
     var formData = new FormData(form);
@@ -171,10 +170,11 @@ $(function() {
       processData: false,
       contentType: false,
       success: function (data) {
-        alert("success file upload..");
+         alert("success file upload..");
           //$('#filePath').val(data);
         },
         error: function (err) {
+          alert("Fail...");
           console.log(err);
         }
       });

@@ -143,16 +143,47 @@ server.post('/upload', function (req, res) {
         uploadDir: 'uploads/',           // 파일이 저장되는 경로(프로젝트 내의 temp 폴더에 저장됩니다.)
         maxFilesSize: 1024 * 1024 * 1024 // 허용 파일 사이즈 최대치
     });
-	
+
 	form.parse(req, function (error, fields, files) {
         // 파일 전송이 요청되면 이곳으로 온다.
         // 에러와 필드 정보, 파일 객체가 넘어온다.
         var path = files.fileInput[0].path;
+        var newPath = 'uploads/'+ files.fileInput[0].originalFilename;
+
+        fs.rename(path, newPath , function(err){
+        	if( err ) throw err;
+        	console.log('File Renamed!');
+        });
+
         console.log(path);
         res.send(path); // 파일과 예외 처리를 한 뒤 브라우저로 응답해준다.
     });
 });
 
+
+server.get('/download',function(req,res){
+	res.download("./uploads/image1.png");
+});
+
+
+server.get('/fileOpen', function(req  , res){
+	fs.stat('./uploads/qoFtGnCoGofnrmoWHGcnDSCu.png', function(error, stats) {
+   		fs.open('./uploads/qoFtGnCoGofnrmoWHGcnDSCu.png', "r", function(error, fd) {  // 읽기 모드로 test.txt 파일 열기
+   			console.log("파일의 크기: ", stats.size);
+       		if(error) console.log("error: ", error);    // 에러 있을 시 에러 출력
+        		/*
+        		let buffer = new Buffer(100);        // 버퍼의 크기를 100으로 함
+        		
+        		fs.read(fd, buffer, 0, buffer.length, 84, function(error, bytesRead, buffer) {
+            			// buffer에 담을 위치 0, txt 파일 시작 위치는 84
+            			let data = buffer.toString("utf8");
+            			console.log(data);
+            			console.log("읽은 버퍼 크기: ", bytesRead);
+            	});
+            	*/
+            });
+   	});
+});
 
 
 server.listen(3000, () => {

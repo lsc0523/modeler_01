@@ -83,7 +83,9 @@
   <div class="canvas" id="js-canvas"></div>
   <div class="properties-panel-parent" id="js-properties-panel"></div>
 </div>
-
+<div>
+  <a id="fileOpen" href="fileOpen" title="파일 열기">파일 열기</a>
+</div>
 <ul class="buttons">
   <li>
 
@@ -103,6 +105,10 @@
     <form action="/upload" method="post" enctype="multipart/form-data" id="fileForm">
       <input type="file" id="fileInput" name="fileInput">
     </form>
+  </li>
+
+  <li>
+      <a id="fileOpen" href="download" class="active" title="파일 열기">파일 다운로드</a>
   </li>
 </ul>
 
