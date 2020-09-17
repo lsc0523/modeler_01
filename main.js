@@ -181,26 +181,6 @@ server.get('/download',function(req,res){
 });
 
 
-server.get('/fileOpen', function(req  , res){
-	fs.stat('./uploads/qoFtGnCoGofnrmoWHGcnDSCu.png', function(error, stats) {
-   		fs.open('./uploads/qoFtGnCoGofnrmoWHGcnDSCu.png', "r", function(error, fd) {  // 읽기 모드로 test.txt 파일 열기
-   			console.log("파일의 크기: ", stats.size);
-       		if(error) console.log("error: ", error);    // 에러 있을 시 에러 출력
-        		/*
-        		let buffer = new Buffer(100);        // 버퍼의 크기를 100으로 함
-        		
-        		fs.read(fd, buffer, 0, buffer.length, 84, function(error, bytesRead, buffer) {
-            			// buffer에 담을 위치 0, txt 파일 시작 위치는 84
-            			let data = buffer.toString("utf8");
-            			console.log(data);
-            			console.log("읽은 버퍼 크기: ", bytesRead);
-            	});
-            	*/
-            });
-   	});
-});
-
-
 server.listen(3000, () => {
 	console.log("Server is Listening")
 });
