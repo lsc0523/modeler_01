@@ -151,6 +151,7 @@ function getNewModelID(callback) {
 		var now = new Date();
 		var zero5 = new Padder(5);
 		var newcnt = zero5.pad(Number(cnt[1]) + 1);
+		var day = dateFormat(now, "yyyymmdd-hhMMss");
 		var newID = "MOD" + newcnt + '_' + day;
 
 		console.log(newID);
