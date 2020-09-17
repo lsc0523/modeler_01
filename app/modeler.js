@@ -10,7 +10,10 @@ import diagramXML from '../resources/newDiagram.bpmn';
 import CliModule from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
 import BpmnViewer from 'bpmn-js/lib/Viewer';
-import tooltips from "diagram-js/lib/features/tooltips";
+//import tooltips from "diagram-js/lib/features/tooltips";
+
+
+var common = require('./common');
 
 import {
   registerBpmnJSPlugin
@@ -47,13 +50,25 @@ var bpmnModeler = new BpmnModeler({
   }
 });
 
+
 function createNewDiagram(xml) {
+
+  if(common.isNotEmpty(xml)){
+    openDiagram(xml);
+  }
+  else
+  {
+    openDiagram(diagramXML);
+  }
+
+/*
   if(xml != "" && xml != undefined && xml != 'undefined'){
     openDiagram(xml);
   }
   else{
     openDiagram(diagramXML);
   }
+*/
 }
 
 async function openDiagram(xml) {
@@ -159,19 +174,38 @@ $(function() {
     }
   });
 
+
+  bpmnModeler.on('element.click', function(e) {
+
+    var element = e.element;
+    // get incoming shapes
+    var incoming = element.incoming;
+    // get outgoing shapes
+    var outgoing = element.outgoing;
+  });
+
+
   $('#fileInput').on('change', function (){
     var form = $('#fileForm')[0];
     var formData = new FormData(form);
 
+
     $.ajax({
-      type: 'post',
+      type: 'POST',
       url: '/upload',
       data: formData,
       processData: false,
       contentType: false,
       success: function (data) {
-         alert("success file upload..");
-          //$('#filePath').val(data);
+        alert("success file upload..");
+        var modeling = bpmnModeler.get('modeling');
+        //modeler.get('selection').get()
+        var elementsToColor = bpmnModeler.get('selection').get()[0] 
+
+          modeling.setColor(elementsToColor, {
+            stroke: 'green',
+            fill: 'yellow'
+          });
         },
         error: function (err) {
           alert("Fail...");
@@ -190,11 +224,21 @@ $(function() {
     var xmlData = xml.xml.replace( '<?xml version="1.0" encoding="UTF-8"?>', '');
     var urlLink = '';
 
+    if(common.isEmpty(modelID[0].innerText)){
+      urlLink = '/insert';
+    }
+    else
+    {
+      urlLink = '/update'
+    }
+
+    /*
     if(modelID[0].innerText == "" || modelID[0].innerText == undefined || modelID[0].innerText == 'undefined'){
       urlLink = '/insert';
     }else{
       urlLink = '/update';
     }
+    */
 
     console.log(urlLink);
     var selectedElements = bpmnModeler.get('selection').get(); 
