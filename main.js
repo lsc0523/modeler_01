@@ -155,6 +155,21 @@ server.post('/upload', function (req, res) {
         	console.log('File Renamed!');
         });
 
+		var params = {
+			MODELID: req.body.id,
+			MODEL_NODEID: 'DataObjectReference_0001',
+			REPOSNAME: req.body.id,
+			REPOSDESC: 'L&C도면',
+			REPOSINFO: 'L&C도면.pdf'
+		};
+
+
+		Mssql.InsertModelRepos(params, function (result) {
+			console.log(result);
+		});
+
+
+
         console.log(path);
         res.send(path); // 파일과 예외 처리를 한 뒤 브라우저로 응답해준다.
     });

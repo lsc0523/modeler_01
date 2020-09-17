@@ -42,6 +42,7 @@
     "bpmn-js": "^7.3.0",
     "bpmn-js-cli": "^2.0.0",
     "bpmn-js-properties-panel": "^0.35.0",
+    "camunda-bpmn-moddle": "^4.4.0",
     "camunda-modeler-plugin-helpers": "^3.1.0",
     "dataformat": "^1.0.0",
     "dateformat": "^3.0.3",
