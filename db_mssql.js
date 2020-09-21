@@ -44,17 +44,17 @@ var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MO
 var sqlInsertModelReposQuery = 'insert into ' + ModelRepostableName + '(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
 	+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
 
-function ExcuteSQLSelectModel(id, callback) {
+function ExcuteSQLSelectModel(parms, callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
 		if (err) {
 			return console.error('error is', err);
 		}
 
 		var ps = new sql.PreparedStatement(connection);
-		ps.input('id', sql.NVarChar(50));
+		ps.input('MODELID', sql.NVarChar);
 
 		ps.prepare(sqlSelectModelQurey, function (err, recordsets) {
-			ps.execute({ id: id }, function (err, recordset) {
+			ps.execute({ MODELID: parms.MODELID }, function (err, recordset) {
 				ps.unprepare(function (err) {
 					if (err !== null) {
 						console.log(err);
@@ -66,12 +66,12 @@ function ExcuteSQLSelectModel(id, callback) {
 	});
 }
 
-function ExcuteSQLSelectModelbyPromises(id, callback) {
+function ExcuteSQLSelectModelbyPromises(parms, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('id', sql.NVarChar, id)
+			.input('MODELID', sql.NVarChar, parms.MODELID)
 			.query(sqlSelectModelQurey)
 
 	}).then(result => {
@@ -83,12 +83,12 @@ function ExcuteSQLSelectModelbyPromises(id, callback) {
 	})
 }
 
-function ExcuteSQLSelectModelReposbyPromises(id, callback) {
+function ExcuteSQLSelectModelReposbyPromises(parms, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('id', sql.NVarChar, id)
+			.input('MODELID', sql.NVarChar, parms.MODELID)
 			.query(sqlSelectModelReposIDQurey)
 
 	}).then(result => {
@@ -125,10 +125,6 @@ function getNewReposID(id, callback) {
 		return callback(newID);
 
 	});
-
-	//return callback(newModelID);
-	//	return  callback();
-
 }
 
 function getNewModelID(callback) {
@@ -190,22 +186,22 @@ function Padder(len, pad) {
 
 
 // Model  
-function ExcuteSQLUpdateModel(xml, id, callback) {
+function ExcuteSQLUpdateModel(parms , callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
 		if (err) {
 			return console.error('error is', err);
 		}
 
 		var ps = new sql.PreparedStatement(connection);
-		ps.input('XML', sql.Xml);
-		ps.input('id', sql.NVarChar);
+		ps.input('MODEL_XML', sql.Xml);
+		ps.input('MODELID', sql.NVarChar);
 
 		// Xml TO Json
 		//		 var xmlToJson = convert.xml2json(XML, {compact: true, spaces: 4});
 		//		 console.log(xmlToJson);
 
 		ps.prepare(sqlUpdateModelQuery, function (err) {
-			ps.execute({ XML: xml, id: id }, function (err, result) {
+			ps.execute({ MODEL_XML: parms.MODEL_XML, MODELID: parms.MODELID }, function (err, result) {
 				ps.unprepare(function (err) {
 					if (err !== null) {
 						console.log(err);
@@ -217,14 +213,14 @@ function ExcuteSQLUpdateModel(xml, id, callback) {
 	});
 }
 
-function ExcuteSQLUpdateModelbyPromises(xml, id, callback) {
+function ExcuteSQLUpdateModelbyPromises(parms, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('XML', sql.Xml, xml)
-			.input('id', sql.NVarChar, id)
-			.query('update PROCESSMODEL set MODEL_XML=@XML where MODELID=@id')
+			.input('MODEL_XML', sql.Xml, parms.MODEL_XML)
+			.input('MODELID', sql.NVarChar, parms.MODELID)
+			.query('update PROCESSMODEL set MODEL_XML=@MODEL_XML where MODELID=@MODELID')
 	}).then(result => {
 		console.dir(result);
 		return callback(result.rowsAffected);
