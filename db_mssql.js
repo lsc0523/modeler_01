@@ -365,13 +365,14 @@ function ExcuteSQLInsertModelbyPromises(parms, callback) {
 	});
 }
 
-function ExcuteSQLDeleteModelbyPromises(id, callback) {
+function ExcuteSQLDeleteModelbyPromises(parms, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('id', sql.NVarChar, id)
-			.query(sqlDeleteModelQuery)
+			.input('MODELID', sql.NVarChar, parms.MODELID)
+			//.query(sqlDeleteModelQuery)
+			.execute('SP_BPMM_MODELER_DELETE_MODEL')
 	}).then(result => {
 		console.dir(result);
 		return callback(result.rowsAffected);
