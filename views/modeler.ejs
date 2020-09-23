@@ -11,40 +11,56 @@
   <link rel="stylesheet" href="css/app.css" />
   <link rel="stylesheet" href="css/style.css" />
   <style type="text/css">
-   ul.main {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: #10ad73;
+
+    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+    body , html{
+      font-family: "Noto Sans KR", sans-serif !important;
+      font-size: 15px;
+    }
+
+
+    ul.main {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      background-color: #10ad73;
+    }
+
+    ul.main:after{
+     content:'';
+     display: block;
+     clear:both;
+   }
+
+   li.main {
+     float: left;
+   }
+
+   li.main a {
+     display: block;
+     color: white;
+     text-align: center;
+     padding: 14px 16px;
+     text-decoration: none;
+     width:150px;
+
+   }
+   li.main a:hover:not(.active) {
+    /*background-color: #4CAF50;*/
+    text-decoration: underline;
+  }
+  .active {
+    text-decoration: underline;
+    /*background-color: #4CAF50;*/
   }
 
-  ul.main:after{
-   content:'';
-   display: block;
-   clear:both;
- }
-
- li.main {
-   float: left;
- }
-
- li.main a {
-   display: block;
-   color: white;
-   text-align: center;
-   padding: 14px 16px;
-   text-decoration: none;
-   width:150px;
-
- }
- li.main a:hover:not(.active) {
-  /*background-color: #4CAF50;*/
-  text-decoration: underline;
-}
-.active {
-  text-decoration: underline;
-  /*background-color: #4CAF50;*/
-}
+  input[type=text].maininput {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+  }
 </style>
 </head>
 <body>
@@ -84,15 +100,19 @@
   <div class="canvas" id="js-canvas"></div>
   <div class="properties-panel-parent" id="js-properties-panel"></div>
 </div>
-<div>
-  <a id="fileOpen" href="fileOpen" title="파일 열기">파일 열기</a>
+<div style="position: fixed; bottom: 130px; left: 20px;">
+ <!-- <a id="fileOpen" href="fileOpen" title="파일 열기">파일 열기</a> -->
+ <label for="name">모델 이름</label>
+ <input type = "text" id = "modelName" class="maininput">
+</div>
+
+<div style="position: fixed; bottom: 60px; left: 20px;">
+  <label for="name">세부 사항</label>
+  <input type = "text" id = "modelDetailName" class="maininput">
 </div>
 <ul class="buttons">
   <li>
-
-  </li>
-  <li>
-    <a id="js-download-diagram" href class="active" title="download BPMN diagram">
+    <a id="js-download-diagram" href class="active"  title="download BPMN diagram">
       모델러 저장
     </a>
   </li>
@@ -103,13 +123,13 @@
   </li>
 
   <li>
-    <form action="/upload" method="post" enctype="multipart/form-data" id="fileForm">
-      <input type="file" id="fileInput" name="fileInput">
-    </form>
+    <!--<form action="/upload" method="post" enctype="multipart/form-data" id="fileForm"> -->
+      <input type="file" id="fileInput" name="fileInput" multiple>
+    <!-- </form> -->
   </li>
 
   <li>
-      <a id="fileOpen" href="download" class="active" title="파일 열기">파일 다운로드</a>
+    <a id="fileOpen" href="download" class="active" title="파일 열기">파일 다운로드</a>
   </li>
 </ul>
 
