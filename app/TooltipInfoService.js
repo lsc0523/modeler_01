@@ -186,6 +186,24 @@ function TooltipInfoService(eventBus, overlays, elementRegistry, editorActions) 
     return addHeaderRemoveEmptyLinesAndFinalize('Job Configuration', lines);
   }
 
+  /*
+  //Add Doc Text...
+  function tooltipDocumentText(element){
+    if (element.businessObject == undefined) return '';
+
+    var lines = [];
+    lines.push(tooltipLineText('Text', element.businessObject.jobPriority));
+
+
+    var retryTimeCycle = findExtensionByType(element, 'camunda:FailedJobRetryTimeCycle')
+    if (retryTimeCycle != undefined) {
+      lines.push(tooltipLineText('Retry Time Cycle', retryTimeCycle.body));
+    }
+
+    return addHeaderRemoveEmptyLinesAndFinalize('Documentation', lines);
+  }
+  */
+
   /**
    * container for conditional sequence flows:
    *  - evaluate outgoing sequence flows, if they are conditional or default
@@ -238,7 +256,8 @@ function TooltipInfoService(eventBus, overlays, elementRegistry, editorActions) 
 
       return '<div class="tooltip-container"> \
            <div class="tooltip-subheader">Documentation</div>'
-        + tooltipLineText("Element Documentation", _html_ok)
+        //+ tooltipLineText("Element Documentation", _html_ok)
+         + tooltipLineText("Element Documentation", element.businessObject.documentation[0].text)
         + '</div>';
 
     } else {
@@ -575,14 +594,14 @@ function TooltipInfoService(eventBus, overlays, elementRegistry, editorActions) 
               <div class="tooltip-content">'
                 + tooltipHeader(element)
                 + emptyPropertiesIfNoLines([
-                    // tooltipGeneral(element)
+                    //tooltipGeneral(element),
                     tooltipDetails(element),
                     tooltipMultiInstance(element),
                     tooltipExternalTaskConfiguration(element),
                     // tooltipAsynchronousContinuations(element)
                     tooltipJobConfiguration(element),
-                    tooltipConditionalOutgoingSequenceFlows(element)
-                    // tooltipDocumentation(element)
+                    tooltipConditionalOutgoingSequenceFlows(element),
+                    tooltipDocumentation(element)
                 ])
                 + '</div> \
             </div>';

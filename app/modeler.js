@@ -50,6 +50,7 @@ var bpmnModeler = new BpmnModeler({
   }
 });
 
+var file_prams = [];
 
 function createNewDiagram(xml) {
 
@@ -68,7 +69,7 @@ function createNewDiagram(xml) {
   else{
     openDiagram(diagramXML);
   }
-*/
+  */
 }
 
 async function openDiagram(xml) {
@@ -174,7 +175,6 @@ $(function() {
     }
   });
 
-
   bpmnModeler.on('element.click', function(e) {
 
     var element = e.element;
@@ -186,9 +186,10 @@ $(function() {
 
 
   $('#fileInput').on('change', function (){
+    /*
     var form = $('#fileForm')[0];
     var formData = new FormData(form);
-
+    formData.append("elementID", );
 
     $.ajax({
       type: 'POST',
@@ -201,18 +202,37 @@ $(function() {
         var modeling = bpmnModeler.get('modeling');
         //modeler.get('selection').get()
         var elementsToColor = bpmnModeler.get('selection').get()[0] 
+        var fileName = data.result;
+        modeling.setColor(elementsToColor, {
+          stroke: 'green',
+          fill: 'yellow'
+        });
 
-          modeling.setColor(elementsToColor, {
-            stroke: 'green',
-            fill: 'yellow'
-          });
-        },
-        error: function (err) {
-          alert("Fail...");
-          console.log(err);
-        }
-      });
+        $('#fileList').append("<div id="  +  bpmnModeler.get('selection').get()[0].id  +   
+          "> ID : " + bpmnModeler.get('selection').get()[0].id + "    FileName : " + data.result + "</div>");
+        // ///{MODELID : '', MODEL_NODEID: 'DataObjectReference_0001', REPOSNAME: 'L&C도면', REPOSINFO: 'L&C도면.pdf' }
+       
+        file_prams.add(
+            {
+              MODELID =  $("#modelID"),
+              MODEL_NODEID = bpmnModeler.get('selection').get()[0].id,
+              REPOSNAME = fileName,
+              REPOSINFO = fileName
+            }
+        )
+        
+
+      },
+      error: function (err) {
+        alert("Fail...");
+        console.log(err);
+      }
+    });
+    */
   });
+
+
+  
 
 
   downloadLink.click(async function(e){
@@ -232,37 +252,39 @@ $(function() {
       urlLink = '/update'
     }
 
-    /*
-    if(modelID[0].innerText == "" || modelID[0].innerText == undefined || modelID[0].innerText == 'undefined'){
-      urlLink = '/insert';
-    }else{
-      urlLink = '/update';
-    }
-    */
+    //var form = $('#fileForm')[0];
 
-    console.log(urlLink);
-    var selectedElements = bpmnModeler.get('selection').get(); 
-    console.log(selectedElements);
+    var JSmodeName = $('#modelName').val();
+    var modelDetailName = $('#modelDetailName').val();
+    var formData = new FormData();
+    formData.append("id", xmlData.replace(/(\r\n|\n|\r)/gm, ""));
+    formData.append("modelID", modelID[0].innerText);
+    formData.append("modelName", JSmodeName);
+    formData.append("modelDetailName", modelDetailName);
+    //formData.append("files", fileInput.files);
+
+    $.each($("input[type='file']")[0].files, function(i, file) {
+      formData.append('files', file);
+    });
 
     $.ajax({
-      url: urlLink,
-      type:'POST',
-      data:{ 
-       id: xmlData.replace(/(\r\n|\n|\r)/gm, ""),
-       modelID : modelID[0].innerText
-     },
+     url: urlLink,
+     type:'POST',
+     data : formData,
+     processData: false,
+     contentType: false,
      error : function(error) {
       alert("Error!");
     },
     success : function(data) {
       alert("저장이 완료 되었습니다.");
-      window.location.href = 'home';
+      //window.location.href = 'home';
     },
     complete : function() {
                     //window.location.href = 'home';
                     //alert("complete!");    
-                  }
-                });
+    }
+    });
   });
 
   function setEncoded(link, name, data) {

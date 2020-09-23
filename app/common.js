@@ -17,3 +17,5 @@ export function isEmpty(_str){
 	return !isNotEmpty(_str);
 }
 
+
+//module.exports[ isNotEmpty , isEmpty ]
