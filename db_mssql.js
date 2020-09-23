@@ -44,7 +44,7 @@ var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MO
 var sqlInsertModelReposQuery = 'insert into ' + ModelRepostableName + '(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
 	+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
 
-function ExcuteSQLSelectModel(parms, callback) {
+function ExcuteSQLSelectModel(params, callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
 		if (err) {
 			return console.error('error is', err);
@@ -54,7 +54,7 @@ function ExcuteSQLSelectModel(parms, callback) {
 		ps.input('MODELID', sql.NVarChar);
 
 		ps.prepare(sqlSelectModelQurey, function (err, recordsets) {
-			ps.execute({ MODELID: parms.MODELID }, function (err, recordset) {
+			ps.execute({ MODELID: params.MODELID }, function (err, recordset) {
 				ps.unprepare(function (err) {
 					if (err !== null) {
 						console.log(err);
@@ -66,12 +66,12 @@ function ExcuteSQLSelectModel(parms, callback) {
 	});
 }
 
-function ExcuteSQLSelectModelbyPromises(parms, callback) {
+function ExcuteSQLSelectModelbyPromises(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('MODELID', sql.NVarChar, parms.MODELID)
+			.input('MODELID', sql.NVarChar, params.MODELID)
 			.query(sqlSelectModelQurey)
 
 	}).then(result => {
@@ -83,12 +83,12 @@ function ExcuteSQLSelectModelbyPromises(parms, callback) {
 	})
 }
 
-function ExcuteSQLSelectModelReposbyPromises(parms, callback) {
+function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('MODELID', sql.NVarChar, parms.MODELID)
+			.input('MODELID', sql.NVarChar, params.MODELID)
 			.query(sqlSelectModelReposIDQurey)
 
 	}).then(result => {
@@ -186,7 +186,7 @@ function Padder(len, pad) {
 
 
 // Model  
-function ExcuteSQLUpdateModel(parms , callback) {
+function ExcuteSQLUpdateModel(params , callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
 		if (err) {
 			return console.error('error is', err);
@@ -201,7 +201,7 @@ function ExcuteSQLUpdateModel(parms , callback) {
 		//		 console.log(xmlToJson);
 
 		ps.prepare(sqlUpdateModelQuery, function (err) {
-			ps.execute({ MODEL_XML: parms.MODEL_XML, MODELID: parms.MODELID }, function (err, result) {
+			ps.execute({ MODEL_XML: params.MODEL_XML, MODELID: params.MODELID }, function (err, result) {
 				ps.unprepare(function (err) {
 					if (err !== null) {
 						console.log(err);
@@ -213,13 +213,13 @@ function ExcuteSQLUpdateModel(parms , callback) {
 	});
 }
 
-function ExcuteSQLUpdateModelbyPromises(parms, callback) {
+function ExcuteSQLUpdateModelbyPromises(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('MODEL_XML', sql.Xml, parms.MODEL_XML)
-			.input('MODELID', sql.NVarChar, parms.MODELID)
+			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+			.input('MODELID', sql.NVarChar, params.MODELID)
 			.query('update PROCESSMODEL set MODEL_XML=@MODEL_XML where MODELID=@MODELID')
 	}).then(result => {
 		console.dir(result);
@@ -232,16 +232,16 @@ function ExcuteSQLUpdateModelbyPromises(parms, callback) {
 
 var sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, where MODELID=@id';
 
-function ExcuteSQLUpdateModelParams(parms, callback) {
+function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('MODELID', sql.NVarChar, parms.MODELID)
-			.input('MODEL_XML', sql.Xml, parms.MODEL_XML)
-			.input('MODELID_PR', sql.NVarChar, parms.MODELID_PR)
-			.input('MODELID_PR_NODEID', sql.NVarChar, parms.MODELID_PR_NODEID)
-			.input('UPDUSER', sql.NVarChar, parms.UPDUSER)
+			.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+			.input('MODELID_PR', sql.NVarChar, params.MODELID_PR)
+			.input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
+			.input('UPDUSER', sql.NVarChar, params.UPDUSER)
 			.input('UPDDTTM', sql.DateTimeOffset, now)
 			.query(sqlUpdateModelQuery_Dev)
 	}).then(result => {
@@ -255,8 +255,8 @@ function ExcuteSQLUpdateModelParams(parms, callback) {
 
 
 
-function ExcuteSQLInsertModel(parms, callback) {
-	// console.log(parms);
+function ExcuteSQLInsertModel(params, callback) {
+	// console.log(params);
 	var connection = sql.connect(dbConnectionConfig, function (err) {
 		if (err) {
 			return console.error('error is', err);
@@ -283,8 +283,8 @@ function ExcuteSQLInsertModel(parms, callback) {
 
 			var now = new Date();
 			ps.execute({
-				MODELCATID: parms.MODELCATID, MODELID: result, PROCESSID: parms.PROCESSID, MODEL_XML: parms.MODEL_XML,
-				INSUSER: parms.INSUSER, INSDTTM: now, UPDUSER: parms.UPDUSER, UPDDTTM: now, REPOSIGRUPID: ''
+				MODELCATID: params.MODELCATID, MODELID: result, PROCESSID: params.PROCESSID, MODEL_XML: params.MODEL_XML,
+				INSUSER: params.INSUSER, INSDTTM: now, UPDUSER: params.UPDUSER, UPDDTTM: now, REPOSIGRUPID: ''
 			}, function (err, result) {
 				ps.unprepare(function (err) {
 					if (err !== null) {
@@ -297,28 +297,28 @@ function ExcuteSQLInsertModel(parms, callback) {
 
 
 
-		// parms.MODELID = getNewModelID();
+		// params.MODELID = getNewModelID();
 
-		// console.log(parms.MODELID);
+		// console.log(params.MODELID);
 
 
 	});
 }
 
 
-function ExcuteSQLInsertModelRepository(parms, callback) {
-	getNewReposID(parms.MODELID, function (result) {
+function ExcuteSQLInsertModelRepository(params, callback) {
+	getNewReposID(params.MODELID, function (result) {
 		console.log(result);
 		var now = new Date();
 		sql.connect(dbConnectionConfig).then(pool => {
 			// Query		    
 			return pool.request()
-				.input('MODELID', sql.NVarChar, parms.MODELID)
+				.input('MODELID', sql.NVarChar, params.MODELID)
 				.input('REPOSID', sql.NVarChar, result)
-				.input('MODEL_NODEID', sql.NVarChar, parms.MODEL_NODEID)
-				.input('REPOSNAME', sql.NVarChar, parms.REPOSNAME)
-				.input('REPOSDESC', sql.NVarChar, parms.REPOSDESC)
-				.input('REPOSINFO', sql.NVarChar, parms.REPOSINFO)
+				.input('MODEL_NODEID', sql.NVarChar, params.MODEL_NODEID)
+				.input('REPOSNAME', sql.NVarChar, params.REPOSNAME)
+				.input('REPOSDESC', sql.NVarChar, params.REPOSDESC)
+				.input('REPOSINFO', sql.NVarChar, params.REPOSINFO)
 
 				.query(sqlInsertModelReposQuery)
 
@@ -333,25 +333,25 @@ function ExcuteSQLInsertModelRepository(parms, callback) {
 }
 
 
-function ExcuteSQLInsertModelbyPromises(parms, callback) {
+function ExcuteSQLInsertModelbyPromises(params, callback) {
 	getNewModelID(function (result) {
 		//	 console.log(result);    
 		var now = new Date();
 		sql.connect(dbConnectionConfig).then(pool => {
 			// Query		    
 			return pool.request()
-				.input('MODELCATID', sql.NVarChar, parms.MODELCATID)
-				.input('MODELTYPE', sql.NVarChar, parms.MODELTYPE)
+				.input('MODELCATID', sql.NVarChar, params.MODELCATID)
+				.input('MODELTYPE', sql.NVarChar, params.MODELTYPE)
 				.input('MODELID', sql.NVarChar, result)
-				.input('MODELNAME', sql.NVarChar, parms.MODELNAME)
-				.input('MODELDESC', sql.NVarChar, parms.MODELDESC)
-				.input('PROCESSID', sql.NVarChar, parms.PROCESSID)
-				.input('MODEL_XML', sql.Xml, parms.MODEL_XML)
-				.input('MODELID_PR', sql.Xml, parms.MODELID_PR)
-				.input('MODELID_PR_NODEID', sql.Xml, parms.MODELID_PR_NODEID)
-				.input('INSUSER', sql.NVarChar, parms.INSUSER)
+				.input('MODELNAME', sql.NVarChar, params.MODELNAME)
+				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
+				.input('PROCESSID', sql.NVarChar, params.PROCESSID)
+				.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+				.input('MODELID_PR', sql.Xml, params.MODELID_PR)
+				.input('MODELID_PR_NODEID', sql.Xml, params.MODELID_PR_NODEID)
+				.input('INSUSER', sql.NVarChar, params.INSUSER)
 				.input('INSDTTM', sql.DateTimeOffset, now)
-				.input('UPDUSER', sql.NVarChar, parms.UPDUSER)
+				.input('UPDUSER', sql.NVarChar, params.UPDUSER)
 				.input('UPDDTTM', sql.DateTimeOffset, now)
 				.query(sqlInsertModelQuery_Dev)
 
@@ -365,12 +365,12 @@ function ExcuteSQLInsertModelbyPromises(parms, callback) {
 	});
 }
 
-function ExcuteSQLDeleteModelbyPromises(parms, callback) {
+function ExcuteSQLDeleteModelbyPromises(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('MODELID', sql.NVarChar, parms.MODELID)
+			.input('MODELID', sql.NVarChar, params.MODELID)
 			//.query(sqlDeleteModelQuery)
 			.execute('SP_BPMM_MODELER_DELETE_MODEL')
 	}).then(result => {
