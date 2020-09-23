@@ -3,6 +3,7 @@ var path = require ("path")
 
 var server = express()
 var webpack = require('webpack')
+//var common = require('./app/common');
 
 // webpack의 output 장소인 dist를 express static으로 등록한다.
 const staticMiddleWare = express.static("public");
@@ -32,6 +33,14 @@ server.set('view engine', 'ejs');
 var bodyParser = require('body-parser')
 server.use(bodyParser.urlencoded({extended: false}))
 
+
+//Util...
+function isNotEmpty(_str){
+	var obj = String(_str);
+	if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
+	else return true;
+
+}
 
 server.get('/home2' , function(req , res){
 	console.log("home2...");
@@ -101,25 +110,77 @@ server.post('/update' , function(req , res){
 
 });
 
-server.post('/insert' , function(req , res){
+var multer = require('multer');
+
+//server.use(multer());
+
+let storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'uploads');
+	},
+	filename: function (req, file, cb) {
+		cb(null, getFile(file));
+	}
+});
+
+function getFile(file) {
+	let oriFile = file.originalname;
+	let ext = path.extname(oriFile);
+	let name = path.basename(oriFile, ext);
+    let rnd = Math.floor(Math.random() * 90) + 10; // 10 ~ 99
+    return Date.now() + '-' + rnd + '-' + name + ext;
+}
+
+
+let upload = multer({
+	storage: storage
+});
+
+server.post('/insert' , upload.any() ,function(req , res){
+
+	console.log(req.body);
+	console.log(req.files);
 	console.log("insert...");
 	//console.log(req.body);
-	console.log(req.body.id);
 
 	var params = { MODELCATID : 'LGC_MOD001_20200828',
 	PROCESSID : 'PROD0003',
 	MODEL_XML : req.body.id,
-	INSUSER : 'gschun',
+	MODELNAME : req.body.modelName,
+	MODELDESC : req.body.modelDetailName,
+	INSUSER : 'gschun' ,
 	UPDUSER : 'gschun'}
 	;
+	//console.log(params);
 
-	Mssql.InsertModel(params, function(result){
-		console.log(result);		
+
+	Mssql.InsertModel(params, function(result, newModelID){
+		console.log(11);
+		console.log(result);	
+		console.log(newModelID);	
+		if(isNotEmpty(req.files)){
+			var pramsFile = { REPOSINFO : req.files[0].filename , 
+							  REPOSNAME : req.files[0].originalFilename ,
+							  MODELID : newModelID
+							};
+
+
+			Mssql.InsertModelRepos(pramsFile , function(file_result){
+				console.log(22);
+				console.log(file_result);
+			});
+		}
 	});
 
-	res.send({result : "OK"});
 
+	//setTimeout(function() {
+	//		res.send({data : "OK"});
+	//}, 1000);
+
+	//setTimeout(res.send({data : "OK"}), 3000);
+	//console.log("TEST");
 });
+
 
 server.get('/delete' , function(req , res){
 	console.log("delete...");
@@ -129,11 +190,12 @@ server.get('/delete' , function(req , res){
 		console.log(result);
 	});
 
-	res.send({ result : "success deleting bpmn.."});
+	res.render('home2');
 });
 
 
 //File Logic..
+/*
 var fs = require('fs');
 var multiparty = require('multiparty');
 
@@ -155,26 +217,12 @@ server.post('/upload', function (req, res) {
         	console.log('File Renamed!');
         });
 
-		var params = {
-			MODELID: req.body.id,
-			MODEL_NODEID: 'DataObjectReference_0001',
-			REPOSNAME: req.body.id,
-			REPOSDESC: 'L&C도면',
-			REPOSINFO: 'L&C도면.pdf'
-		};
-
-
-		Mssql.InsertModelRepos(params, function (result) {
-			console.log(result);
-		});
-
-
-
-        console.log(path);
-        res.send(path); // 파일과 예외 처리를 한 뒤 브라우저로 응답해준다.
+        console.log(newPath);
+        res.send({ result : files.fileInput[0].originalFilename }); // 파일과 예외 처리를 한 뒤 브라우저로 응답해준다.
     });
 });
 
+*/
 
 server.get('/download',function(req,res){
 	res.download("./uploads/image1.png");

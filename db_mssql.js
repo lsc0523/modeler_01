@@ -71,7 +71,8 @@ function ExcuteSQLSelectModelbyPromises(params, callback) {
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('MODELID', sql.NVarChar, params.MODELID)
+			//.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('MODELID', sql.NVarChar, params)
 			.query(sqlSelectModelQurey)
 
 	}).then(result => {
@@ -88,7 +89,8 @@ function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			.input('MODELID', sql.NVarChar, params.MODELID)
+			//.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('ID', sql.NVarChar, params)
 			.query(sqlSelectModelReposIDQurey)
 
 	}).then(result => {
@@ -334,7 +336,7 @@ function ExcuteSQLInsertModelRepository(params, callback) {
 
 
 function ExcuteSQLInsertModelbyPromises(params, callback) {
-	getNewModelID(function (result) {
+	getNewModelID(function (newModelID) {
 		//	 console.log(result);    
 		var now = new Date();
 		sql.connect(dbConnectionConfig).then(pool => {
@@ -342,7 +344,7 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 			return pool.request()
 				.input('MODELCATID', sql.NVarChar, params.MODELCATID)
 				.input('MODELTYPE', sql.NVarChar, params.MODELTYPE)
-				.input('MODELID', sql.NVarChar, result)
+				.input('MODELID', sql.NVarChar, newModelID)
 				.input('MODELNAME', sql.NVarChar, params.MODELNAME)
 				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
 				.input('PROCESSID', sql.NVarChar, params.PROCESSID)
@@ -357,7 +359,7 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 
 		}).then(result => {
 			// console.dir(result);
-			return callback(result);
+			return callback(result, newModelID);
 		}).catch(err => {
 			console.dir(err);
 			// ... error checks
