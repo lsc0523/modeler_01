@@ -78,6 +78,7 @@
 <p id="xmlData" style="display:none;"><%=name%></p>
 <p id="modelID" style="display:none;"><%=modelID%></p>
 
+
 <div class="content with-diagram" id="js-drop-zone">
 
   <div class="message intro">
@@ -103,12 +104,12 @@
 <div style="position: fixed; bottom: 130px; left: 20px;">
  <!-- <a id="fileOpen" href="fileOpen" title="파일 열기">파일 열기</a> -->
  <label for="name">모델 이름</label>
- <input type = "text" id = "modelName" class="maininput">
+  <input type = "text" id = "modelName" class="maininput" value="<%=JsmodelName%>">
 </div>
 
 <div style="position: fixed; bottom: 60px; left: 20px;">
   <label for="name">세부 사항</label>
-  <input type = "text" id = "modelDetailName" class="maininput">
+  <input type = "text" id = "modelDetailName" class="maininput" value="<%=JsmodelDetailName%>">
 </div>
 <ul class="buttons">
   <li>
@@ -129,7 +130,10 @@
   </li>
 
   <li>
-    <a id="fileOpen" href="download" class="active" title="파일 열기">파일 다운로드</a>
+   <!-- <a id="fileOpen" href="download" class="active" title="파일 열기">파일 다운로드</a>  -->
+   <% if( JsFileList != "" ){ %>
+   <a id="fileList" href="download?id=<%=JsFileList%>" class = "active" > <%=JsFileList%> </a>
+   <% } %>
   </li>
 </ul>
 
