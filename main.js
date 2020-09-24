@@ -206,7 +206,12 @@ server.get('/delete' , function(req , res){
 	console.log("delete...");
 	console.log(req.query.id);
 
-	Mssql.DeleteModel(req.query.id , function(result){
+	var params = {
+		MODELID: ''
+	}
+	params.MODELID = req.query.id
+
+	Mssql.DeleteModel(params , function(result){
 		console.log(result);
 	});
 
