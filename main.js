@@ -62,8 +62,14 @@ server.get('/viewer' , function(req , res){
 	if(req.query.id == "" || req.query.id == undefined){
 		res.render('viewer', {name : ""});
 	}
-	else{
-		Mssql.SelectModel(req.query.id, function(result){
+	else {
+
+		var params = {
+			MODELID: ''
+		}
+		params.MODELID = req.query.id
+
+		Mssql.SelectModel(params, function(result){
 			xmlData = result.recordset[0].MODEL_XML;
 			console.log(xmlData);
 			res.render('viewer', {name : xmlData});
@@ -79,8 +85,14 @@ server.get('/modeler' , function(req , res){
 	if(req.query.id == "" || req.query.id == undefined){
 		res.render('modeler', {name : "" , modelID : ""});
 	}
-	else{
-		Mssql.SelectModel(req.query.id, function(result){
+	else {
+
+		var params = {
+			MODELID: ''
+		}
+		params.MODELID = req.query.id
+
+		Mssql.SelectModel(params, function(result){
 			console.log(result);
 			xmlData = result.recordset[0].MODEL_XML;
 			modelID = result.recordset[0].MODELID;
@@ -102,7 +114,15 @@ server.post('/update' , function(req , res){
 	console.log(req.body.id);
 	console.log(req.body.modelID);
 
-	Mssql.UpdateModel(req.body.id, req.body.modelID, function(result){
+	var params = {
+		MODEL_XML : '',
+		MODELID: ''
+	}
+	params.MODEL_XML = req.body.id,
+	params.MODELID = req.query.id
+
+
+	Mssql.UpdateModel(params, function(result){
 		console.log(result);		
 	});
 

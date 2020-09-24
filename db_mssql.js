@@ -27,15 +27,15 @@ var ModelRepostableName = "PROCESSMODELREPOSITORY";
 
 
 //sql Qurey
-var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@id';
-var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@id';
+var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@MODELID';
+var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@MODELID';
 
 var sqlDeleteModelQuery = 'delete from ' + ModeltableName + ' where MODELID=@id';
 var sqlInsertModelQuery = 'insert into ' + ModeltableName + '(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
 	+ ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
 var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID) DESC'
 
-var sqlSelectModelReposIDQurey = 'select top(1) REPOSID from ' + ModelRepostableName + ' where MODELID=@id order by (REPOSID) DESC'
+var sqlSelectModelReposIDQurey = 'select top(1) REPOSID from ' + ModelRepostableName + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
 
 var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MODELTYPE, MODELID, MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
@@ -72,11 +72,12 @@ function ExcuteSQLSelectModelbyPromises(params, callback) {
 		// Query		    
 		return pool.request()
 			//.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('MODELID', sql.NVarChar, params)
+			.input('MODELID', sql.NVarChar, params.MODELID)
 			.query(sqlSelectModelQurey)
 
 	}).then(result => {
-		// console.dir(result);¤·
+		console.dir(result);
+
 		return callback(result);
 	}).catch(err => {
 		console.dir(err);
@@ -90,7 +91,7 @@ function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 		// Query		    
 		return pool.request()
 			//.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('ID', sql.NVarChar, params)
+			.input('MODELID', sql.NVarChar, params.MODELID)
 			.query(sqlSelectModelReposIDQurey)
 
 	}).then(result => {
