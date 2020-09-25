@@ -262,35 +262,38 @@ $(function() {
     formData.append("modelName", JSmodeName);
     formData.append("modelDetailName", modelDetailName);
     //formData.append("files", fileInput.files);
-
-    $.each($("input[type='file']")[0].files, function(i, file) {
-      formData.append('files', file);
-    });
+    //var fileCheck = document.getElementById("fileInput").value;
+    //if(isNotEmpty(fileCheck)){
+      $.each($("input[type='file']")[0].files, function(i, file) {
+        formData.append('files', file);
+      });
+    //}
 
     $.ajax({
-     url: urlLink,
-     type:'POST',
-     data : formData,
-     processData: false,
-     contentType: false,
-     error : function(error) {
-      alert("Error!");
-    },
-    success : function(data) {
-      alert("저장이 완료 되었습니다.");
-      //window.location.href = 'home';
-    },
-    complete : function() {
-                    //window.location.href = 'home';
-                    //alert("complete!");    
-    }
+       url: urlLink,
+       type:'POST',
+       data : formData,
+       processData: false,
+       contentType: false,
+       enctype: 'multipart/form-data',
+       async: false,
+       success : function(data) {
+          alert("저장이 완료 되었습니다.");
+          window.location.href = 'home';
+        },
+       error : function(error) {
+          alert("Error!");
+        }
+
     });
   });
 
+
+  /*
   function setEncoded(link, name, data) {
     var encodedData = encodeURIComponent(data);
     link.addClass('active')
-    /*
+    
     if (data) {
       link.addClass('active').attr({
         'href': 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
@@ -301,9 +304,10 @@ $(function() {
     } else {
       link.removeClass('active');
     }
-    */
+    
     
   }
+
 
   var exportArtifacts = debounce(async function() {
     try {
@@ -328,12 +332,13 @@ $(function() {
   }, 500);
 
   bpmnModeler.on('commandStack.changed', exportArtifacts);
+  */
+
+
 });
 
 
-
-// helpers //////////////////////
-
+/*
 function debounce(fn, timeout) {
 
   var timer;
@@ -346,3 +351,4 @@ function debounce(fn, timeout) {
     timer = setTimeout(fn, timeout);
   };
 }
+*/
