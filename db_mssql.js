@@ -35,7 +35,7 @@ var sqlInsertModelQuery = 'insert into ' + ModeltableName + '(MODELCATID, MODELI
 	+ ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
 var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID) DESC'
 
-var sqlSelectModelReposIDQurey = 'select top(1) REPOSID from ' + ModelRepostableName + ' where MODELID=@MODELID order by (REPOSID) DESC'
+var sqlSelectModelReposIDQurey = 'select top(1) * from ' + ModelRepostableName + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
 
 var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MODELTYPE, MODELID, MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
@@ -223,7 +223,9 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 		return pool.request()
 			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
 			.input('MODELID', sql.NVarChar, params.MODELID)
-			.query('update PROCESSMODEL set MODEL_XML=@MODEL_XML where MODELID=@MODELID')
+			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
+			.input('MODELDESC', sql.NVarChar, params.MODELDESC)			
+			.query('update PROCESSMODEL set MODEL_XML=@MODEL_XML , MODELNAME=@MODELNAME , MODELDESC=@MODELDESC where MODELID=@MODELID')
 	}).then(result => {
 		console.dir(result);
 		return callback(result.rowsAffected);
@@ -233,7 +235,7 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 	});
 }
 
-var sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, where MODELID=@id';
+var sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID where MODELID=@MODELID';
 
 function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();
@@ -242,6 +244,8 @@ function ExcuteSQLUpdateModelParams(params, callback) {
 		return pool.request()
 			.input('MODELID', sql.NVarChar, params.MODELID)
 			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
+			.input('MODELDESC', sql.NVarChar, params.MODELDESC)
 			.input('MODELID_PR', sql.NVarChar, params.MODELID_PR)
 			.input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
 			.input('UPDUSER', sql.NVarChar, params.UPDUSER)

@@ -33,6 +33,33 @@ server.set('view engine', 'ejs');
 var bodyParser = require('body-parser')
 server.use(bodyParser.urlencoded({extended: false}))
 
+//files...
+var multer = require('multer');
+
+//server.use(multer());
+
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'uploads');
+	},
+	filename: function (req, file, cb) {
+		cb(null, getFile(file));
+	}
+});
+
+function getFile(file) {
+	let oriFile = file.originalname;
+	let ext = path.extname(oriFile);
+	let name = path.basename(oriFile, ext);
+    let rnd = Math.floor(Math.random() * 90) + 10; // 10 ~ 99
+    return Date.now() + '-' + rnd + '-' + name + ext;
+}
+
+
+var upload = multer({
+	storage: storage
+});
+
 
 //Util...
 function isNotEmpty(_str){
@@ -62,14 +89,8 @@ server.get('/viewer' , function(req , res){
 	if(req.query.id == "" || req.query.id == undefined){
 		res.render('viewer', {name : ""});
 	}
-	else {
-
-		var params = {
-			MODELID: ''
-		}
-		params.MODELID = req.query.id
-
-		Mssql.SelectModel(params, function(result){
+	else{
+		Mssql.SelectModel(req.query.id, function(result){
 			xmlData = result.recordset[0].MODEL_XML;
 			console.log(xmlData);
 			res.render('viewer', {name : xmlData});
@@ -78,26 +99,65 @@ server.get('/viewer' , function(req , res){
 });
 
 server.get('/modeler' , function(req , res){
-	console.log('modeler...');
+	console.log('modeler...Start...');
 	console.log(req.query.id);
 	var xmldata = "";
 	var modelID = "";
-	if(req.query.id == "" || req.query.id == undefined){
-		res.render('modeler', {name : "" , modelID : ""});
-	}
-	else {
+	var modelName ="";
+	var modelDetailName ="";
+	var JsFileList = "";
 
-		var params = {
-			MODELID: ''
-		}
-		params.MODELID = req.query.id
+
+	if(req.query.id == "" || req.query.id == undefined){
+		
+		res.render('modeler', {
+			name : "" , 
+			modelID : "" , 
+			JsmodelName : "" , 
+			JsmodelDetailName : "" ,
+			JsFileList : JsFileList
+		});
+
+	}
+	else{
+
+		var params = { MODELID : req.query.id };
 
 		Mssql.SelectModel(params, function(result){
 			console.log(result);
+			
 			xmlData = result.recordset[0].MODEL_XML;
 			modelID = result.recordset[0].MODELID;
-			console.log(modelID);
-			res.render('modeler', {name : xmlData, modelID : modelID});
+			modelName = result.recordset[0].MODELNAME;
+			modelDetailName = result.recordset[0].MODELDESC;	
+			//console.log(modelID);
+
+			var fileParams = { MODELID : req.query.id};
+
+			Mssql.SelectModelRepos(fileParams , function(file_result){
+				console.log(file_result);
+
+				if(file_result.rowsAffected !=0 ){
+					JsFileList = file_result.recordset[0].REPOSINFO
+				}
+
+				res.render('modeler', {	
+						name : xmlData, 
+						modelID : modelID,
+						JsmodelName : modelName,
+						JsmodelDetailName : modelDetailName,
+						JsFileList : JsFileList
+						});
+
+			});
+
+			/*
+			res.render('modeler', {	name : xmlData, 
+									modelID : modelID,
+									JsmodelName : modelName,
+									JsmodelDetailName : modelDetailName
+									});
+			*/
 		});
 	}
 
@@ -108,70 +168,20 @@ server.get('/about' , function(req , res){
 	res.send('about directory.. LG CNS modeler...');
 });
 
-server.post('/update' , function(req , res){
-	console.log("update...");
-	//console.log(req.body);
-	console.log(req.body.id);
-	console.log(req.body.modelID);
-
-	var params = {
-		MODEL_XML : '',
-		MODELID: ''
-	}
-	params.MODEL_XML = req.body.id,
-	params.MODELID = req.query.id
 
 
-	Mssql.UpdateModel(params, function(result){
-		console.log(result);		
-	});
+//var fs = require('fs');
+//var multiparty = require('multiparty');
+//upload.any()
 
-	res.send({result : req.body.modelID});
-
-});
-
-var multer = require('multer');
-
-//server.use(multer());
-
-let storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, 'uploads');
-	},
-	filename: function (req, file, cb) {
-		cb(null, getFile(file));
-	}
-});
-
-function getFile(file) {
-	let oriFile = file.originalname;
-	let ext = path.extname(oriFile);
-	let name = path.basename(oriFile, ext);
-    let rnd = Math.floor(Math.random() * 90) + 10; // 10 ~ 99
-    return Date.now() + '-' + rnd + '-' + name + ext;
-}
-
-
-let upload = multer({
-	storage: storage
-});
-
-server.post('/insert' , upload.any() ,function(req , res){
-
-	console.log(req.body);
-	console.log(req.files);
-	console.log("insert...");
-	//console.log(req.body);
-
+function InsertModelData(req, callback){
 	var params = { MODELCATID : 'LGC_MOD001_20200828',
-	PROCESSID : 'PROD0003',
-	MODEL_XML : req.body.id,
-	MODELNAME : req.body.modelName,
-	MODELDESC : req.body.modelDetailName,
-	INSUSER : 'gschun' ,
-	UPDUSER : 'gschun'}
-	;
-	//console.log(params);
+				   PROCESSID : 'PROD0003',
+				   MODEL_XML : req.body.id,
+				   MODELNAME : req.body.modelName,
+				   MODELDESC : req.body.modelDetailName,
+				   INSUSER : 'gschun' ,
+				   UPDUSER : 'gschun'}
 
 
 	Mssql.InsertModel(params, function(result, newModelID){
@@ -183,33 +193,55 @@ server.post('/insert' , upload.any() ,function(req , res){
 							  REPOSNAME : req.files[0].originalFilename ,
 							  MODELID : newModelID
 							};
-
-
 			Mssql.InsertModelRepos(pramsFile , function(file_result){
 				console.log(22);
 				console.log(file_result);
+				callback(file_result);
 			});
+		}else{
+			callback(result);
 		}
 	});
+}
+
+server.post('/insert' , upload.any() ,function(req , res){
+
+	console.log(req.body);
+	console.log(req.files);
+	console.log("insert...");
+
+	InsertModelData(req, function(file_result){
+		console.log(file_result);
+		res.send("OK");
+	});
+});
 
 
-	//setTimeout(function() {
-	//		res.send({data : "OK"});
-	//}, 1000);
+server.post('/update' , upload.any() ,  function(req , res){
+	console.log("update...");
+	//console.log(req.body);
+	console.log(req.body.id);
+	console.log(req.body.modelID);
 
-	//setTimeout(res.send({data : "OK"}), 3000);
-	//console.log("TEST");
+	var params = { MODELID : req.body.modelID , 
+				   MODEL_XML : req.body.id ,
+				   MODELNAME : req.body.modelName,
+				   MODELDESC : req.body.modelDetailName
+				 };
+
+	Mssql.UdataModelParams(params, function(result){
+		console.log(result);
+
+
+		res.send("OK");		
+	});
 });
 
 
 server.get('/delete' , function(req , res){
 	console.log("delete...");
-	console.log(req.query.id);
-
-	var params = {
-		MODELID: ''
-	}
-	params.MODELID = req.query.id
+	//console.log(req.query.id);
+	var params = { MODELID : req.query.id };
 
 	Mssql.DeleteModel(params , function(result){
 		console.log(result);
@@ -250,7 +282,7 @@ server.post('/upload', function (req, res) {
 */
 
 server.get('/download',function(req,res){
-	res.download("./uploads/image1.png");
+	res.download("./uploads/" + req.query.id);
 });
 
 
