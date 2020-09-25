@@ -235,7 +235,7 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 	});
 }
 
-var sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID where MODELID=@MODELID';
+sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
 
 function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();

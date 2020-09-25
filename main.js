@@ -37,7 +37,6 @@ server.use(bodyParser.urlencoded({extended: false}))
 var multer = require('multer');
 
 //server.use(multer());
-
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads');
@@ -232,8 +231,17 @@ server.post('/update' , upload.any() ,  function(req , res){
 	Mssql.UdataModelParams(params, function(result){
 		console.log(result);
 
-
-		res.send("OK");		
+		if(isNotEmpty(req.files)){
+			var pramsFile = { REPOSINFO : req.files[0].filename , 
+							  REPOSNAME : req.files[0].originalFilename ,
+							  MODELID : newModelID
+							};
+			Mssql.InsertModelRepos(pramsFile , function(file_result){
+				res.send("OK");	
+			});
+		}else{ 
+			res.send("OK");		
+		}
 	});
 });
 
