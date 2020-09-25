@@ -89,7 +89,8 @@ server.get('/viewer' , function(req , res){
 		res.render('viewer', {name : ""});
 	}
 	else{
-		Mssql.SelectModel(req.query.id, function(result){
+		var params = { MODELID : req.query.id };
+		Mssql.SelectModel(params, function(result){
 			xmlData = result.recordset[0].MODEL_XML;
 			console.log(xmlData);
 			res.render('viewer', {name : xmlData});
@@ -234,7 +235,7 @@ server.post('/update' , upload.any() ,  function(req , res){
 		if(isNotEmpty(req.files)){
 			var pramsFile = { REPOSINFO : req.files[0].filename , 
 							  REPOSNAME : req.files[0].originalFilename ,
-							  MODELID : newModelID
+							  MODELID : req.body.modelID 
 							};
 			Mssql.InsertModelRepos(pramsFile , function(file_result){
 				res.send("OK");	
