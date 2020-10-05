@@ -186,6 +186,18 @@ $(function() {
 
 
   $('#fileInput').on('change', function (){
+
+    var fileName = $(this).val();
+    var fileCount = $(this).get(0).files.length;
+    if($(this).get(0).files.length == 1){
+        $('.buttons input[type=text]').val(fileName);
+    }
+    else {
+        $('.buttons input[type=text]').val('파일 '+fileCount+'개');
+    }
+
+
+
     /*
     var form = $('#fileForm')[0];
     var formData = new FormData(form);

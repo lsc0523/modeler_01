@@ -55,12 +55,15 @@
     /*background-color: #4CAF50;*/
   }
 
+  /*
   input[type=text].maininput {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
   }
+  */
+  
 </style>
 </head>
 <body>
@@ -102,7 +105,7 @@
   <div class="properties-panel-parent" id="js-properties-panel"></div>
 </div>
 <div style="position: fixed; bottom: 130px; left: 20px;">
- <!-- <a id="fileOpen" href="fileOpen" title="파일 열기">파일 열기</a> -->
+
  <label for="name">모델 이름</label>
   <input type = "text" id = "modelName" class="maininput" value="<%=JsmodelName%>">
 </div>
@@ -111,31 +114,19 @@
   <label for="name">세부 사항</label>
   <input type = "text" id = "modelDetailName" class="maininput" value="<%=JsmodelDetailName%>">
 </div>
-<ul class="buttons">
-  <li>
-    <a id="js-download-diagram" href class="active"  title="download BPMN diagram">
-      모델러 저장
-    </a>
-  </li>
-  <li>
-    <a id="js-download-svg" href title="download as SVG image" style="display: none;">
-      SAVE SVG
-    </a>
-  </li>
 
-  <li>
-    <!--<form action="/upload" method="post" enctype="multipart/form-data" id="fileForm"> -->
-      <input type="file" id="fileInput" name="fileInput" multiple>
-    <!-- </form> -->
-  </li>
+<div class="buttons">
+  <label id="js-download-diagram" href class="active"  title="download BPMN diagram">모델러 저장</label>
+  
+  <label>파일 첨부
+  <input type="file" id="fileInput" name="fileInput" multiple>
+  </label>
+  <input type="text" readonly="readonly" title="File Route">
 
-  <li>
-   <!-- <a id="fileOpen" href="download" class="active" title="파일 열기">파일 다운로드</a>  -->
    <% if( JsFileList != "" ){ %>
    <a id="fileList" href="download?id=<%=JsFileList%>" class = "active" > <%=JsFileList%> </a>
    <% } %>
-  </li>
-</ul>
+</div>
 
 <script type="text/javascript" src="modeler.app.js"></script>
 </html>

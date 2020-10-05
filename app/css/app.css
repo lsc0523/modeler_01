@@ -2,15 +2,18 @@
   box-sizing: border-box;
 }
 
-body, html {
 
+body, html {
+  /*
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  */
   font-size: 14px;
   height: 100%;
   padding: 0;
   margin: 0;
 
 }
+
 
 a:link {
   text-decoration: none;
@@ -92,9 +95,10 @@ a:link {
 
   padding: 0;
   margin: 0;
-  list-style: none;
+  /* list-style: none; */
 }
 
+/*
 .buttons > li {
   display: inline-block;
   margin-right: 10px;
@@ -113,6 +117,58 @@ a:link {
 .buttons a.active {
   opacity: 1.0;
 }
+*/
+
+.buttons label {
+    position:relative;
+    cursor:pointer;
+    display:inline-block;
+    vertical-align:middle;
+    overflow:hidden;
+    width:100px;
+    height:30px;
+    background:#777;
+    color:#fff;
+    text-align:center;
+    line-height:30px;
+    text-decoration: none;
+}
+
+
+.buttons button {
+    position:relative;
+    cursor:pointer;
+    display:inline-block;
+    vertical-align:middle;
+    overflow:hidden;
+    width:100px;
+    height:30px;
+    background:#777;
+    color:#fff;
+    text-align:center;
+    line-height:30px;
+}
+
+.buttons label input {
+    position:absolute;
+    width:0;
+    height:0;
+    overflow:hidden;
+}
+
+.buttons input[type=text] {
+    vertical-align:middle;
+    display:inline-block;
+    width:400px;
+    height:28px;
+    line-height:28px;
+    font-size:11px;
+    padding:0;
+    border:0;
+    border:1px solid #777;
+}
+
+
 
 
 
