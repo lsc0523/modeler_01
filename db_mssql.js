@@ -13,7 +13,7 @@ var dbConnectionConfig = {
 	port: 1433,
 	user: 'sa',
 	password: "1",
-	server: 'LCNC15V0516\\sqlexpress',
+	server: 'LCSC18V139\\SQLEXPRESS',
 };
 
 sql.on('error', err => {
@@ -27,7 +27,7 @@ var ModelRepostableName = "PROCESSMODELREPOSITORY";
 
 
 //sql Qurey
-var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@MODELID';
+var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@MODELID order by upddttm';
 var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@MODELID';
 
 var sqlDeleteModelQuery = 'delete from ' + ModeltableName + ' where MODELID=@id';
