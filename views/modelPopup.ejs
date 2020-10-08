@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <title>모델정보입력</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            console.log("popup");
+            $('#modelname').val(opener.document.getElementById("modelName").value);
+            $('#modeldetailname').val(opener.document.getElementById("modelDetailName").value);
+        });
+
+        function setParentText(){
+            opener.document.getElementById("modelName").value = $('#modelname').val();
+            opener.document.getElementById("modelDetailName").value = $('#modeldetailname').val();
+            window.close();
+        }
+   </script>
+
+   <style type="text/css">
+    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+    body , html{
+      font-family: "Noto Sans KR", sans-serif !important;
+      font-size: 15px;
+    }
+
+    textarea{
+        font-family: inherit;
+        font-size: inherit;
+    }
+
+    input[type=button] {
+        position:relative;
+        cursor:pointer;
+        display:inline-block;
+        vertical-align:middle;
+        overflow:hidden;
+        width:100px;
+        height:30px;
+        background:#777;
+        color:#fff;
+        text-align:center;
+        line-height:30px;
+        text-decoration: none;
+    }
+
+   </style>
+ 
+</head>
+<body>
+    <b><font size="5" color="gray">모델정보입력</font></b>
+    <br><br>
+    <label> 모델이름 </label>
+    <br>
+    <input type="text" id="modelname" size="48" style="height: 30px"> 
+    <br><br>
+    <label> 세부사항 </label>
+    <br>
+    <textarea id="modeldetailname" cols="50" rows="10"> </textarea>
+    <br><br>
+     <input type="button" value="확인" onclick="setParentText()">
+     <input type="button" value="닫기" onclick="window.close()">
+</body>
+</html>

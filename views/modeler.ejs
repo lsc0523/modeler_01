@@ -8,8 +8,10 @@
   <link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
   <link rel="stylesheet" href="vendor/diagram-js-minimap/assets/diagram-js-minimap.css" />
   <link rel="stylesheet" href="vendor/bpmn-js-properties-panel/assets/bpmn-js-properties-panel.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/app.css" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/colorPick.css">
   <style type="text/css">
 
     @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
@@ -46,6 +48,7 @@
      width:150px;
 
    }
+
    li.main a:hover:not(.active) {
     /*background-color: #4CAF50;*/
     text-decoration: underline;
@@ -62,25 +65,26 @@
     margin: 8px 0;
     box-sizing: border-box;
   }
-  */
-  
+  */  
 </style>
 </head>
 <body>
  <div>
   <ul class='main'>
     <li class='main'><a href="home2">Home</a></li>
-    <li class='main'><a href="home">Model List</a></li>
+    <li class='main'><a href="home/1">Model List</a></li>
     <li class='main'><a href="viewer" >Viewer</a></li>
     <li class='main'><a class="active" href="modeler">Modeler</a></li>
     <li class='main'><a href="about">About</a></li>
   </ul>
 </div>
-
-
+<div style="background-color: #777; padding: 20px 20px; position: relative;">
+  <button class="picker" id="picker1" style="width: 2%; top: 25%; left: 2%; border:0; outline :0; position: absolute;">AAA</button> 
+  <button class="btn btn-light" id="btn-minimap"  style="width: 8%; top: 10%; left: 76.5%; border:0; outline :0; position: absolute;">미니맵 보이기 여부</button> 
+  <button class="btn btn-light" id="btn-panel"  style="width: 8%; top: 10%; left: 86.5%; border:0; outline :0; position: absolute;">패널 보이기 여부</button> 
+</div>
 <p id="xmlData" style="display:none;"><%=name%></p>
 <p id="modelID" style="display:none;"><%=modelID%></p>
-
 
 <div class="content with-diagram" id="js-drop-zone">
 
@@ -100,33 +104,186 @@
       </div>
     </div>
   </div>
-
   <div class="canvas" id="js-canvas"></div>
-  <div class="properties-panel-parent" id="js-properties-panel"></div>
+  <div class="properties-panel-parent" id="js-properties-panel">
+  </div>
 </div>
-<div style="position: fixed; bottom: 130px; left: 20px;">
-
- <label for="name">모델 이름</label>
-  <input type = "text" id = "modelName" class="maininput" value="<%=JsmodelName%>">
-</div>
-
-<div style="position: fixed; bottom: 60px; left: 20px;">
-  <label for="name">세부 사항</label>
-  <input type = "text" id = "modelDetailName" class="maininput" value="<%=JsmodelDetailName%>">
-</div>
+<input type = "hidden" id = "modelName" class="maininput" value="<%=JsmodelName%>">
+<input type = "hidden" id = "modelDetailName" class="maininput" value="<%=JsmodelDetailName%>">
 
 <div class="buttons">
   <label id="js-download-diagram" href class="active"  title="download BPMN diagram">모델러 저장</label>
-  
-  <label>파일 첨부
-  <input type="file" id="fileInput" name="fileInput" multiple>
+  <label id="modelinfo">모델정보입력</label>
+  <label>
+        <img src="/Attach_icon.ico" width="30" height="30">
+        <input type="file" id="fileInput" name="fileInput" multiple>
   </label>
-  <input type="text" readonly="readonly" title="File Route">
 
+  <input type="text" readonly="readonly" title="File Route">
    <% if( JsFileList != "" ){ %>
-   <a id="fileList" href="download?id=<%=JsFileList%>" class = "active" > <%=JsFileList%> </a>
+      <a id="fileList" href="download?id=<%=JsFileList%>" class = "active" style="right: 1px;" > <%=JsFileList%> </a>
    <% } %>
 </div>
 
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<!--
+<script type="text/javascript">
+(function( $ ) {
+
+    $.fn.colorPick = function(config) {
+
+        return this.each(function() {
+            new $.colorPick(this, config || {});
+        });
+
+    };
+
+    $.colorPick = function (element, options) {
+        options = options || {};
+        this.options = $.extend({}, $.fn.colorPick.defaults, options);
+        if(options.str) {
+            this.options.str = $.extend({}, $.fn.colorPick.defaults.str, options.str);
+        }
+        $.fn.colorPick.defaults = this.options;
+        this.color   = this.options.initialColor.toUpperCase();
+        this.element = $(element);
+
+        var dataInitialColor = this.element.data('initialcolor');
+        if (dataInitialColor) {
+            this.color = dataInitialColor;
+            this.appendToStorage(this.color);
+        }
+
+        var uniquePalette = [];
+        $.each($.fn.colorPick.defaults.palette.map(function(x){ return x.toUpperCase() }), function(i, el){
+            if($.inArray(el, uniquePalette) === -1) uniquePalette.push(el);
+        });
+
+        this.palette = uniquePalette;
+
+        return this.element.hasClass(this.options.pickrclass) ? this : this.init();
+    };
+
+    $.fn.colorPick.defaults = {
+        'initialColor': '#3498db',
+        'paletteLabel': 'Default palette:',
+        'allowRecent': true,
+        'recentMax': 5,
+        'allowCustomColor': false,
+        'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b", "#ecf0f1", "#bdc3c7", "#95a5a6", "#7f8c8d"],
+        'onColorSelected': function() {
+            this.element.css({'backgroundColor': this.color, 'color': this.color});
+        }
+    };
+
+    $.colorPick.prototype = {
+
+        init : function(){
+
+            var self = this;
+            var o = this.options;
+
+            $.proxy($.fn.colorPick.defaults.onColorSelected, this)();
+
+            this.element.click(function(event) {
+                var offset = $(self.element).offset();
+
+                event.preventDefault();
+                self.show(self.element, event.pageX - offset.left, event.pageY - offset.top);
+
+                $('.customColorHash').val(self.color);
+
+                $('.colorPickButton').click(function(event) {
+          self.color = $(event.target).attr('hexValue');
+          self.appendToStorage($(event.target).attr('hexValue'));
+          self.hide();
+          $.proxy(self.options.onColorSelected, self)();
+          return false;
+              });
+                $('.customColorHash').click(function(event) {
+                    return false;
+                }).keyup(function (event) {
+                    var hash = $(this).val();
+                    if (hash.indexOf('#') !== 0) {
+                        hash = "#"+hash;
+                    }
+                    if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hash)) {
+                        self.color = hash;
+                        self.appendToStorage(hash);
+                        $.proxy(self.options.onColorSelected, self)();
+                        $(this).removeClass('error');
+                    } else {
+                        $(this).addClass('error');
+                    }
+                });
+
+                return false;
+            }).blur(function() {
+                self.element.val(self.color);
+                $.proxy(self.options.onColorSelected, self)();
+                self.hide();
+                return false;
+            });
+
+            $(document).on('click', function(event) {
+                self.hide();
+                return true;
+            });
+
+            return this;
+        },
+
+        appendToStorage: function(color) {
+          if ($.fn.colorPick.defaults.allowRecent === true) {
+            var storedColors = JSON.parse(localStorage.getItem("colorPickRecentItems"));
+        if (storedColors == null) {
+              storedColors = [];
+            }
+        if ($.inArray(color, storedColors) == -1) {
+              storedColors.unshift(color);
+          storedColors = storedColors.slice(0, $.fn.colorPick.defaults.recentMax)
+          localStorage.setItem("colorPickRecentItems", JSON.stringify(storedColors));
+            }
+          }
+        },
+
+        show: function(element, left, top) {
+
+            $(".colorPickWrapper").remove();
+
+            $(element).prepend('<div class="colorPickWrapper"><div id="colorPick" style="display:none;top:' + top + 'px;left:' + left + 'px"><span>'+$.fn.colorPick.defaults.paletteLabel+'</span></div></div>');
+
+          jQuery.each(this.palette, function (index, item) {
+        $("#colorPick").append('<div class="colorPickButton" hexValue="' + item + '" style="background:' + item + '"></div>');
+      });
+            if ($.fn.colorPick.defaults.allowCustomColor === true) {
+                $("#colorPick").append('<input type="text" style="margin-top:5px" class="customColorHash" />');
+            }
+      if ($.fn.colorPick.defaults.allowRecent === true) {
+        $("#colorPick").append('<span style="margin-top:5px">Recent:</span>');
+        if (JSON.parse(localStorage.getItem("colorPickRecentItems")) == null || JSON.parse(localStorage.getItem("colorPickRecentItems")) == []) {
+          $("#colorPick").append('<div class="colorPickButton colorPickDummy"></div>');
+        } else {
+          jQuery.each(JSON.parse(localStorage.getItem("colorPickRecentItems")), function (index, item) {
+                $("#colorPick").append('<div class="colorPickButton" hexValue="' + item + '" style="background:' + item + '"></div>');
+                        if (index == $.fn.colorPick.defaults.recentMax-1) {
+                            return false;
+                        }
+          });
+        }
+      }
+          $("#colorPick").fadeIn(200);
+        },
+
+      hide: function() {
+        $( ".colorPickWrapper" ).fadeOut(200, function() {
+                $(".colorPickWrapper").remove();
+          return this;
+      });
+        },
+
+    };}( jQuery ));</script>
+-->
 <script type="text/javascript" src="modeler.app.js"></script>
+
 </html>
