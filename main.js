@@ -23,7 +23,7 @@ server.use(staticMiddleWare);
 
 //DB 연결 정보
 var Mssql = require('./db_mssql.js');
-var sqlQurey = 'select * from PROCESSMODEL';
+var sqlQurey = 'SELECT * FROM PROCESSMODEL ORDER BY UPDDTTM';
 
 //html render
 server.engine('html', require('ejs').renderFile);
@@ -73,11 +73,35 @@ server.get('/home2' , function(req , res){
 	res.render('home2');
 });
 
-server.get('/home' , function(req , res){
+
+/*
+router.get('/page/:page',function(req,res,next)
+{
+    var page = req.params.page;
+    var sql = "select idx, name, title, date_format(modidate,'%Y-%m-%d %H:%i:%s') modidate, " +
+        "date_format(regdate,'%Y-%m-%d %H:%i:%s') regdate,hit from board";
+    conn.query(sql, function (err, rows) {
+        if (err) console.error("err : " + err);
+        res.render('page', {title: ' 게시판 리스트', rows: rows, page:page, length:rows.length-1, page_num:10, pass:true});
+        console.log(rows.length-1);
+    });
+});
+
+*/
+
+server.get('/home/:page' , function(req , res){
 	console.log("home...");
 	Mssql.NonQuery(sqlQurey,function(result){
 		//console.log(result);
-		res.render('home' , { data : result.recordset});
+		var page = req.params.page;
+
+		res.render('home' , { 
+				data : result.recordset,
+				page : page,
+				page_num : 10,
+				pass: true,
+				length : result.recordset.length -1
+			});
 	});
 });
 
@@ -97,6 +121,11 @@ server.get('/viewer' , function(req , res){
 		});
 	}
 });
+
+
+server.get('/modelPopup',  function(req , res){
+	res.render('modelPopup');
+})
 
 server.get('/modeler' , function(req , res){
 	console.log('modeler...Start...');
@@ -176,12 +205,12 @@ server.get('/about' , function(req , res){
 
 function InsertModelData(req, callback){
 	var params = { MODELCATID : 'LGC_MOD001_20200828',
-				   PROCESSID : 'PROD0003',
+				   PROCESSID : req.body.processID ,
 				   MODEL_XML : req.body.id,
 				   MODELNAME : req.body.modelName,
 				   MODELDESC : req.body.modelDetailName,
-				   INSUSER : 'gschun' ,
-				   UPDUSER : 'gschun'}
+				   INSUSER : 'LGCNS' ,
+				   UPDUSER : 'LGCNS'}
 
 
 	Mssql.InsertModel(params, function(result, newModelID){
@@ -253,45 +282,30 @@ server.get('/delete' , function(req , res){
 	var params = { MODELID : req.query.id };
 
 	Mssql.DeleteModel(params , function(result){
-		console.log(result);
+		//console.log(result);
+		Mssql.NonQuery(sqlQurey,function(result){
+		//console.log(result);
+
+			res.render('home' , { 
+				data : result.recordset,
+				page : 1,
+				page_num : 10,
+				pass: true,
+				length : result.recordset.length -1
+			});
+			//res.render('home' , { data : result.recordset});
+		});
 	});
-
-	res.render('home2');
+	//res.render('home2');
 });
-
-
-//File Logic..
-/*
-var fs = require('fs');
-var multiparty = require('multiparty');
-
-server.post('/upload', function (req, res) {
-	var form = new multiparty.Form({
-        autoFiles: false,                // 요청이 들어오면 파일을 자동으로 저장할 것인가
-        uploadDir: 'uploads/',           // 파일이 저장되는 경로(프로젝트 내의 temp 폴더에 저장됩니다.)
-        maxFilesSize: 1024 * 1024 * 1024 // 허용 파일 사이즈 최대치
-    });
-
-	form.parse(req, function (error, fields, files) {
-        // 파일 전송이 요청되면 이곳으로 온다.
-        // 에러와 필드 정보, 파일 객체가 넘어온다.
-        var path = files.fileInput[0].path;
-        var newPath = 'uploads/'+ files.fileInput[0].originalFilename;
-
-        fs.rename(path, newPath , function(err){
-        	if( err ) throw err;
-        	console.log('File Renamed!');
-        });
-
-        console.log(newPath);
-        res.send({ result : files.fileInput[0].originalFilename }); // 파일과 예외 처리를 한 뒤 브라우저로 응답해준다.
-    });
-});
-
-*/
 
 server.get('/download',function(req,res){
 	res.download("./uploads/" + req.query.id);
+});
+
+server.get('/login' , function(req , res){
+	console.log("Login...");
+	res.render('login');
 });
 
 
