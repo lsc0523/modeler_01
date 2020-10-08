@@ -1,19 +1,21 @@
 import $ from 'jquery';
 
-//port bpmnJs from 'bpmn-js';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda.json';
 import minimapModule from 'diagram-js-minimap';
+import minimap from 'diagram-js-minimap/lib/Minimap';
 import diagramXML from '../resources/newDiagram.bpmn';
 import CliModule from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
 import BpmnViewer from 'bpmn-js/lib/Viewer';
 //import tooltips from "diagram-js/lib/features/tooltips";
-
+//import BpmnColor from 'bpmn-js-in-color';
 
 var common = require('./common');
+
+//var BpmnColor = require('bpmn-js-in-color');
 
 import {
   registerBpmnJSPlugin
@@ -41,6 +43,8 @@ var bpmnModeler = new BpmnModeler({
   customTranslateModule,
   //tooltips,
   plugin
+  //BpmnColor
+  //require('bpmn-js-in-color')
   ],
   cli: {
     bindTo: 'cli'
@@ -164,6 +168,11 @@ $(function() {
   var data = $("#xmlData");
   console.log(data);
   createNewDiagram(data[0].innerText);
+  
+  $('#js-properties-panel').hide();
+  $('.map').hide();
+  $('.toggle').hide();
+
 
   var downloadLink = $('#js-download-diagram');
   var downloadSvgLink = $('#js-download-svg');
@@ -184,7 +193,27 @@ $(function() {
     var outgoing = element.outgoing;
   });
 
+  
+  $('#btn-panel').on('click' , function(){
+    if($('#js-properties-panel').is(':visible')){   
+       $('#js-properties-panel').hide();
+    }
+    else
+    {
+      $('#js-properties-panel').show();
+    }
+  });
 
+  $('#btn-minimap').on('click' , function(){
+    if($('.map').is(':visible')){
+      $('.map').hide();
+    }
+    else{
+      $('.map').show();
+    }
+
+  });
+  
   $('#fileInput').on('change', function (){
 
     var fileName = $(this).val();
@@ -195,56 +224,21 @@ $(function() {
     else {
         $('.buttons input[type=text]').val('파일 '+fileCount+'개');
     }
+  });
 
-
-
-    /*
-    var form = $('#fileForm')[0];
-    var formData = new FormData(form);
-    formData.append("elementID", );
-
-    $.ajax({
-      type: 'POST',
-      url: '/upload',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function (data) {
-        alert("success file upload..");
-        var modeling = bpmnModeler.get('modeling');
-        //modeler.get('selection').get()
-        var elementsToColor = bpmnModeler.get('selection').get()[0] 
-        var fileName = data.result;
-        modeling.setColor(elementsToColor, {
-          stroke: 'green',
-          fill: 'yellow'
-        });
-
-        $('#fileList').append("<div id="  +  bpmnModeler.get('selection').get()[0].id  +   
-          "> ID : " + bpmnModeler.get('selection').get()[0].id + "    FileName : " + data.result + "</div>");
-        // ///{MODELID : '', MODEL_NODEID: 'DataObjectReference_0001', REPOSNAME: 'L&C도면', REPOSINFO: 'L&C도면.pdf' }
-       
-        file_prams.add(
-            {
-              MODELID =  $("#modelID"),
-              MODEL_NODEID = bpmnModeler.get('selection').get()[0].id,
-              REPOSNAME = fileName,
-              REPOSINFO = fileName
-            }
-        )
-        
-
-      },
-      error: function (err) {
-        alert("Fail...");
-        console.log(err);
-      }
-    });
-    */
+  $('#modelinfo').on('click' , function(){
+     popupOpen();
   });
 
 
-  
+  function popupOpen(){
+      var url= "/modelPopup";    
+      var winWidth = 500;
+      var winHeight = 500;
+      var popupOption= "width="+winWidth+", height="+winHeight;
+      popupOption += " ,modal=yes";    
+      var myWindow = window.open(url,"TestName",popupOption);
+  }
 
 
   downloadLink.click(async function(e){
@@ -268,11 +262,15 @@ $(function() {
 
     var JSmodeName = $('#modelName').val();
     var modelDetailName = $('#modelDetailName').val();
+    var ProcessID = bpmnModeler._definitions.rootElements[0].id;
+
     var formData = new FormData();
     formData.append("id", xmlData.replace(/(\r\n|\n|\r)/gm, ""));
     formData.append("modelID", modelID[0].innerText);
     formData.append("modelName", JSmodeName);
     formData.append("modelDetailName", modelDetailName);
+    formData.append("processID", ProcessID);
+
     //formData.append("files", fileInput.files);
     //var fileCheck = document.getElementById("fileInput").value;
     //if(isNotEmpty(fileCheck)){
@@ -291,7 +289,7 @@ $(function() {
        async: false,
        success : function(data) {
           alert("저장이 완료 되었습니다.");
-          window.location.href = 'home';
+          window.location.href = 'home/1';
         },
        error : function(error) {
           alert("Error!");
@@ -345,6 +343,184 @@ $(function() {
 
   bpmnModeler.on('commandStack.changed', exportArtifacts);
   */
+
+
+  $.fn.colorPick = function(config) {
+
+        return this.each(function() {
+            new $.colorPick(this, config || {});
+        });
+
+    };
+
+    $.colorPick = function (element, options) {
+        options = options || {};
+        this.options = $.extend({}, $.fn.colorPick.defaults, options);
+        if(options.str) {
+            this.options.str = $.extend({}, $.fn.colorPick.defaults.str, options.str);
+        }
+        $.fn.colorPick.defaults = this.options;
+        this.color   = this.options.initialColor.toUpperCase();
+        this.element = $(element);
+
+        var dataInitialColor = this.element.data('initialcolor');
+        if (dataInitialColor) {
+            this.color = dataInitialColor;
+            this.appendToStorage(this.color);
+        }
+
+        var uniquePalette = [];
+        $.each($.fn.colorPick.defaults.palette.map(function(x){ return x.toUpperCase() }), function(i, el){
+            if($.inArray(el, uniquePalette) === -1) uniquePalette.push(el);
+        });
+
+        this.palette = uniquePalette;
+
+        return this.element.hasClass(this.options.pickrclass) ? this : this.init();
+    };
+
+    $.fn.colorPick.defaults = {
+        'initialColor': '#3498db',
+        'paletteLabel': 'Default palette:',
+        'allowRecent': true,
+        'recentMax': 5,
+        'allowCustomColor': false,
+        'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b", "#ecf0f1", "#bdc3c7", "#95a5a6", "#7f8c8d"],
+        'onColorSelected': function() {
+            this.element.css({'backgroundColor': this.color, 'color': this.color});
+        }
+    };
+
+    $.colorPick.prototype = {
+
+        init : function(){
+
+            var self = this;
+            var o = this.options;
+
+            $.proxy($.fn.colorPick.defaults.onColorSelected, this)();
+
+            this.element.click(function(event) {
+                var offset = $(self.element).offset();
+
+                event.preventDefault();
+                self.show(self.element, event.pageX - offset.left, event.pageY - offset.top);
+
+                $('.customColorHash').val(self.color);
+
+                $('.colorPickButton').click(function(event) {
+          self.color = $(event.target).attr('hexValue');
+          self.appendToStorage($(event.target).attr('hexValue'));
+          self.hide();
+          $.proxy(self.options.onColorSelected, self)();
+          return false;
+              });
+                $('.customColorHash').click(function(event) {
+                    return false;
+                }).keyup(function (event) {
+                    var hash = $(this).val();
+                    if (hash.indexOf('#') !== 0) {
+                        hash = "#"+hash;
+                    }
+                    if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(hash)) {
+                        self.color = hash;
+                        self.appendToStorage(hash);
+                        $.proxy(self.options.onColorSelected, self)();
+                        $(this).removeClass('error');
+                    } else {
+                        $(this).addClass('error');
+                    }
+                });
+
+                return false;
+            }).blur(function() {
+                self.element.val(self.color);
+                $.proxy(self.options.onColorSelected, self)();
+                self.hide();
+                return false;
+            });
+
+            $(document).on('click', function(event) {
+                self.hide();
+                return true;
+            });
+
+            return this;
+        },
+
+        appendToStorage: function(color) {
+          if ($.fn.colorPick.defaults.allowRecent === true) {
+            var storedColors = JSON.parse(localStorage.getItem("colorPickRecentItems"));
+        if (storedColors == null) {
+              storedColors = [];
+            }
+        if ($.inArray(color, storedColors) == -1) {
+              storedColors.unshift(color);
+          storedColors = storedColors.slice(0, $.fn.colorPick.defaults.recentMax)
+          localStorage.setItem("colorPickRecentItems", JSON.stringify(storedColors));
+            }
+          }
+        },
+
+        show: function(element, left, top) {
+
+            $(".colorPickWrapper").remove();
+
+            $(element).prepend('<div class="colorPickWrapper"><div id="colorPick" style="display:none;top:' + top + 'px;left:' + left + 'px"><span>'+$.fn.colorPick.defaults.paletteLabel+'</span></div></div>');
+
+          jQuery.each(this.palette, function (index, item) {
+        $("#colorPick").append('<div class="colorPickButton" hexValue="' + item + '" style="background:' + item + '"></div>');
+      });
+            if ($.fn.colorPick.defaults.allowCustomColor === true) {
+                $("#colorPick").append('<input type="text" style="margin-top:5px" class="customColorHash" />');
+            }
+      if ($.fn.colorPick.defaults.allowRecent === true) {
+        $("#colorPick").append('<span style="margin-top:5px">Recent:</span>');
+        if (JSON.parse(localStorage.getItem("colorPickRecentItems")) == null || JSON.parse(localStorage.getItem("colorPickRecentItems")) == []) {
+          $("#colorPick").append('<div class="colorPickButton colorPickDummy"></div>');
+        } else {
+          jQuery.each(JSON.parse(localStorage.getItem("colorPickRecentItems")), function (index, item) {
+                $("#colorPick").append('<div class="colorPickButton" hexValue="' + item + '" style="background:' + item + '"></div>');
+                        if (index == $.fn.colorPick.defaults.recentMax-1) {
+                            return false;
+                        }
+          });
+        }
+      }
+          $("#colorPick").fadeIn(200);
+        },
+
+      hide: function() {
+        $( ".colorPickWrapper" ).fadeOut(200, function() {
+                $(".colorPickWrapper").remove();
+          return this;
+      });
+        },
+
+    };
+
+
+
+    $("#picker1").colorPick({
+      'initialColor' : '#1abc9c',
+      'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b", "#ecf0f1"],
+      'onColorSelected': function() {
+        console.log("The user has selected the color: " + this.color)
+        this.element.css({'backgroundColor': this.color, 'color': this.color});
+
+        var modeling = bpmnModeler.get('modeling');
+
+        for(var i=0; i < bpmnModeler.get('selection').get().length; i++){
+
+            modeling.setColor(bpmnModeler.get('selection').get()[i] , {
+              stroke: 'black',
+              fill: this.color
+            });
+            //elementsToColor.push(bpmnModeler.get('selection').get()[i]);
+        }
+      }
+  });
+
 
 
 });

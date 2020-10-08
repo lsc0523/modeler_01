@@ -14,8 +14,7 @@ export default {
   'Timer Start Event': '타이머',
   'Conditional Start Event': '조건',
   'Signal Start Event': '신호',
-  'Error Start Event': '오류',
-  'Name' : '이름',
+  'Error Start Event': '오류'
   //'Escalation Start Event': '升级启动事件',
   //'Compensation Start Event': '补偿启动事件',
   //'Message Start Event (non-interrupting)': '消息启动事件 (非中断)',
