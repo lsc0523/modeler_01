@@ -33,6 +33,21 @@ server.set('view engine', 'ejs');
 var bodyParser = require('body-parser')
 server.use(bodyParser.urlencoded({extended: false}))
 
+//cookie...
+var cookie = require('cookie-parser');
+server.use(cookie());
+
+//session..
+var sessionParser = require('express-session');
+server.use(sessionParser({
+    secret: '@#@$MYSIGN#@$#$',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60, // 쿠키 유효기간 1시간
+    },
+}));
+
 //files...
 var multer = require('multer');
 
@@ -70,24 +85,39 @@ function isNotEmpty(_str){
 
 server.get('/home2' , function(req , res){
 	console.log("home2...");
-	res.render('home2');
+	console.log(req.cookies);
+
+
+	if(req.cookies.user){
+		var reasonTypeQurey = "SELECT A.* FROM REASONCODE A WHERE A.CODE_TYPE = 'LG_C_TYPE'";
+
+		Mssql.NonQuery(reasonTypeQurey,function(result){
+			//console.log(result);
+			//var page = req.params.page;
+
+			res.render('home2' , { 
+					data : result.recordset
+					//page : page,
+					//page_num : 10,
+					//pass: true,
+					//length : result.recordset.length -1
+				});
+		});
+	}else{
+		res.send("로그인 하시기 바랍니다.");
+	}
+
+	/*
+	if(req.cookies.user){
+		res.render('home2');
+	}else{
+		res.send("Error");
+	}
+	*/
+
+	//res.render('home2');
 });
 
-
-/*
-router.get('/page/:page',function(req,res,next)
-{
-    var page = req.params.page;
-    var sql = "select idx, name, title, date_format(modidate,'%Y-%m-%d %H:%i:%s') modidate, " +
-        "date_format(regdate,'%Y-%m-%d %H:%i:%s') regdate,hit from board";
-    conn.query(sql, function (err, rows) {
-        if (err) console.error("err : " + err);
-        res.render('page', {title: ' 게시판 리스트', rows: rows, page:page, length:rows.length-1, page_num:10, pass:true});
-        console.log(rows.length-1);
-    });
-});
-
-*/
 
 server.get('/home/:page' , function(req , res){
 	console.log("home...");
@@ -122,9 +152,13 @@ server.get('/viewer' , function(req , res){
 	}
 });
 
-
+//Popups...
 server.get('/modelPopup',  function(req , res){
 	res.render('modelPopup');
+})
+
+server.get('/downloadPopup',  function(req , res){
+	res.render('downloadPopup');
 })
 
 server.get('/modeler' , function(req , res){
@@ -137,58 +171,59 @@ server.get('/modeler' , function(req , res){
 	var JsFileList = "";
 
 
-	if(req.query.id == "" || req.query.id == undefined){
-		
-		res.render('modeler', {
-			name : "" , 
-			modelID : "" , 
-			JsmodelName : "" , 
-			JsmodelDetailName : "" ,
-			JsFileList : JsFileList
-		});
+	Mssql.NonQuery(sqlQurey,function(result_data){
 
-	}
-	else{
-
-		var params = { MODELID : req.query.id };
-
-		Mssql.SelectModel(params, function(result){
-			console.log(result);
+		if(req.query.id == "" || req.query.id == undefined){
 			
-			xmlData = result.recordset[0].MODEL_XML;
-			modelID = result.recordset[0].MODELID;
-			modelName = result.recordset[0].MODELNAME;
-			modelDetailName = result.recordset[0].MODELDESC;	
-			//console.log(modelID);
-
-			var fileParams = { MODELID : req.query.id};
-
-			Mssql.SelectModelRepos(fileParams , function(file_result){
-				console.log(file_result);
-
-				if(file_result.rowsAffected !=0 ){
-					JsFileList = file_result.recordset[0].REPOSINFO
-				}
-
-				res.render('modeler', {	
-						name : xmlData, 
-						modelID : modelID,
-						JsmodelName : modelName,
-						JsmodelDetailName : modelDetailName,
-						JsFileList : JsFileList
-						});
-
+			res.render('modeler', {
+				name : "" , 
+				modelID : "" , 
+				JsmodelName : "" , 
+				JsmodelDetailName : "" ,
+				JsFileList : JsFileList,
+				type : req.query.type,
+				data : result_data.recordset
 			});
 
-			/*
-			res.render('modeler', {	name : xmlData, 
-									modelID : modelID,
-									JsmodelName : modelName,
-									JsmodelDetailName : modelDetailName
-									});
-			*/
-		});
-	}
+		}
+		else{
+
+			var params = { MODELID : req.query.id };
+
+			Mssql.SelectModel(params, function(result){
+				console.log(result);
+				
+				xmlData = result.recordset[0].MODEL_XML;
+				modelID = result.recordset[0].MODELID;
+				modelName = result.recordset[0].MODELNAME;
+				modelDetailName = result.recordset[0].MODELDESC;
+				modelType = result.recordset[0].MODELCATID;	
+
+				var fileParams = { MODELID : req.query.id};
+
+				Mssql.SelectAllFileList(fileParams , function(file_result){
+					console.log(file_result);
+
+					if(file_result.rowsAffected !=0 ){
+						JsFileList = file_result.recordset;
+					}
+
+					res.render('modeler', {	
+							name : xmlData, 
+							modelID : modelID,
+							JsmodelName : modelName,
+							JsmodelDetailName : modelDetailName,
+							JsFileList : JsFileList,
+							type : modelType,
+							data : result_data.recordset
+							});
+
+				});
+			});
+		}
+
+	});
+
 
 });
 
@@ -198,13 +233,8 @@ server.get('/about' , function(req , res){
 });
 
 
-
-//var fs = require('fs');
-//var multiparty = require('multiparty');
-//upload.any()
-
 function InsertModelData(req, callback){
-	var params = { MODELCATID : 'LGC_MOD001_20200828',
+	var params = { MODELCATID : req.body.type,
 				   PROCESSID : req.body.processID ,
 				   MODEL_XML : req.body.id,
 				   MODELNAME : req.body.modelName,
@@ -282,9 +312,8 @@ server.get('/delete' , function(req , res){
 	var params = { MODELID : req.query.id };
 
 	Mssql.DeleteModel(params , function(result){
-		//console.log(result);
+
 		Mssql.NonQuery(sqlQurey,function(result){
-		//console.log(result);
 
 			res.render('home' , { 
 				data : result.recordset,
@@ -293,10 +322,8 @@ server.get('/delete' , function(req , res){
 				pass: true,
 				length : result.recordset.length -1
 			});
-			//res.render('home' , { data : result.recordset});
 		});
 	});
-	//res.render('home2');
 });
 
 server.get('/download',function(req,res){
@@ -306,6 +333,35 @@ server.get('/download',function(req,res){
 server.get('/login' , function(req , res){
 	console.log("Login...");
 	res.render('login');
+});
+
+server.post('/loginUser', function(req, res){
+	console.log("login...User");
+
+	var user = { id : req.body.id };
+	res.cookie("user", user);
+	console.log(req.cookies);
+
+	req.session.user = {
+		id : req.body.id,
+		currentTime : new Date()
+	};
+
+	console.log(req.session);
+
+	res.json({'result' : 'ok'});
+
+});
+
+server.post('/createUser', function(req, res){
+	console.log("Create...User");
+
+	console.log(req.body.id);
+	console.log(req.body.pass);
+	console.log(req.body.email);
+
+	res.json({'result' : 'ok'});
+
 });
 
 

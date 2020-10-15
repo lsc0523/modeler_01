@@ -85,6 +85,7 @@ function ExcuteSQLSelectModelbyPromises(params, callback) {
 	})
 }
 
+
 function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
@@ -93,6 +94,28 @@ function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 			//.input('MODELID', sql.NVarChar, params.MODELID)
 			.input('MODELID', sql.NVarChar, params.MODELID)
 			.query(sqlSelectModelReposIDQurey)
+
+	}).then(result => {
+		console.dir(result.recordset[0]);
+		return callback(result);
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	})
+}
+
+
+//All file List from db
+var allFileList = 'select * from ' + ModelRepostableName + ' where MODELID=@MODELID order by (REPOSID) DESC'
+
+function ExcuteSQLSelectAllFileList(params, callback) {
+
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			//.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('MODELID', sql.NVarChar, params.MODELID)
+			.query(allFileList)
 
 	}).then(result => {
 		console.dir(result.recordset[0]);
@@ -411,5 +434,8 @@ module.exports = {
 	InsertModel: ExcuteSQLInsertModelbyPromises,
 	DeleteModel: ExcuteSQLDeleteModelbyPromises,
 	UdataModelParams: ExcuteSQLUpdateModelParams,
-	InsertModelRepos: ExcuteSQLInsertModelRepository
+	InsertModelRepos: ExcuteSQLInsertModelRepository,
+
+	//FileList...
+	SelectAllFileList : ExcuteSQLSelectAllFileList
 };
