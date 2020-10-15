@@ -12,18 +12,6 @@
   <style type="text/css">
     @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-    /*
-    @font-face{ 
-      font-family:'LGSmHaTR'; 
-      src:url('fonts/LGSmHaTR.eot'); 
-      src:url('fonts/LGSmHaTR.eot?#iefix') format(‘embedded-opentype’), 
-      url('fonts/LGSmHaTR.woff') format(‘woff’), 
-      url('fonts/LGSmHaTR.ttf') format('truetype'), 
-      url('fonts/LGSmHaTR.svg') format('svg'); 
-    }
-    */
-
-
     body , html
     {
       font-family: "Noto Sans KR", sans-serif !important;
@@ -93,12 +81,12 @@
     <li class='main'><a href="about">About</a></li>
   </ul>
 
-  <div class = topcontainer>BPMN Modeler</div>
+  <div class = topcontainer>BPMN 모델러</div>
   <div class="container" style="height: 80px"> </div>
   <div style="height: 80px;">
     <div style="display: inline-block; width: 300px;"></div>
     <div style="display: inline-block; width: 700px;">
-      <p><img src="/bpmn-js.gif"/ style="width: 600px;"></p>
+      <img src="/bpmn-js.gif" style="width: 600px; border: 3px;">
     </div>
     <div style="display: inline-block; width: 700px; height: 400px; vertical-align: top;">
       <h2>모델러 작성</h2>
@@ -107,7 +95,13 @@
       Simple Shape & Activity 도구를 사용하여 쉽고 빠르게 작성 <br>
       사용자 편의 기능 및 타 계열사와의 표준 프로세스 적립
       <br><br><br><br><br>
-      <a href="modeler" class="btn btn-primary" style="">사용하기</a>
+     
+      <% for(var i=0; i < data.length; i++){ %>
+
+        <a href="modeler?type=<%=data[i].CODE%>"  class="btn btn-primary" style=""><%=data[i].CODE_DESC %> 모델러</a>
+
+      <% } %>
+
     </div>
 
   </div>

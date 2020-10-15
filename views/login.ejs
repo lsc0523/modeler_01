@@ -127,17 +127,17 @@ body {
 
 <div class="login-page">
   <div class="form">
-    <form class="register-form">
-      <input type="text" placeholder="name"/>
-      <input type="password" placeholder="password"/>
-      <input type="text" placeholder="email address"/>
-      <button>create</button>
+    <form class="register-form" id="createForm" name="CreateForm">
+      <input id="id" type="text" placeholder="name"/>
+      <input id="password" type="password" placeholder="password"/>
+      <input id ="email" type="text" placeholder="email address"/>
+      <button id="createUser">Create</button>
       <p class="message">Already registered? <a href="#">Sign In</a></p>
     </form>
     <form class="login-form">
-      <input type="text" placeholder="username"/>
-      <input type="password" placeholder="password"/>
-      <button>login</button>
+      <input id="login_id" type="text" placeholder="username"/>
+      <input id="login_pass" type="password" placeholder="password"/>
+      <button id="login">login</button>
       <p class="message">Not registered? <a href="#">Create an account</a></p>
     </form>
   </div>
@@ -146,8 +146,55 @@ body {
 </body>
 
 
-
 <script type="text/javascript">
+
+  $('#login').click(function(){
+   
+    $.ajax({
+       url: '/loginUser',
+       type:'POST',
+       data : { 
+                id : $('#login_id').val(),
+                pass : $('#login_pass').val()
+              },
+
+       dataType: "json",  
+
+       success : function(data) {
+          window.location.href = '/home2';
+        },
+       error : function(error) {
+          alert("Error!");
+        }
+    })   
+
+  });
+
+
+  $('#createUser').click(function(){
+
+    $.ajax({
+       url: '/createUser',
+       type:'POST',
+       data : { 
+                id : $('#id').val(),
+                pass : $('#password').val(),
+                email : $('#email').val()
+              },
+
+       dataType: "json",  
+
+       success : function(data) {
+          alert("계정 생성이 완료 되었습니다.");
+          window.location.href = '/login';
+        },
+       error : function(error) {
+          alert("Error!");
+        }
+
+    })
+  });
+
   $('.message a').click(function(){
      $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
   });

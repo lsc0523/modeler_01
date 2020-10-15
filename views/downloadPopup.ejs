@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <title>다운로드 리스트</title>
+   <style type="text/css">
+    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+    body , html{
+      font-family: "Noto Sans KR", sans-serif !important;
+      font-size: 15px;
+    }
+
+    textarea{
+        font-family: inherit;
+        font-size: inherit;
+    }
+
+    input[type=button] {
+        position:relative;
+        cursor:pointer;
+        display:inline-block;
+        vertical-align:middle;
+        overflow:hidden;
+        width:100px;
+        height:30px;
+        background:#777;
+        color:#fff;
+        text-align:center;
+        line-height:30px;
+        text-decoration: none;
+    }
+
+   </style>
+ 
+</head>
+<body>
+    <b><font size="5" color="gray">다운로드 리스트</font></b>
+    <br><br>
+    <div id="fileList"></div>
+
+</body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            console.log("download_popup");
+            var count = opener.document.getElementById("file_length").value;
+
+            for(var i=0; i < count; i++){
+                var fileList = $("#fileList");
+                fileList.after("<a id='downFile" + i + "'></a><br>");
+
+                $("#downFile"+ i).attr("href", opener.document.getElementById("file"+ i).value);
+                $('#downFile'+ i).text(opener.document.getElementById("file"+ i).value);
+            }
+        });
+   </script>
+
+</html>
