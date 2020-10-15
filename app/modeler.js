@@ -10,10 +10,12 @@ import diagramXML from '../resources/newDiagram.bpmn';
 import CliModule from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
 import BpmnViewer from 'bpmn-js/lib/Viewer';
+import customContextPad from './custom';
 //import tooltips from "diagram-js/lib/features/tooltips";
 //import BpmnColor from 'bpmn-js-in-color';
 
 var common = require('./common');
+var colorPick = require('./colorPick')
 
 //var BpmnColor = require('bpmn-js-in-color');
 
@@ -43,6 +45,7 @@ var bpmnModeler = new BpmnModeler({
   customTranslateModule,
   //tooltips,
   plugin
+  //customContextPad
   //BpmnColor
   //require('bpmn-js-in-color')
   ],
@@ -172,10 +175,15 @@ $(function() {
   $('#js-properties-panel').hide();
   $('.map').hide();
   $('.toggle').hide();
-
+  $('.accordion').hide();
+  //colorPick.colorPicker();
 
   var downloadLink = $('#js-download-diagram');
   var downloadSvgLink = $('#js-download-svg');
+
+  if( $('#file_length') > 0 ){
+    $('#btn-download').css({ color : "green"});
+  }
 
   $('.buttons a').click(function(e) {
     if (!$(this).is('.active')) {
@@ -213,6 +221,21 @@ $(function() {
     }
 
   });
+
+  $('#btn-list').on('click', function(){
+
+    if($('.accordion').is(':visible')){
+      $('.accordion').hide();
+      $('.panel').hide();
+    }
+    else{
+      $('.accordion').show();
+      $('.panel').show();
+    }
+
+    //$('.accordion').hide();
+  })
+
   
   $('#fileInput').on('change', function (){
 
@@ -236,10 +259,17 @@ $(function() {
       var winWidth = 500;
       var winHeight = 500;
       var popupOption= "width="+winWidth+", height="+winHeight;
-      popupOption += " ,modal=yes";    
-      var myWindow = window.open(url,"TestName",popupOption);
+      //popupOption += " ,modal=yes";    
+      var myWindow = window.open(url,"modelPopup",popupOption);
   }
 
+  $('#btn-download').on('click', function(){
+      var url= "/downloadPopup";    
+      var winWidth = 800;
+      var winHeight = 500;
+      var popupOption= "width="+winWidth+", height="+winHeight;
+      var myWindow = window.open(url,"downloadPopup",popupOption);
+  });
 
   downloadLink.click(async function(e){
     console.log("download xml...");
@@ -262,11 +292,13 @@ $(function() {
 
     var JSmodeName = $('#modelName').val();
     var modelDetailName = $('#modelDetailName').val();
+    var modelType = $('#modelType').val();
     var ProcessID = bpmnModeler._definitions.rootElements[0].id;
 
     var formData = new FormData();
     formData.append("id", xmlData.replace(/(\r\n|\n|\r)/gm, ""));
     formData.append("modelID", modelID[0].innerText);
+    formData.append("type", modelType);
     formData.append("modelName", JSmodeName);
     formData.append("modelDetailName", modelDetailName);
     formData.append("processID", ProcessID);

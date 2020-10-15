@@ -40,12 +40,23 @@ a:link {
   display: table-cell;
 }
 
+/*
+.content > .accordion {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: : 0;
+  width: 100px;
+  height: 100px;
+}
+*/
+
 .content > .properties-panel-parent {
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
-  width: 260px;
+  width: 300px;
   z-index: 10;
   border-left: 1px solid #ccc;
   overflow: auto;
