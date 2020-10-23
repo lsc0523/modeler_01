@@ -192,6 +192,16 @@ $(function() {
     }
   });
 
+  //setTimes..
+  var today = new Date();
+      
+  var hours = today.getHours();      // 시
+  var minutes = today.getMinutes();  // 분
+  var seconds = today.getSeconds();  // 초
+
+  $('#save-time').val(" Autosaved at "+ hours + ":" + minutes + ":" + seconds);
+
+
   bpmnModeler.on('element.click', function(e) {
 
     var element = e.element;
@@ -224,6 +234,16 @@ $(function() {
 
   $('#btn-list').on('click', function(){
 
+    if(document.getElementById("mySidenav").style.width == "0px" || 
+       document.getElementById("mySidenav").style.width == "" )
+    {
+      openNav();
+    }
+    else
+    {
+      closeNav();
+    }
+    /*
     if($('.accordion').is(':visible')){
       $('.accordion').hide();
       $('.panel').hide();
@@ -232,8 +252,36 @@ $(function() {
       $('.accordion').show();
       $('.panel').show();
     }
+    */
 
     //$('.accordion').hide();
+  })
+
+
+  /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
+  function openNav() {
+    document.getElementById("mySidenav").style.width = "400px";
+    document.getElementById("main_list").style.marginLeft = "400px";
+  }
+
+  /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
+  function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main_list").style.marginLeft = "0";
+  }
+
+
+  //zoom
+  $('#zoom-reset').on('click' , function(){
+    bpmnModeler.get('zoomScroll').reset();
+  })
+
+  $('#zoom-in').on('click', function(){
+    bpmnModeler.get('zoomScroll').stepZoom(1);
+  })
+
+  $('#zoom-out').on('click', function(){
+    bpmnModeler.get('zoomScroll').stepZoom(-1);
   })
 
   
@@ -242,10 +290,10 @@ $(function() {
     var fileName = $(this).val();
     var fileCount = $(this).get(0).files.length;
     if($(this).get(0).files.length == 1){
-        $('.buttons input[type=text]').val(fileName);
+        $('#file_path').val(fileName);
     }
     else {
-        $('.buttons input[type=text]').val('파일 '+fileCount+'개');
+        $('#file_path').val('파일 '+fileCount+'개');
     }
   });
 
@@ -349,34 +397,49 @@ $(function() {
     
     
   }
+  */
 
 
   var exportArtifacts = debounce(async function() {
+    /*
     try {
 
       const { svg } = await bpmnModeler.saveSVG();
-      setEncoded(downloadSvgLink, 'diagram.svg', svg);
+      //setEncoded(downloadSvgLink, 'diagram.svg', svg);
     } catch (err) {
 
       console.error('Error happened saving SVG: ', err);
-      setEncoded(downloadSvgLink, 'diagram.svg', null);
+      //setEncoded(downloadSvgLink, 'diagram.svg', null);
     }
+    */
 
     try {
 
       const { xml } = await bpmnModeler.saveXML({ format: true });
-      setEncoded(downloadLink, 'diagram.bpmn', xml);
+      var today = new Date();
+      
+      var hours = today.getHours();      // 시
+      var minutes = today.getMinutes();  // 분
+      var seconds = today.getSeconds();  // 초
+
+      $('#save-time').val(" Autosaved at "+ hours + ":" + minutes + ":" + seconds);
+
+
+
+
+      //setEncoded(downloadLink, 'diagram.bpmn', xml);
     } catch (err) {
 
       console.error('Error happened saving diagram: ', err);
-      setEncoded(downloadLink, 'diagram.bpmn', null);
+      //$('#save-time').val(" Error....");
+      //setEncoded(downloadLink, 'diagram.bpmn', null);
     }
   }, 500);
 
   bpmnModeler.on('commandStack.changed', exportArtifacts);
-  */
+  
 
-
+  //color picker..
   $.fn.colorPick = function(config) {
 
         return this.each(function() {
@@ -558,7 +621,7 @@ $(function() {
 });
 
 
-/*
+
 function debounce(fn, timeout) {
 
   var timer;
@@ -571,4 +634,4 @@ function debounce(fn, timeout) {
     timer = setTimeout(fn, timeout);
   };
 }
-*/
+

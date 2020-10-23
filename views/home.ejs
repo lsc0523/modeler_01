@@ -2,91 +2,143 @@
 <html lang="ko">
 
 <head>
-  <title>Home</title>
+  <title>MODEL LIST</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Gugi&amp;subset=korean" rel="stylesheet">
-
 
   <style type="text/css">
-     @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-    body , html{
+    body , html
+    {
       font-family: "Noto Sans KR", sans-serif !important;
-      font-size: 15px;
+      font-weight: normal;
+      font-style: normal;
       height: 100%;
       padding: 0;
       margin: 0;
     }
 
-
-    ul.main {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      background-color: #10ad73;
-    }
-    
-    ul.main:after{
-     content:'';
-     display: block;
-     clear:both;
-   }
-   
-   li.main {
-     float: left;
-   }
-   
-   li.main a {
-     display: block;
-     color: white;
-     text-align: center;
-     padding: 14px 16px;
-     text-decoration: none;
-     width:150px;
-     
-   }
-   li.main a:hover:not(.active) {
-    /*background-color: #4CAF50;*/
-    text-decoration: underline;
-  }
   .active {
     text-decoration: underline;
-    /*background-color: #4CAF50;*/
   }
+
+  .section , aside{
+        float:left;
+        height:300px;
+        margin-top: -1px;
+  }
+
+  aside {
+        width:400px;
+        background:hsl(0 0% 97% / 1);
+  }
+
+  .collaborator{
+  
+    height: 100%;
+    background-color: white;
+    border-left: 1px solid hsl(0 0% 87% / 1); 
+    box-shadow: rgba(0, 0, 0, 0.1) -3px 0px 5px -4px;
+  }
+
+  .collaborator_header{
+    margin: 0px;
+    padding: 20px;
+    color: hsl(0 0% 33% / 1); 
+    background-color: hsl(0 0% 97% / 1); 
+    font-size: 14px;
+    border-bottom: 1px solid hsl(0 0% 87% / 1); ;
+    border-top: 1px solid hsl(0 0% 87% / 1); 
+  }
+
+  .btn-none{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+    outline: none;
+    padding: 0px 10px;
+    display: flex;
+    color: rgba(0, 0, 0, 0.4);
+    flex: 2 1 0%;
+  }
+
+
+#Progress_Loading
+{
+ position: absolute;
+ left: 50%;
+ top: 50%;
+ background: #ffffff;
+}
 </style>
 
 
 </head>
 
 <body>
+<!-- 로딩바 -->
+<div id = "Progress_Loading">
+  <img src="/Progress_Loading.gif"/>
+</div>
 
-  <ul class='main'>
-    <li class='main'><a href="/home2">Home</a></li>
-    <li class='main'><a class="active" href="home/1">Model List</a></li>
-    <li class='main'><a href="/viewer" >Viewer</a></li>
-    <li class='main'><a href="/modeler">Modeler</a></li>
-    <li class='main'><a href="/about">About</a></li>
-  </ul>
-  <div class="container">
-    <br>
-    <h3>MODELER LIST</h3>
+   <div style="height: 50px; 
+            padding-top: 10px;
+            padding-bottom: 20px;
+  ">
+  <img src="/logo.png" style="border-right: 1px solid hsl(0 0% 87% / 1); 
+                               padding-right: 20px; 
+                               padding-left: 20px; 
+  ">
+  <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HOME</a>
+  <a href="/home/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODEL LIST</a>
+  <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODELER</a>
+  <% if(sess) { %>
+  <a href="/logout" style="padding-left: 20px; 
+                           position: absolute; 
+                           right: 50px; 
+                           top : 17px; 
+                           color: hsl(0 0% 50% / 1);">
+                           LOGOUT</a>
+  <% } %>
+</div>
 
-    <a href="/modeler">추가</a>
-    <br>
-    <br>
-    <p>Modler List ...</p>
+<div  style="background-color: hsl(0,0%,97%); 
+            padding: 25px 100px; 
+            position: relative; 
+            height: 10%;
+            border-bottom: 1px solid hsl(0 0% 87% / 1);
+            border-top: 1px solid hsl(0 0% 87% / 1);
+            margin-top: 10px;
+            font-size: 19px;
+            ">
+  Welcome, <%=sess%> 님
+</div>
 
-    <table class="table table-striped" style="width: 1200px">
+  <div class="section"style="padding-left: 100px; 
+                             background-color: hsl(0,0%,97%); 
+                             height: 100%">
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <table class="table table-striped" 
+            style="width: 1400px;">
      <thead>
       <tr>
-        <th style="width: 20%">Model ID</th>
-        <th style="width: 15%">Process ID</th>
-        <th style="width: 15%">Model Name</th>
-        <th style="width: 35%">Model Detail Name</th>
+        <th style="width: 20%">모델 ID</th>
+        <th style="width: 15%">프로세스 ID</th>
+        <th style="width: 15%">모델 이름</th>
+        <th style="width: 35%">모델 세부사항</th>
         <th style="width: 5%">열기</th>
         <th style="width: 5%">수정</th>
         <th style="width: 5%">삭제</th>
@@ -100,7 +152,20 @@
                 i++;
               }
               else{  var rows = data[i]; %>
+      
       <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+
+      <tr style="border-radius: 3px;
+                  border: 1px solid hsl(0 0% 87% / 1);
+                  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;">
         <td><%= rows.MODELID  %></td>
         <td><%= rows.PROCESSID  %></td>
         <td><%= rows.MODELNAME %></td>
@@ -122,11 +187,115 @@
   </tbody>
 </table>
 </div>
+
+<!-- Colaboratin -->
+<aside  style="height: 100%">
+  <div class="collaborator">
+    <h3 id="collaborator-sidebar-title" class="collaborator_header">공유</h3>
+
+    <div style="display: flex;
+                -webkit-box-pack: end;
+                justify-content: flex-end;
+                margin-bottom: 15px;
+                margin-top: 15px;
+    ">
+        <button id="btn_user" class="btn btn-primary" style="width: 80px;">추가</button>
+    </div>
+    <div style="display: flex;
+                -webkit-box-align: center;
+                align-items: center;
+                padding-left: 50px;
+                padding-bottom: 10px;">
+      <button class="btn-none">이름</button>
+      <button class="btn-none">역할</button>
+    </div>
+
+    <ul id="user-list"
+        data-test="entity-list" style="margin: 3px 0px 15px;
+                                       padding-left: 0px;
+                                       list-style-type: none;
+                                       width: 100%;">
+      <li data-test="entity-You" style="border-top: 1px solid hsl(0 0% 87% / 1);
+                                        padding-top: 10px;
+                                        display: flex;
+                                        -webkit-box-pack: justify;
+                                        justify-content: space-between;
+                                        background-color: white;
+                                        -webkit-box-align: center;
+                                        align-items: center;
+                                        color: var(--grey-lighten-50);
+                                        border-bottom: 1px solid hsl(0 0% 87% / 1);
+                                        margin-bottom: 10px;
+                                        padding-bottom: 10px;
+                                        ">
+        <span style="padding-left: 50px;"><%=sess%></span>
+        <span>소유</span>
+        <span></span>
+        </li>
+      </ul>
+  </div>
+</aside>
+
+
+
 <br>
 <br>
 <br>
 <br>
 </body>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+
+     $('#Progress_Loading').hide();
+  
+    $(document).ajaxStart(function(){
+      $('#Progress_Loading').show(); //ajax실행시 로딩바를 보여준다.
+    })
+
+    $(document).ajaxStop(function(){
+      $('#Progress_Loading').hide(); //ajax종료시 로딩바를 숨겨준다.
+    });
+  });
+  
+  $('#btn_user').on('click', function(){
+      var url= "/userPopup";    
+      var winWidth = 1060;
+      var winHeight = 620;
+      var popupOption= "width="+winWidth+", height="+winHeight;
+      var myWindow = window.open(url,"userPopup",popupOption);  
+  });
+
+  $(document).on('click','li',function(){
+    //var pcode=$(this).attr('id'); //이거는 해당 element의 id value값을 가져오는것.
+    var mailAddress = $(this)[0].childNodes[0].textContent;
+
+    if(mailAddress != "" && mailAddress != undefined && mailAddress != 'undefined'){
+        
+      $.ajax({
+         url: '/mailSend',
+         type:'GET',
+         data : { email : mailAddress},
+         dataType: "json",  
+         success : function(data) {
+            alert("메일 전송이 성공하였습니다.");
+            window.location.href = '/home/1';
+          },
+         error : function(error) {
+            alert("메일 전송이 실패하였습니다.");
+          }
+
+      });
+
+    }
+    else{
+      alert("메일주소를 확인하시기 바랍니다.");
+    }
+    
+  });
+
+</script>
 </html>
 
 

@@ -16,205 +16,184 @@
 
     @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-    body , html{
+    body , html
+    {
       font-family: "Noto Sans KR", sans-serif !important;
-      font-size: 15px;
-    }
-
-
-    ul.main {
-      list-style-type: none;
-      margin: 0;
+      font-weight: normal;
+      font-style: normal;
+      height: 100%;
       padding: 0;
-      background-color: #10ad73;
+      margin: 0;
     }
+  
 
-    ul.main:after{
-     content:'';
-     display: block;
-     clear:both;
-   }
-
-   li.main {
-     float: left;
-   }
-
-   li.main a {
-     display: block;
-     color: white;
-     text-align: center;
-     padding: 14px 16px;
-     text-decoration: none;
-     width:150px;
-
-   }
-
-   li.main a:hover:not(.active) {
-    /*background-color: #4CAF50;*/
-    text-decoration: underline;
-  }
   .active {
-    text-decoration: underline;
-    /*background-color: #4CAF50;*/
+     text-decoration: underline;
   }
 
- .accordion {
-  background-color: #eee;
+  .panel {
+    padding: 0 18px;
+    background-color: gray;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    line-height: 8px;
+  }
+
+/* The side navigation menu */
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 10;
+  left: 0;
+  overflow-y: scroll; /* Disable horizontal scroll */ 
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  background-color: hsl(0,0%,97%); 
   color: #444;
   cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-  transition: 0.4s;
+  border-right:1px solid hsl(0 0% 87% / 1);
 }
 
-/*
-.active, .accordion:hover {
-  background-color: #ccc;
-}
-*/
-
-.accordion:after {
-  content: '\002B';
-  color: #777;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
-}
-
-/*
-.active:after {
-  content: "\2212";
-}
-*/
-
-.panel {
-  padding: 0 18px;
-  background-color: white;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-}
-
-
-
-  /*
-  input[type=text].maininput {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-  }
-  */  
-
-/*
-.tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
-
-
-.tab button {
-  background-color: inherit;
-  float: left;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 14px 16px;
+/* The navigation menu links */
+.sidenav a {
+  padding: 10px 8px 8px 8px;
+  text-decoration: none;
+  font-size: 30px;
+  color: black;
+  display: block;
   transition: 0.3s;
 }
 
-.tab button:hover {
-  background-color: #ddd;
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+  color: white;
 }
 
-
-.tab button.active {
-  background-color: #ccc;
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 15px;}
 }
 
-
-.tabcontent {
-  display: none;
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-top: none;
-}
-*/
-
+  .btn-file{
+      position: relative;
+      overflow: hidden;
+  }
+  
+  .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+                right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+   }
 
 </style>
 </head>
 <body>
- <div>
-  <ul class='main'>
-    <li class='main'><a href="home2">Home</a></li>
-    <li class='main'><a href="home/1">Model List</a></li>
-    <li class='main'><a href="viewer" >Viewer</a></li>
-    <li class='main'><a class="active" href="modeler">Modeler</a></li>
-    <li class='main'><a href="about">About</a></li>
-  </ul>
+ <div style="height: 50px; 
+            padding-top: 10px;
+  ">
+  <img src="/logo.png" style="border-right: 1px solid hsl(0 0% 87% / 1); 
+                               padding-right: 20px; 
+                               padding-left: 20px; 
+  ">
+
+  <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HOME</a>
+  <a href="/home/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODEL LIST</a>
+  <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODELER</a>
+  <% if(sess) { %>
+  <a href="/logout" style="padding-left: 20px; 
+                           position: absolute; 
+                           right: 50px; 
+                           top : 17px; 
+                           color: hsl(0 0% 50% / 1);">
+                           LOGOUT</a>
+  <% } %>
+
 </div>
-<div style="background-color: #777; padding: 20px 20px; position: relative; height: 7%;">
-  <button class="picker" id="picker1" style="width: 3%; top: 15%; left: 5%; border:0; outline :1; position: absolute;">
-     <img src="/paint_icon.jpg" width="40" height="40">
+<div style="background-color: hsl(0,0%,97%); 
+            padding: 20px 20px; 
+            position: relative; 
+            height: 7%;
+            border-bottom: 1px solid hsl(0 0% 87% / 1);
+            border-top: 1px solid hsl(0 0% 87% / 1);
+            margin-top: 10px;
+            ">
+  <button class="picker" id="picker1" style="width: 3%; top: 15%; left: 65%; border:0; outline :1; position: absolute;">
+     <img src="/paint_icon.svg" width="40" height="40">
   </button> 
+
+  <label class="btn btn-light btn-file" 
+          data-toggle="tooltip" data-placement="bottom" title="업로드"
+          style="width: 4%; top: 10%; left: 20%; border:0; outline :0; position: absolute;">
+    <img src="/Attach_icon.svg" width="40" height="40" >
+    <input type="file" id="fileInput" name="fileInput" multiple style="display:none">
+  </label>
+  
+  <input type="text" id="save-time" 
+         style="top: 20%;   
+                border:0; 
+                outline :0;
+                background-color: hsl(0,0%,97%);
+                color: hsl(0,0%,33%);
+                font-size: 15px; ">
+  <input type="text" readonly="readonly" title="File Route"  id="file_path"
+         style="width: 25%; 
+                top: 25%; 
+                left: 30%; 
+                border:0; 
+                outline :0; 
+                position: absolute;
+                background-color: hsl(0,0%,97%);
+                color: black; ">
+
+  <button class="btn btn-light" id="js-download-diagram"
+          data-toggle="tooltip" data-placement="bottom" title="저장"
+          style="width: 4%; top: 10%; left: 10%; border:0; outline :0; position: absolute;">
+    <img src="/save_icon.svg" width="40" height="40">
+  </button>
+  <button class="btn btn-light" id="modelinfo"
+          data-toggle="tooltip" data-placement="bottom" title="정보입력"
+          style="width: 4%; top: 10%; left: 15%; border:0; outline :0; position: absolute;">
+    <img src="/info_icon.svg" width="40" height="40">
+  </button>
   <button class="btn btn-light" id="btn-download"  
           data-toggle="tooltip" data-placement="bottom" title="다운로드"
           style="width: 4%; top: 10%; left: 70%; border:0; outline :0; position: absolute;">
-    <img src="/dowload_icon.ico" width="40" height="40">
+    <img src="/download_icon.svg" width="40" height="40">
   </button> 
   <button class="btn btn-light" id="btn-list"  
           data-toggle="tooltip" data-placement="bottom" title="모델 리스트"
           style="width: 4%; top: 10%; left: 75%; border:0; outline :0; position: absolute;">
-    <img src="/list_icon.png" width="40" height="40">
+    <img src="/list_icon.svg" width="40" height="40">
   </button> 
   <button class="btn btn-light" id="btn-minimap"  
           data-toggle="tooltip" data-placement="bottom" title="미니맵"
           style="width: 4%; top: 10%; left: 80%; border:0; outline :0; position: absolute;">
-    <img src="/minimap_icon.png" width="40" height="40">
+    <img src="/minimap_icon.svg" width="40" height="40">
   </button> 
   <button class="btn btn-light" id="btn-panel"  
           data-toggle="tooltip" data-placement="bottom" title="속성창"
           style="width: 4%; top: 10%; left: 85%; border:0; outline :0; position: absolute;">
-    <img src="/panel_icon.ico" width="40" height="40">
+    <img src="/panel_icon.svg" width="40" height="40">
   </button> 
 </div>
 <p id="xmlData" style="display:none;"><%=name%></p>
 <p id="modelID" style="display:none;"><%=modelID%></p>
 <input type = "hidden" id = "modelType" value="<%=type%>">
   
-<button class="accordion" style="width: 20%">전지</button>
-<div class="panel">
-  <% for(var i=0; i < data.length; i++){ %>
-
-  <% if(data[i].MODELCATID == "A"){ %>
-    <a href="/modeler?id=<%=data[i].MODELID%>"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a> <br>
-  <% } %>
-  <% } %>
-</div>
-
-<button class="accordion" style="width: 20%">조립</button>
-<div class="panel">
-  <% for(var i=0; i < data.length; i++){ %>
-  <% if(data[i].MODELCATID == "B"){ %>
-    <a href="/modeler?id=<%=data[i].MODELID%>"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a> <br>
-  <% } %>
-  <% } %>
-</div>
-
-<button class="accordion" style="width: 20%">활성화</button>
-<div class="panel">
-  <% for(var i=0; i < data.length; i++){ %>
-  <% if(data[i].MODELCATID == "C"){ %>
-    <a href="/modeler?id=<%=data[i].MODELID%>"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a> <br>
-  <% } %>
-  <% } %>
-</div>
 
 <!--
 <div class="tab">
@@ -258,11 +237,45 @@
   <h3>MODEL_03</h3>
   <p>Tokyo is the capital of Japan.</p>
 </div>
-
 -->
 
-<div class="content with-diagram" id="js-drop-zone">
 
+<div id="mySidenav" class="sidenav" 
+     style="border-right: : 1px solid hsl(0 0% 87% / 1);">
+ <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+  <a href="#" class="sideListMenu">전지</a>
+  <div class="panel">
+    <% for(var i=0; i < data.length; i++){ %>
+    <% if(data[i].MODELCATID == "A"){ %>
+      <a href="/modeler?id=<%=data[i].MODELID%>" style="font-size: 15px;"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a><br>
+    <% } %>
+    <% } %>
+  </div>
+  <a href="#" class="sideListMenu">조립</a>
+    <div class="panel">
+      <% for(var i=0; i < data.length; i++){ %>
+      <% if(data[i].MODELCATID == "B"){ %>
+        <a href="/modeler?id=<%=data[i].MODELID%>" style="font-size: 15px;"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a><br>
+      <% } %>
+      <% } %>
+    </div>
+  <a href="#" class="sideListMenu">활성</a>
+    <div class="panel">
+      <% for(var i=0; i < data.length; i++){ %>
+      <% if(data[i].MODELCATID == "C"){ %>
+        <a href="/modeler?id=<%=data[i].MODELID%>" style="font-size: 15px;"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a><br>
+      <% } %>
+      <% } %>
+    </div>
+</div>
+
+<!--
+<span onclick="openNav()">open</span>
+-->
+
+<div id="main_list"></div>
+
+<div class="content with-diagram" id="js-drop-zone">
   <div class="message intro">
     <div class="note">
       Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
@@ -281,27 +294,37 @@
   </div>
 
   <div class="canvas" id="js-canvas"></div>
-  <div class="properties-panel-parent" id="js-properties-panel">
-
-  </div>
+  <div class="properties-panel-parent" id="js-properties-panel"></div>
 </div>
 
 <input type = "hidden" id = "modelName" class="maininput" value="<%=JsmodelName%>">
 <input type = "hidden" id = "modelDetailName" class="maininput" value="<%=JsmodelDetailName%>">
 
-<div class="buttons">
+<!--
+<div class="buttons" style="display: none;">
   <label id="js-download-diagram" href class="active"  title="download BPMN diagram">모델러 저장</label>
   <label id="modelinfo">모델정보입력</label>
+
   <label>
         <img src="/Attach_icon.ico" width="30" height="30">
         <input type="file" id="fileInput" name="fileInput" multiple>
   </label>
 
+
   <input type="text" readonly="readonly" title="File Route">
+
   <input type="hidden" id="file_length" value="<%=JsFileList.length%>">
  <% for(var k=0; k < JsFileList.length; k++){ %>  
   <input type="hidden" id="file<%=k%>" value="download?id=<%=JsFileList[k].REPOSINFO%>">
  <% } %>
+</div>
+-->
+
+
+<div class="zoom">
+  <img src="/zoom-reset-icon.png" id="zoom-reset" width="40" height="40">
+  <img src="/zoom-in-icon.png" id="zoom-in" width="40" height="40">
+  <img src="/zoom-out-icon.png" id="zoom-out" width="40" height="40">
 </div>
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -309,7 +332,8 @@
 
 <script type="text/javascript">
 
-var acc = document.getElementsByClassName("accordion");
+//model list side bar..
+var acc = document.getElementsByClassName('sideListMenu');
 var i;
 
 for (i = 0; i < acc.length; i++) {
@@ -319,15 +343,16 @@ for (i = 0; i < acc.length; i++) {
     if (panel.style.maxHeight) {
       panel.style.maxHeight = null;
     } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
+      //panel.style.maxHeight = panel.scrollHeight + "px";
+      panel.style.maxHeight = "500px";
     } 
    });
-  }
+}
 
 //btn tooltip..
-$('[data-toggle="tooltip"]').tooltip()
+//$('[data-toggle="tooltip"]').tooltip()
 
-
+/*
 function openCity(evt, cityName) {
   // Declare all variables
   var i, tabcontent, tablinks;
@@ -348,6 +373,7 @@ function openCity(evt, cityName) {
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
 }
+*/
 
 </script>
 

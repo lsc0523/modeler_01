@@ -2,7 +2,7 @@
 <html lang="ko">
 
 <head>
-  <title>Home</title>
+  <title>HOME</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -22,49 +22,22 @@
       margin: 0;
     }
 
-
-    ul.main {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      background-color: #10ad73;
-    }
-    
-    ul.main:after{
-     content:'';
-     display: block;
-     clear:both;
-   }
-   
-   li.main {
-     float: left;
-   }
-   
-   li.main a {
-     display: block;
-     color: white;
-     text-align: center;
-     padding: 14px 16px;
-     text-decoration: none;
-     width:150px;
-     
-   }
-   li.main a:hover:not(.active) {
-    /*background-color: #4CAF50;*/
-    text-decoration: underline;
-  }
   .active {
     text-decoration: underline;
     /*background-color: #4CAF50;*/
   }
 
   .topcontainer {
-    background-color: #10ad73;
+    background-color: hsl(0 0% 87% / 1);
     font-size: 50px;
     text-align: center;
     color: white;
-    height: 300px;
+    height: 150px;
     line-height: 250px;
+    border-top: 1px solid hsl(0 0% 87% / 1); 
+    border-bottom: 1px solid hsl(0 0% 87% / 1); 
+    margin-top: 10px;
+    color : hsl(0 0% 50% / 1);
   }
 </style>
 
@@ -73,15 +46,42 @@
 
 <body>
 
-  <ul class='main'>
-    <li class='main'><a class="active" href="home2">Home</a></li>
-    <li class='main'><a href="home/1">Model List</a></li>
-    <li class='main'><a href="viewer" >Viewer</a></li>
-    <li class='main'><a href="modeler">Modeler</a></li>
-    <li class='main'><a href="about">About</a></li>
-  </ul>
+   <div style="height: 50px; 
+            padding-top: 10px;
+            padding-bottom: 10px;
+  ">
+  <img src="/logo.png" style="border-right: 1px solid hsl(0 0% 87% / 1); 
+                               padding-right: 20px; 
+                               padding-left: 20px; 
+  ">
 
-  <div class = topcontainer>BPMN 모델러</div>
+  <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HOME</a>
+  <a href="/home/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODEL LIST</a>
+  <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODELER</a>
+  <% if(sess) { %>
+  <a href="/logout" style="padding-left: 20px; 
+                           position: absolute; 
+                           right: 50px; 
+                           top : 17px; 
+                           color: hsl(0 0% 50% / 1);">
+                           LOGOUT</a>
+  <% } %>
+</div>
+
+<div  style="background-color: hsl(0,0%,97%); 
+            padding: 25px 100px; 
+            position: relative; 
+            height: 10%;
+            border-bottom: 1px solid hsl(0 0% 87% / 1);
+            border-top: 1px solid hsl(0 0% 87% / 1);
+            margin-top: 10px;
+            font-size: 19px;
+            ">
+  Welcome, <%=sess%> 님
+</div>
+
+
+ <!-- <div class = topcontainer></div> -->
   <div class="container" style="height: 80px"> </div>
   <div style="height: 80px;">
     <div style="display: inline-block; width: 300px;"></div>

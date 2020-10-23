@@ -44,7 +44,7 @@ server.use(sessionParser({
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 1000 * 60 * 60, // 쿠키 유효기간 1시간
+      maxAge: 1000 * 60 * 60 * 5, // 쿠키 유효기간 1시간
     },
 }));
 
@@ -90,32 +90,17 @@ server.get('/home2' , function(req , res){
 
 	if(req.cookies.user){
 		var reasonTypeQurey = "SELECT A.* FROM REASONCODE A WHERE A.CODE_TYPE = 'LG_C_TYPE'";
-
 		Mssql.NonQuery(reasonTypeQurey,function(result){
-			//console.log(result);
-			//var page = req.params.page;
-
 			res.render('home2' , { 
-					data : result.recordset
-					//page : page,
-					//page_num : 10,
-					//pass: true,
-					//length : result.recordset.length -1
+					data : result.recordset,
+					sess : req.session.user.id
 				});
 		});
-	}else{
+	}
+	else
+	{
 		res.send("로그인 하시기 바랍니다.");
 	}
-
-	/*
-	if(req.cookies.user){
-		res.render('home2');
-	}else{
-		res.send("Error");
-	}
-	*/
-
-	//res.render('home2');
 });
 
 
@@ -124,13 +109,15 @@ server.get('/home/:page' , function(req , res){
 	Mssql.NonQuery(sqlQurey,function(result){
 		//console.log(result);
 		var page = req.params.page;
+		console.log(req.session.user);
 
 		res.render('home' , { 
 				data : result.recordset,
 				page : page,
 				page_num : 10,
 				pass: true,
-				length : result.recordset.length -1
+				length : result.recordset.length -1,
+				sess : req.session.user.id
 			});
 	});
 });
@@ -147,7 +134,11 @@ server.get('/viewer' , function(req , res){
 		Mssql.SelectModel(params, function(result){
 			xmlData = result.recordset[0].MODEL_XML;
 			console.log(xmlData);
-			res.render('viewer', {name : xmlData});
+			res.render('viewer', 
+				{  name : xmlData, 
+				   sess : req.session.user.id
+				}
+			);
 		});
 	}
 });
@@ -182,7 +173,8 @@ server.get('/modeler' , function(req , res){
 				JsmodelDetailName : "" ,
 				JsFileList : JsFileList,
 				type : req.query.type,
-				data : result_data.recordset
+				data : result_data.recordset,
+				sess : req.session.user.id
 			});
 
 		}
@@ -215,7 +207,8 @@ server.get('/modeler' , function(req , res){
 							JsmodelDetailName : modelDetailName,
 							JsFileList : JsFileList,
 							type : modelType,
-							data : result_data.recordset
+							data : result_data.recordset,
+							sess : req.session.user.id
 							});
 
 				});
@@ -320,7 +313,8 @@ server.get('/delete' , function(req , res){
 				page : 1,
 				page_num : 10,
 				pass: true,
-				length : result.recordset.length -1
+				length : result.recordset.length -1,
+				sess : req.session.user.id
 			});
 		});
 	});
@@ -347,10 +341,21 @@ server.post('/loginUser', function(req, res){
 		currentTime : new Date()
 	};
 
-	console.log(req.session);
+	console.log(req.session.user);
 
 	res.json({'result' : 'ok'});
 
+});
+
+server.get('/logout' , function(req , res){
+	req.session.destroy(function(err){
+		if(err){ 
+			console.log(err);
+		}
+		else{
+			res.redirect('/login');
+		}
+	})
 });
 
 server.post('/createUser', function(req, res){
@@ -363,6 +368,55 @@ server.post('/createUser', function(req, res){
 	res.json({'result' : 'ok'});
 
 });
+
+server.get('/userPopup', function(req, res){
+	res.render('userPopup');
+});
+
+
+//Mail app
+var nodemailer = require('nodemailer');
+
+server.get('/mailSend' , function(req , res){
+
+	var mailAddress = req.query.email;
+
+	if(mailAddress){
+
+		var transporter = nodemailer.createTransport({
+		    host:'smtp.gmail.com',
+		    port : '587',
+		    auth: {
+		        user : 'dugudcjfwin@gmail.com',
+		        pass : 'ahddl7411@'
+		    },
+		    secureConnection: 'false',
+	        tls: {
+	            ciphers: 'SSLv3',
+	            rejectUnauthorized: false
+	        }
+		});
+
+		var mailOption = {
+		    from : 'dugudcjfwin@gmail.com',
+		    to : mailAddress,
+		    subject : 'INVITE YOU',
+		    text : 'Invite You Modeler.'
+		};
+
+		transporter.sendMail(mailOption, function(err, info) {
+		    if ( err ) {
+		        console.error('Send Mail error : ', err);
+		        res.json({'result' : 'ok'});
+		    }
+		    else {
+		        console.log('Message sent : ', info);
+		         res.json({'result' : 'ok'});
+		    }
+		});
+	}
+})
+
 
 
 server.listen(3000, () => {

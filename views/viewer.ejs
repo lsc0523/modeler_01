@@ -3,57 +3,64 @@
 <head>
   <title>bpmn-js minimap demo</title>
 
-  <link rel="stylesheet" href="vendor/bpmn-js/assets/diagram-js.css" />
-  <link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
- <!-- <link rel="stylesheet" href="vendor/diagram-js-minimap/assets/diagram-js-minimap.css" />  -->
-  <link rel="stylesheet" href="vendor/bpmn-js-properties-panel/assets/bpmn-js-properties-panel.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="css/app.css" />
   <style type="text/css">
-ul.main {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: #10ad73;
-    }
-   
-ul.main:after{
-     content:'';
-     display: block;
-     clear:both;
-    }
-  
-li.main {
-     float: left;
+  @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+  body , html
+  {
+      font-family: "Noto Sans KR", sans-serif !important;
+      font-weight: normal;
+      font-style: normal;
+      height: 100%;
+      padding: 0;
+      margin: 0;
   }
-  
-li.main a {
-     display: block;
-     color: white;
-     text-align: center;
-     padding: 14px 16px;
-     text-decoration: none;
-     width:150px;
-     
-  }
-  li.main a:hover:not(.active) {
-    /*background-color: #4CAF50;*/
+  .active 
+  {
     text-decoration: underline;
   }
-  .active {
-    text-decoration: underline;
-    /*background-color: #4CAF50;*/
-  }
+
   </style>
 </head>
 <body>
 
-  <ul class='main'>
-    <li class='main'><a href="home2">Home</a></li>
-    <li class='main'><a href="home/1">Model List</a></li>
-    <li class='main'><a class="active" href="viewer" >Viewer</a></li>
-    <li class='main'><a href="modeler">Modeler</a></li>
-    <li class='main'><a href="about">About</a></li>
-  </ul>
+<div style="height: 50px; 
+            padding-top: 10px;
+            padding-bottom: 20px;
+  ">
+  <img src="/logo.png" style="border-right: 1px solid hsl(0 0% 87% / 1); 
+                               padding-right: 20px; 
+                               padding-left: 20px; 
+  ">
+  <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HOME</a>
+  <a href="/home/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODEL LIST</a>
+  <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODELER</a>
+  <% if(sess) { %>
+  <a href="/logout" style="padding-left: 20px; 
+                           position: absolute; 
+                           right: 50px; 
+                           top : 17px; 
+                           color: hsl(0 0% 50% / 1);">
+                           LOGOUT</a>
+  <% } %>
+</div>
+
+<div  style="background-color: hsl(0,0%,97%); 
+            padding: 25px 100px; 
+            position: relative; 
+            height: 10%;
+            border-bottom: 1px solid hsl(0 0% 87% / 1);
+            border-top: 1px solid hsl(0 0% 87% / 1);
+            margin-top: 10px;
+            font-size: 19px;
+            ">
+  Welcome, <%=sess%> 님
+</div>
 
  <p id="xmlData" style="display:none;"><%=name%></p>
 
@@ -77,6 +84,13 @@ li.main a {
     </div>
 
    <div class="canvas" id="js-canvas"></div>
+ </div>
+
+<div class="zoom">
+  <img src="/zoom-reset-icon.png" id="zoom-reset" width="40" height="40">
+  <img src="/zoom-in-icon.png" id="zoom-in" width="40" height="40">
+  <img src="/zoom-out-icon.png" id="zoom-out" width="40" height="40">
+</div>
 
   <script type="text/javascript" src="viewer.app.js"></script>
 </html>

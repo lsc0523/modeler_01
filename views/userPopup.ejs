@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <title>유저메일등록</title>
+<style type="text/css">
+   @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+  body , html{
+    font-family: "Noto Sans KR", sans-serif !important;
+    font-size: 15px;
+  }
+
+
+  html, body {
+     height: 100%;
+     background: #e0e0e0;
+     font-family: sans-serif;
+     font-size: 14px;
+}
+ #wrap {
+     width: 100%;
+     max-width: 900px;
+     margin: 0 auto 60px;
+     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+}
+ .input::before {
+     content: '';
+     display: block;
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 300px;
+     background: #0f1041;
+}
+ .input-header {
+     position: relative;
+     padding-top: 80px;
+     color: #fff;
+}
+ .input-header h1 {
+     padding-bottom: 25px;
+     font-size: 3.25em;
+     font-weight: 100;
+}
+ .input-content {
+     position: relative;
+     padding: 44px 55px;
+     background: #fff;
+     z-index: 10;
+}
+ .input-content h2 {
+     padding-bottom: 45px;
+     font-size: 1.625em;
+     font-weight: bold;
+     vertical-align: middle;
+}
+ .input-content h2 span {
+     display: inline-block;
+     margin-left: 10px;
+     padding: 5px 6px 3px;
+     border: 1px solid #ffca00;
+     border-radius: 4px;
+     font-size: 0.85rem;
+     vertical-align: middle;
+     color: #ffca00;
+}
+ .input-content .inputbox {
+     overflow: hidden;
+     position: relative;
+     padding: 15px 0 28px 200px;
+}
+ .input-content .inputbox-title {
+     position: absolute;
+     top: 15px;
+     left: 0;
+     width: 200px;
+     height: 30px;
+     color: #666;
+     font-weight: bold;
+     line-height: 30px;
+}
+ .input-content .inputbox-content {
+     position: relative;
+     width: 100%;
+}
+ .input-content .inputbox-content input {
+     width: 100%;
+     height: 30px;
+     box-sizing: border-box;
+     line-height: 30px;
+     font-size: 14px;
+     border: 0;
+     background: none;
+     border-bottom: 1px solid #ccc;
+     outline: none;
+     border-radius: 0;
+     -webkit-appearance: none;
+}
+ .input-content .inputbox-content input:focus ~ label, .input-content .inputbox-content input:valid ~ label {
+     color: #2962ff;
+     transform: translateY(-20px);
+     font-size: 0.825em;
+     cursor: default;
+}
+ .input-content .inputbox-content input:focus ~ .underline {
+     width: 100%;
+}
+ .input-content .inputbox-content label {
+     position: absolute;
+     top: 0;
+     left: 0;
+     height: 30px;
+     line-height: 30px;
+     color: #ccc;
+     cursor: text;
+     transition: all 200ms ease-out;
+     z-index: 10;
+}
+ .input-content .inputbox-content .underline {
+     content: '';
+     display: block;
+     position: absolute;
+     bottom: -1px;
+     left: 0;
+     width: 0;
+     height: 2px;
+     background: #2962ff;
+     transition: all 200ms ease-out;
+}
+ .input-content .btns {
+     padding: 30px 0 0 200px;
+}
+ .input-content .btns .btn {
+     display: inline-block;
+     margin-right: 2px;
+     padding: 10px 25px;
+     background: none;
+     border: 1px solid #c0c0c0;
+     border-radius: 2px;
+     color: #666;
+     font-size: 1.125em;
+     outline: none;
+     transition: all 100ms ease-out;
+}
+ .input-content .btns .btn:hover, .input-content .btns .btn:focus {
+     transform: translateY(-3px);
+}
+ .input-content .btns .btn-confirm {
+     border: 1px solid #2962ff;
+     background: #2962ff;
+     color: #fff;
+}
+ 
+
+</style>
+ 
+</head>
+<body>
+    <!--
+    <b><font size="5" color="gray">유저메일 입력</font></b>
+    <br><br>
+    -->
+
+    <!--
+    <table class="table table-striped" 
+            style="width: 500px;">
+     <thead>
+      <tr>
+        <th style="width: 10%">선택</th>
+        <th style="width: 30%">ID</th>
+        <th style="width: 30%">이름</th>
+        <th style="width: 30%">역할</th>
+      </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>dugudcjf</td>
+        <td>여형철</td>     
+        <td>
+            <select name="role">
+            <option value="view">보기</option>
+            <option value="commnet">확인</option>
+            <option value="edit">수정</option>
+            </select>
+        </td>     
+      </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>cjsrnltjr</td>
+        <td>천귀석</td>     
+        <td><button></button></td>     
+
+    </tr>
+    </tbody>
+    </table>
+    -->
+
+<!--
+<div autocomplete="on">
+<input type='text' id='user_id' autocomplete="on">
+</div>
+<button id="btn_confirm" class="btn btn-primary">확인</button>
+-->
+
+
+<div id="wrap" class="input">
+  <header class="input-header">
+  </header>
+  <section class="input-content">
+    <h2>E-mail / Role 입력<span></span></h2>
+    <div class="input-content-wrap">
+      <dl class="inputbox">
+        <dt class="inputbox-title">E-mail</dt>
+        <dd class="inputbox-content">
+          <input id="input0" type="text" required/>
+          <label for="input0">E-mail</label>
+          <span class="underline"></span>
+        </dd>
+      </dl>
+      <dl class="inputbox">
+        <dt class="inputbox-title">Role</dt>
+        <dd class="inputbox-content">
+          <input id="input1" type="text" required/>
+          <label for="input1">Role</label>
+          <span class="underline"></span>
+        </dd>
+      </dl>
+      <div class="btns">
+          <button  id='btn_confirm' class="btn btn-confirm">확인</button>
+          <button  id='btn_cancel' class="btn btn-cancel">취소</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $('#btn_cancel').on('click', function(){
+            window.close();
+        })
+
+        $('#btn_confirm').on('click', function(){
+            //console.log("AA");
+
+            var userID = $('#input0').val();
+
+            var parentForm = opener.document.getElementById("user-list");
+
+            var li = document.createElement('li');
+            li.setAttribute("style", "  border-top: 1px solid hsl(0 0% 87% / 1); " +
+                                     "  padding-top: 10px; " +
+                                     "   display: flex;" +
+                                     "   -webkit-box-pack: justify;" +
+                                     "   justify-content: space-between;" +
+                                     "   background-color: white;" +
+                                     "   -webkit-box-align: center;" +
+                                     "   align-items: center;" +
+                                     "   color: var(--grey-lighten-50);" +
+                                     "   border-bottom: 1px solid hsl(0 0% 87% / 1);" +
+                                     "   margin-bottom: 10px; " +
+                                     "   padding-bottom: 10px; ");
+            
+            //var span1 = document.createElement('span');
+            var span2 = document.createElement('span');
+            span2.setAttribute("style" , "padding-left: 50px;");
+
+            var span3 = document.createElement('span');
+            var span4 = document.createElement('span');
+
+            var text1 = document.createTextNode($('#input0').val());
+            var text2 = document.createTextNode($('#input1').val());
+
+            var img = document.createElement("IMG");
+            img.setAttribute("src" , "/email.svg");
+            img.setAttribute("id" , "SendMail");
+            
+            //li.appendChild(span1);
+            li.appendChild(span2);
+            li.appendChild(span3);
+            li.appendChild(span4);
+
+            span2.appendChild(text1);
+            span3.appendChild(text2); 
+            span4.appendChild(img);
+
+            parentForm.appendChild(li);
+
+        });
+   </script>
+
+</html>
