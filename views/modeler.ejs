@@ -300,7 +300,7 @@
 <input type = "hidden" id = "modelName" class="maininput" value="<%=JsmodelName%>">
 <input type = "hidden" id = "modelDetailName" class="maininput" value="<%=JsmodelDetailName%>">
 
-<!--
+
 <div class="buttons" style="display: none;">
   <label id="js-download-diagram" href class="active"  title="download BPMN diagram">모델러 저장</label>
   <label id="modelinfo">모델정보입력</label>
@@ -312,13 +312,12 @@
 
 
   <input type="text" readonly="readonly" title="File Route">
-
   <input type="hidden" id="file_length" value="<%=JsFileList.length%>">
  <% for(var k=0; k < JsFileList.length; k++){ %>  
   <input type="hidden" id="file<%=k%>" value="download?id=<%=JsFileList[k].REPOSINFO%>">
  <% } %>
 </div>
--->
+
 
 
 <div class="zoom">

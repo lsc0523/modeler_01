@@ -267,11 +267,13 @@
       var myWindow = window.open(url,"userPopup",popupOption);  
   });
 
-  $(document).on('click','li',function(){
+  $(document).on('click','#SendMail',function(){
     //var pcode=$(this).attr('id'); //이거는 해당 element의 id value값을 가져오는것.
-    var mailAddress = $(this)[0].childNodes[0].textContent;
+    var mailAddress = $(this).parents('span').parents('li')[0].childNodes[0].textContent;
 
-    if(mailAddress != "" && mailAddress != undefined && mailAddress != 'undefined'){
+    if(mailAddress.trim() != "" && 
+       mailAddress.trim() != undefined && 
+       mailAddress.trim() != 'undefined'){
         
       $.ajax({
          url: '/mailSend',
@@ -279,8 +281,13 @@
          data : { email : mailAddress},
          dataType: "json",  
          success : function(data) {
-            alert("메일 전송이 성공하였습니다.");
-            window.location.href = '/home/1';
+
+            if(data.result == 'ok'){
+              alert("메일 전송이 성공하였습니다.");
+            }else{
+              alert("메일 전송이 실패하였습니다.");
+            }
+            //window.location.href = '/home/1';
           },
          error : function(error) {
             alert("메일 전송이 실패하였습니다.");

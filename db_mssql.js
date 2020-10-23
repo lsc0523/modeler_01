@@ -96,6 +96,7 @@ function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 			.query(sqlSelectModelReposIDQurey)
 
 	}).then(result => {
+		console.log(sqlSelectModelReposIDQurey);
 		console.dir(result.recordset[0]);
 		return callback(result);
 	}).catch(err => {
@@ -129,11 +130,16 @@ function ExcuteSQLSelectAllFileList(params, callback) {
 
 
 function getNewReposID(id, callback) {
-	ExcuteSQLSelectModelReposbyPromises(id, function (result) {
+
+	var params = { MODELID : id };
+
+	ExcuteSQLSelectModelReposbyPromises(params, function (result) {
 		console.log(result);
-		if (result.rowsAffected != 0) {
+		if (result.recordsets.length != 0) {
 			var data = result.recordset[0].REPOSID;
-			var cnt = data.split('REPOS');
+			//var cnt = data.split('REPOS');
+			console.log(data);
+			var cnt	= data.substr(5,5);
 			console.log(cnt);
 
 		}
@@ -142,7 +148,7 @@ function getNewReposID(id, callback) {
 		}
 
 		var zero5 = new Padder(5);
-		var newcnt = zero5.pad(Number(cnt[1]) + 1);
+		var newcnt = zero5.pad(Number(cnt) + 1);
 		console.log(newcnt);
 		var newID = "REPOS" + newcnt;
 

@@ -44,7 +44,7 @@ server.use(sessionParser({
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 5, // 쿠키 유효기간 1시간
+      maxAge: 1000 * 60 * 60 * 60, // 쿠키 유효기간 1시간
     },
 }));
 
@@ -400,14 +400,14 @@ server.get('/mailSend' , function(req , res){
 		var mailOption = {
 		    from : 'dugudcjfwin@gmail.com',
 		    to : mailAddress,
-		    subject : 'INVITE YOU',
-		    text : 'Invite You Modeler.'
+		    subject : '[공유] 모델러 초대 메일 발송',
+		    html : '<h1>Invite You Modeler.</h1>'
 		};
 
 		transporter.sendMail(mailOption, function(err, info) {
 		    if ( err ) {
 		        console.error('Send Mail error : ', err);
-		        res.json({'result' : 'ok'});
+		        res.json({'result' : 'ng'});
 		    }
 		    else {
 		        console.log('Message sent : ', info);
