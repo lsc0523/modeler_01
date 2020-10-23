@@ -1,7 +1,6 @@
 import $ from 'jquery';
-import BpmnViewer from 'bpmn-js/lib/Viewer';
+import BpmnViewer from 'bpmn-js/lib/NavigatedViewer';
 import diagramXML from '../resources/newDiagram.bpmn';
-import minimapModule from 'diagram-js-minimap';
 
 var container = $('#js-drop-zone');
 
@@ -13,7 +12,7 @@ var viewer = new BpmnViewer({
  // additionalModules: [ minimapModule ]
 });
 
-$(function() {
+$( async function() {
 	var data = $("#xmlData");
 	console.log(data);
 
@@ -21,17 +20,33 @@ $(function() {
 
 	if(data == null || data == undefined || data == 'undefined'){
 		xmlData = diagramXML;
-	}else
+	}
+	else
 	{
 		xmlData = data[0].innerText;
 	}
+
+	try 
+	{
+		const result = await viewer.importXML(xmlData);
+		const { warnings } = result;
+		console.log(warnings);
+
+	} catch (err) {
+		console.log(err.message, err.warnings);
+	}
   
-	viewer.importXML(xmlData, function(err) {
-		if (err) {
-	    	console.log('error rendering', err);
-	  	} else {
-	  		viewer.get('minimap').open();
-	    	console.log('rendered');
-	 	}
-	});
+
+  //zoom
+  $('#zoom-reset').on('click' , function(){
+    viewer.get('zoomScroll').reset();
+  })
+
+  $('#zoom-in').on('click', function(){
+    viewer.get('zoomScroll').stepZoom(1);
+  })
+
+  $('#zoom-out').on('click', function(){
+    viewer.get('zoomScroll').stepZoom(-1);
+  })
 })
