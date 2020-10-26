@@ -135,7 +135,7 @@ function getNewReposID(id, callback) {
 
 	ExcuteSQLSelectModelReposbyPromises(params, function (result) {
 		console.log(result);
-		if (result.recordsets.length != 0) {
+		if (result.rowsAffected != 0) {
 			var data = result.recordset[0].REPOSID;
 			//var cnt = data.split('REPOS');
 			console.log(data);

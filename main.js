@@ -44,7 +44,7 @@ server.use(sessionParser({
     resave: false,
     saveUninitialized: true,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 60, // 쿠키 유효기간 1시간
+      maxAge: 1000 * 60 * 60 * 5, // 쿠키 유효기간 1시간
     },
 }));
 
@@ -88,7 +88,7 @@ server.get('/home2' , function(req , res){
 	console.log(req.cookies);
 
 
-	if(req.cookies.user){
+	if(req.session.user.id){
 		var reasonTypeQurey = "SELECT A.* FROM REASONCODE A WHERE A.CODE_TYPE = 'LG_C_TYPE'";
 		Mssql.NonQuery(reasonTypeQurey,function(result){
 			res.render('home2' , { 
@@ -99,7 +99,7 @@ server.get('/home2' , function(req , res){
 	}
 	else
 	{
-		res.send("로그인 하시기 바랍니다.");
+		res.render('login');
 	}
 });
 
@@ -324,27 +324,36 @@ server.get('/download',function(req,res){
 	res.download("./uploads/" + req.query.id);
 });
 
+
+
 server.get('/login' , function(req , res){
-	console.log("Login...");
-	res.render('login');
+	console.log("Login...");	
+	var session = req.session.user;
+
+	if(isNotEmpty(session)){
+		res.redirect('/home2');
+	}else{
+		res.render('login');
+	}
 });
 
-server.post('/loginUser', function(req, res){
+
+server.get('/loginUser', function(req, res){
 	console.log("login...User");
 
-	var user = { id : req.body.id };
+	var user = { id : req.param("id") };
 	res.cookie("user", user);
 	console.log(req.cookies);
 
 	req.session.user = {
-		id : req.body.id,
+		id : req.param("id"),
 		currentTime : new Date()
 	};
 
 	console.log(req.session.user);
 
-	res.json({'result' : 'ok'});
-
+	res.redirect('/home2');
+	//res.json({'result' : 'ok'});
 });
 
 server.get('/logout' , function(req , res){
@@ -380,6 +389,7 @@ var nodemailer = require('nodemailer');
 server.get('/mailSend' , function(req , res){
 
 	var mailAddress = req.query.email;
+	console.log(mailAddress);
 
 	if(mailAddress){
 
@@ -400,8 +410,9 @@ server.get('/mailSend' , function(req , res){
 		var mailOption = {
 		    from : 'dugudcjfwin@gmail.com',
 		    to : mailAddress,
-		    subject : '[공유] 모델러 초대 메일 발송',
-		    html : '<h1>Invite You Modeler.</h1>'
+		    subject : '모델러에 초대합니다',
+		    //text : 'Invite You Modeler.'
+		    html : '<h1>공정운영시나리오 모델러 초대합니다.!</h1><a href="http://10.65.78.213:3000/login">초대수락</a>'
 		};
 
 		transporter.sendMail(mailOption, function(err, info) {
