@@ -135,9 +135,9 @@ body {
       <button id="createUser">Create</button>
       <p class="message">Already registered? <a href="#">Sign In</a></p>
     </form>
-    <form class="login-form">
-      <input id="login_id" type="text" placeholder="username"/>
-      <input id="login_pass" type="password" placeholder="password"/>
+    <form class="login-form" name="loginForm" method="get" action="/loginUser">
+      <input id="login_id" name="id" type="text" placeholder="username"/>
+      <input id="login_pass" name = "pass" type="password" placeholder="password"/>
       <button id="login">login</button>
       <p class="message">Not registered? <a href="#">Create an account</a></p>
     </form>
@@ -150,28 +150,33 @@ body {
 <script type="text/javascript">
 
   $('#login').click(function(){
-   
+
+    var loginForm1 = document.loginForm;
+    loginForm1.submit();
+   /*
     $.ajax({
        url: '/loginUser',
-       type:'POST',
+       type:'GET',
        data : { 
                 id : $('#login_id').val(),
                 pass : $('#login_pass').val()
               },
 
        dataType: "json",  
-
        success : function(data) {
-          window.location.href = '/home2';
+          if(data.result == 'ok'){
+            window.location.href = '/home2';
+          }
         },
        error : function(error) {
           alert("Error!");
         }
     })   
+  */
 
   });
 
-
+  /*
   $('#createUser').click(function(){
 
     $.ajax({
@@ -195,6 +200,7 @@ body {
 
     })
   });
+  */
 
   $('.message a').click(function(){
      $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
