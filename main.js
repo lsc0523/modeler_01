@@ -240,12 +240,23 @@ function InsertModelData(req, callback){
 		console.log(11);
 		console.log(result);	
 		console.log(newModelID);	
+		
 		if(isNotEmpty(req.files)){
-			var pramsFile = { REPOSINFO : req.files[0].filename , 
-							  REPOSNAME : req.files[0].originalFilename ,
-							  MODELID : newModelID
-							};
-			Mssql.InsertModelRepos(pramsFile , function(file_result){
+
+			var pramsArray = [];
+
+			for(var i=0; i < req.files.length; i++){
+				
+				var pramsFile = { 
+					    REPOSINFO : req.files[i].filename , 
+					    REPOSNAME : req.files[i].originalFilename ,
+						 MODELID : newModelID
+						};
+
+				pramsArray.push(pramsFile);
+			}
+
+			Mssql.InsertModelRepos(pramsArray , function(file_result){
 				console.log(22);
 				console.log(file_result);
 				callback(file_result);
