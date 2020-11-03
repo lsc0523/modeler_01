@@ -28,7 +28,18 @@ $( async function() {
 
 	try 
 	{
-		const result = await viewer.importXML(xmlData);
+		const result = await viewer.importXML(xmlData , function(err){
+			var eventBus = viewer.get('eventBus');
+            // you may hook into any of the following events
+            var events = [
+                'element.hover',
+                'element.out',
+                'element.click',
+                'element.dblclick',
+                'element.mousedown',
+                'element.mouseup'
+            ];
+		});
 		const { warnings } = result;
 		console.log(warnings);
 

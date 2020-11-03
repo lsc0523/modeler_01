@@ -192,6 +192,16 @@ $(function() {
     }
   });
 
+
+  /*
+  var test = document.getElementById('js-drop-zone');
+  // test 변수에 복제 할 노드를 지정
+
+  var test1 = test.cloneNode(true);
+
+  var divtest = document.getElementById('1234');
+  divtest.appendChild(test1);
+  */
   //setTimes..
   var today = new Date();
       
@@ -417,15 +427,19 @@ $(function() {
 
       const { xml } = await bpmnModeler.saveXML({ format: true });
       var today = new Date();
-      
-      var hours = today.getHours();      // 시
-      var minutes = today.getMinutes();  // 분
-      var seconds = today.getSeconds();  // 초
+      $('#save-time').hide();
+      $('#Progress_Loading').show();
 
-      $('#save-time').val(" Autosaved at "+ hours + ":" + minutes + ":" + seconds);
+      setTimeout(function(){
+          $('#Progress_Loading').hide();
+          $('#save-time').show();
+          var hours = today.getHours();      
+          var minutes = today.getMinutes();  
+          var seconds = today.getSeconds();  
 
+          $('#save-time').val(" Autosaved at "+ hours + ":" + minutes + ":" + seconds);
 
-
+      }, 500);
 
       //setEncoded(downloadLink, 'diagram.bpmn', xml);
     } catch (err) {
