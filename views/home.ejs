@@ -90,6 +90,21 @@
   <img src="/Progress_Loading.gif"/>
 </div>
 
+<!-- Popup Layer -->
+
+<div id="delete_layer" style="display: none;">
+  <div style="height: 50px; 
+              padding-top: 10px;
+              padding-bottom: 20px;
+  ">
+    <button style="border: 1px solid hsl(0 0% 87% / 1); 
+                               padding-right: 20px; 
+                               padding-left: 20px; ">
+    삭제                             
+    </button>
+  </div>
+</div>
+
    <div style="height: 50px; 
             padding-top: 10px;
             padding-bottom: 20px;
@@ -266,6 +281,31 @@
       var popupOption= "width="+winWidth+", height="+winHeight;
       var myWindow = window.open(url,"userPopup",popupOption);  
   });
+
+  $('#delete_layer').on('click', function(e){
+
+     var y = e.clientY;
+     var x = e.clientX;
+  })
+
+  $(document).on('click' , 'span' , function(e){
+
+    if($('#delete_layer').is(':visible')){
+      $('#delete_layer').hide();
+    }
+    else{
+
+      var top = e.clientY - 20;
+      var left = e.clientX - 40;
+
+      $('#delete_layer').css({ 
+          "top"  : top ,
+          "left" : left,
+          "position" : "absolute"
+      }).show();
+    }
+
+  })
 
   $(document).on('click','#SendMail',function(){
     //var pcode=$(this).attr('id'); //이거는 해당 element의 id value값을 가져오는것.

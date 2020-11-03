@@ -7,17 +7,18 @@
     "build": "webpack --mode production",
     "dev": "webpack-dev-server --content-base=public --open",
     "lint": "eslint .",
-    "start": "run-s dev"
+    "start": "run-s dev",
+    "st" : "node main.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/bpmn-io/bpmn-js-examples"
   },
   "keywords": [
-    "bpmnjs-example"
+    "bpmn js modeler"
   ],
   "author": {
-    "name": "Philipp Fromme",
+    "name": "LG CNS",
     "url": "https://github.com/philippfromme"
   },
   "contributors": [
@@ -50,6 +51,7 @@
     "dateformat": "^3.0.3",
     "diagram-js-minimap": "^1.2.1",
     "ejs": "^3.1.5",
+    "ejs-render-loader": "^1.0.0",
     "express-session": "^1.17.1",
     "html-webpack-plugin": "^4.4.1",
     "jquery": "^3.3.1",
@@ -58,6 +60,7 @@
     "multiparty": "^4.2.2",
     "mysql": "^2.18.1",
     "nodemailer": "^6.4.14",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "pg-format": "^1.0.4"
   }
 }

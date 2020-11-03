@@ -41,8 +41,10 @@ var sqlSelectModelReposIDQurey = 'select top(1) * from ' + ModelRepostableName +
 var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MODELTYPE, MODELID, MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
 	+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
 
-var sqlInsertModelReposQuery = 'insert into ' + ModelRepostableName + '(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
-	+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
+var sqlInsertModelReposQuery = 'insert into ' 
+							+ ModelRepostableName + 
+							'(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
+							+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
 
 function ExcuteSQLSelectModel(params, callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
@@ -144,14 +146,15 @@ function getNewReposID(id, callback) {
 
 		}
 		else {
-			var cnt = '00001'
+			var cnt = '00000'
 		}
 
 		var zero5 = new Padder(5);
-		var newcnt = zero5.pad(Number(cnt) + 1);
+		var newcnt = zero5.pad(Number(cnt));
 		console.log(newcnt);
-		var newID = "REPOS" + newcnt;
-
+		//var newID = "REPOS" + newcnt;
+		//var newID = Number(newcnt);
+		var newID = newcnt;
 		console.log(newID);
 
 		return callback(newID);
@@ -343,29 +346,67 @@ function ExcuteSQLInsertModel(params, callback) {
 
 
 function ExcuteSQLInsertModelRepository(params, callback) {
-	getNewReposID(params.MODELID, function (result) {
-		console.log(result);
-		var now = new Date();
-		sql.connect(dbConnectionConfig).then(pool => {
-			// Query		    
-			return pool.request()
-				.input('MODELID', sql.NVarChar, params.MODELID)
-				.input('REPOSID', sql.NVarChar, result)
-				.input('MODEL_NODEID', sql.NVarChar, params.MODEL_NODEID)
-				.input('REPOSNAME', sql.NVarChar, params.REPOSNAME)
-				.input('REPOSDESC', sql.NVarChar, params.REPOSDESC)
-				.input('REPOSINFO', sql.NVarChar, params.REPOSINFO)
 
-				.query(sqlInsertModelReposQuery)
+		//getNewReposID(params[i].MODELID, function (result) {
+			//console.log(result);
+			var format = require('pg-format');
 
-		}).then(result => {
-			// console.dir(result);
-			return callback(result);
-		}).catch(err => {
-			console.dir(err);
-			// ... error checks
-		});
-	});
+			var arraytoarray = [];
+			
+			for(var i=0; i < params.length; i++){
+				var innerarray = [];
+				
+				innerarray.push(params[i].MODELID);
+				innerarray.push(params[i].REPOSID);
+				innerarray.push("");
+				innerarray.push(params[i].REPOSNAME);
+				innerarray.push(params[i].REPOSINFO);
+				//innerarray.push(params[i].REPOSID);
+
+				arraytoarray.push(innerarray);
+			}
+
+			/*
+			var values = [
+			    [ 1, 'jack' ],
+			    [ 2, 'john' ],
+			    [ 3, 'jill' ],
+			];
+			*/
+						
+
+
+			//console.log(format('INSERT INTO test_table (id, name) VALUES %L', values));
+			var query = 'INSERT INTO ' + ModelRepostableName +
+			' (MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)' +
+			' VALUES %L';
+
+
+			var now = new Date();
+			sql.connect(dbConnectionConfig).then(pool => {
+				// Query		    
+				return pool.request()
+					/*
+					.input('MODELID', sql.NVarChar, params.MODELID)
+					.input('REPOSID', sql.NVarChar, result)
+					.input('MODEL_NODEID', sql.NVarChar, params.MODEL_NODEID)
+					.input('REPOSNAME', sql.NVarChar, params.REPOSNAME)
+					.input('REPOSDESC', sql.NVarChar, params.REPOSDESC)
+					.input('REPOSINFO', sql.NVarChar, params.REPOSINFO)
+					*/
+
+					.query(format(query, arraytoarray))
+
+			}).then(result => {
+				// console.dir(result);
+				return callback(result);
+				
+			}).catch(err => {
+				console.dir(err);
+				// ... error checks
+			});
+		//});
+	
 }
 
 
@@ -443,5 +484,6 @@ module.exports = {
 	InsertModelRepos: ExcuteSQLInsertModelRepository,
 
 	//FileList...
-	SelectAllFileList : ExcuteSQLSelectAllFileList
+	SelectAllFileList : ExcuteSQLSelectAllFileList,
+	getNewReposID : getNewReposID
 };

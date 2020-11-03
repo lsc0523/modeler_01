@@ -102,6 +102,10 @@
 </style>
 </head>
 <body>
+
+  <div id = "Progress_Loading">
+    <img src="/Progress_Loading.gif"/>
+  </div>
  <div style="height: 50px; 
             padding-top: 10px;
   ">
@@ -269,12 +273,6 @@
     </div>
 </div>
 
-<!--
-<span onclick="openNav()">open</span>
--->
-
-<div id="main_list"></div>
-
 <div class="content with-diagram" id="js-drop-zone">
   <div class="message intro">
     <div class="note">
@@ -297,7 +295,6 @@
   <div class="properties-panel-parent" id="js-properties-panel"></div>
 </div>
 
-
 <input type = "hidden" id = "modelName" class="maininput" value="<%=JsmodelName%>">
 <input type = "hidden" id = "modelDetailName" class="maininput" value="<%=JsmodelDetailName%>">
 
@@ -305,12 +302,6 @@
 <div class="buttons" style="display: none;">
   <label id="js-download-diagram" href class="active"  title="download BPMN diagram">모델러 저장</label>
   <label id="modelinfo">모델정보입력</label>
-
-  <label>
-        <img src="/Attach_icon.ico" width="30" height="30">
-        <input type="file" id="fileInput" name="fileInput" multiple>
-  </label>
-
 
   <input type="text" readonly="readonly" title="File Route">
   <input type="hidden" id="file_length" value="<%=JsFileList.length%>">
@@ -326,6 +317,7 @@
   <img src="/zoom-in-icon.png" id="zoom-in" width="40" height="40">
   <img src="/zoom-out-icon.png" id="zoom-out" width="40" height="40">
 </div>
+
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="modeler.app.js"></script>

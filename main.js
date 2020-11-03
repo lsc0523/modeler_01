@@ -133,7 +133,7 @@ server.get('/viewer' , function(req , res){
 		var params = { MODELID : req.query.id };
 		Mssql.SelectModel(params, function(result){
 			xmlData = result.recordset[0].MODEL_XML;
-			console.log(xmlData);
+			//console.log(xmlData);
 			res.render('viewer', 
 				{  name : xmlData, 
 				   sess : req.session.user.id
@@ -183,7 +183,7 @@ server.get('/modeler' , function(req , res){
 			var params = { MODELID : req.query.id };
 
 			Mssql.SelectModel(params, function(result){
-				console.log(result);
+				//console.log(result);
 				
 				xmlData = result.recordset[0].MODEL_XML;
 				modelID = result.recordset[0].MODELID;
@@ -194,7 +194,7 @@ server.get('/modeler' , function(req , res){
 				var fileParams = { MODELID : req.query.id};
 
 				Mssql.SelectAllFileList(fileParams , function(file_result){
-					console.log(file_result);
+					//console.log(file_result);
 
 					if(file_result.rowsAffected !=0 ){
 						JsFileList = file_result.recordset;
@@ -226,8 +226,28 @@ server.get('/about' , function(req , res){
 });
 
 
+
+function Padder(len, pad) {
+	if (len === undefined) {
+		len = 1;
+	} else if (pad === undefined) {
+		pad = '0';
+	}
+
+	var pads = '';
+	while (pads.length < len) {
+		pads += pad;
+	}
+
+	this.pad = function (what) {
+		var s = what.toString();
+		return pads.substring(0, pads.length - s.length) + s;
+	};
+}
+
 function InsertModelData(req, callback){
-	var params = { MODELCATID : req.body.type,
+	var params = { 
+				   MODELCATID : req.body.type,
 				   PROCESSID : req.body.processID ,
 				   MODEL_XML : req.body.id,
 				   MODELNAME : req.body.modelName,
@@ -243,24 +263,41 @@ function InsertModelData(req, callback){
 		
 		if(isNotEmpty(req.files)){
 
-			var pramsArray = [];
+			Mssql.getNewReposID(newModelID, function(repoID){
 
-			for(var i=0; i < req.files.length; i++){
+				var newRepoID;
+				var pramsArray = [];
+
+				if(isNotEmpty(repoID)){
+					newRepoID = repoID;
+				}
+				else
+				{
+					newRepoID = 1;
+				}
+
+				for(var i=0; i < req.files.length; i++){
 				
-				var pramsFile = { 
-					    REPOSINFO : req.files[i].filename , 
-					    REPOSNAME : req.files[i].originalFilename ,
-						 MODELID : newModelID
-						};
+					var pramsFile = { 
+							REPOSID : Number(newRepoID) +1, 
+						    REPOSINFO : req.files[i].filename , 
+						    REPOSNAME : req.files[i].originalFilename ,
+							MODELID : newModelID
+							};
 
-				pramsArray.push(pramsFile);
-			}
+					newRepoID = Number(newRepoID) +1;
+					pramsArray.push(pramsFile);
 
-			Mssql.InsertModelRepos(pramsArray , function(file_result){
-				console.log(22);
-				console.log(file_result);
-				callback(file_result);
+				}
+
+				Mssql.InsertModelRepos(pramsArray , function(file_result){
+					console.log(22);
+					console.log(file_result);
+					callback(file_result);
+				});
+
 			});
+			
 		}else{
 			callback(result);
 		}
@@ -438,7 +475,6 @@ server.get('/mailSend' , function(req , res){
 		});
 	}
 })
-
 
 
 server.listen(3000, () => {
