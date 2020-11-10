@@ -1,5 +1,5 @@
-﻿var express = require("express") 
-var path = require ("path")
+﻿var express = require("express")
+var path = require("path")
 
 var server = express()
 var webpack = require('webpack')
@@ -15,7 +15,7 @@ const compiler = webpack(config);
 const webpackDevMiddleware = require("webpack-dev-middleware")(
 	compiler,
 	config.devServer
-	)
+)
 
 // 웹팩미들웨어가 static 미들웨어 이전에 위치!
 server.use(webpackDevMiddleware);
@@ -31,7 +31,7 @@ server.set('view engine', 'ejs');
 
 //Call Post Util..
 var bodyParser = require('body-parser')
-server.use(bodyParser.urlencoded({extended: false}))
+server.use(bodyParser.urlencoded({ extended: false }))
 
 //cookie...
 var cookie = require('cookie-parser');
@@ -40,12 +40,12 @@ server.use(cookie());
 //session..
 var sessionParser = require('express-session');
 server.use(sessionParser({
-    secret: '@#@$MYSIGN#@$#$',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 5, // 쿠키 유효기간 1시간
-    },
+	secret: '@#@$MYSIGN#@$#$',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		maxAge: 1000 * 60 * 60 * 5, // 쿠키 유효기간 1시간
+	},
 }));
 
 //files...
@@ -65,8 +65,8 @@ function getFile(file) {
 	let oriFile = file.originalname;
 	let ext = path.extname(oriFile);
 	let name = path.basename(oriFile, ext);
-    let rnd = Math.floor(Math.random() * 90) + 10; // 10 ~ 99
-    return Date.now() + '-' + rnd + '-' + name + ext;
+	let rnd = Math.floor(Math.random() * 90) + 10; // 10 ~ 99
+	return Date.now() + '-' + rnd + '-' + name + ext;
 }
 
 
@@ -76,71 +76,71 @@ var upload = multer({
 
 
 //Util...
-function isNotEmpty(_str){
+function isNotEmpty(_str) {
 	var obj = String(_str);
-	if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
+	if (obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '') return false;
 	else return true;
 
 }
 
-server.get('/home2' , function(req , res){
+server.get('/home2', function (req, res) {
 	console.log("home2...");
 	console.log(req.cookies);
 
 
-	if(isNotEmpty(req.session.user)){
+	if (isNotEmpty(req.session.user)) {
 		var reasonTypeQurey = "SELECT A.* FROM REASONCODE A WHERE A.CODE_TYPE = 'LG_C_TYPE'";
-		Mssql.NonQuery(reasonTypeQurey,function(result){
-			res.render('home2' , { 
-					data : result.recordset,
-					sess : req.session.user.id
-				});
+		Mssql.NonQuery(reasonTypeQurey, function (result) {
+			res.render('home2', {
+				data: result.recordset,
+				sess: req.session.user.id
+			});
 		});
 	}
-	else
-	{
+	else {
 		res.redirect('login');
 	}
 });
 
 
-server.get('/home/:page' , function(req , res){
+server.get('/home/:page', function (req, res) {
 	console.log("home...");
-	if(isNotEmpty(req.session.user)){
-		Mssql.NonQuery(sqlQurey,function(result){
+	if (isNotEmpty(req.session.user)) {
+		Mssql.NonQuery(sqlQurey, function (result) {
 			//console.log(result);
 			var page = req.params.page;
 			console.log(req.session.user);
 
-			res.render('home' , { 
-					data : result.recordset,
-					page : page,
-					page_num : 10,
-					pass: true,
-					length : result.recordset.length -1,
-					sess : req.session.user.id
-				});
+			res.render('home', {
+				data: result.recordset,
+				page: page,
+				page_num: 10,
+				pass: true,
+				length: result.recordset.length - 1,
+				sess: req.session.user.id
+			});
 		});
-	}else{
+	} else {
 		res.redirect('login');
 	}
 });
 
-server.get('/viewer' , function(req , res){
+server.get('/viewer', function (req, res) {
 	console.log("viewer...");
 	console.log(req.query.id);
 	var xmldata = "";
-	if(req.query.id == "" || req.query.id == undefined){
-		res.render('viewer', {name : ""});
+	if (req.query.id == "" || req.query.id == undefined) {
+		res.render('viewer', { name: "" });
 	}
-	else{
-		var params = { MODELID : req.query.id };
-		Mssql.SelectModel(params, function(result){
+	else {
+		var params = { MODELID: req.query.id };
+		Mssql.SelectModel(params, function (result) {
 			xmlData = result.recordset[0].MODEL_XML;
 			//console.log(xmlData);
-			res.render('viewer', 
-				{  name : xmlData, 
-				   sess : req.session.user.id
+			res.render('viewer',
+				{
+					name: xmlData,
+					sess: req.session.user.id
 				}
 			);
 		});
@@ -148,72 +148,72 @@ server.get('/viewer' , function(req , res){
 });
 
 //Popups...
-server.get('/modelPopup',  function(req , res){
+server.get('/modelPopup', function (req, res) {
 	res.render('modelPopup');
 })
 
-server.get('/downloadPopup',  function(req , res){
+server.get('/downloadPopup', function (req, res) {
 	res.render('downloadPopup');
 })
 
-server.get('/modeler' , function(req , res){
+server.get('/modeler', function (req, res) {
 	console.log('modeler...Start...');
 	console.log(req.query.id);
 	var xmldata = "";
 	var modelID = "";
-	var modelName ="";
-	var modelDetailName ="";
+	var modelName = "";
+	var modelDetailName = "";
 	var JsFileList = "";
 
 
-	Mssql.NonQuery(sqlQurey,function(result_data){
+	Mssql.NonQuery(sqlQurey, function (result_data) {
 
-		if(req.query.id == "" || req.query.id == undefined){
-			
+		if (req.query.id == "" || req.query.id == undefined) {
+
 			res.render('modeler', {
-				name : "" , 
-				modelID : "" , 
-				JsmodelName : "" , 
-				JsmodelDetailName : "" ,
-				JsFileList : JsFileList,
-				type : req.query.type,
-				data : result_data.recordset,
-				sess : req.session.user.id
+				name: "",
+				modelID: "",
+				JsmodelName: "",
+				JsmodelDetailName: "",
+				JsFileList: JsFileList,
+				type: req.query.type,
+				data: result_data.recordset,
+				sess: req.session.user.id
 			});
 
 		}
-		else{
+		else {
 
-			var params = { MODELID : req.query.id };
+			var params = { MODELID: req.query.id };
 
-			Mssql.SelectModel(params, function(result){
+			Mssql.SelectModel(params, function (result) {
 				//console.log(result);
-				
+
 				xmlData = result.recordset[0].MODEL_XML;
 				modelID = result.recordset[0].MODELID;
 				modelName = result.recordset[0].MODELNAME;
 				modelDetailName = result.recordset[0].MODELDESC;
-				modelType = result.recordset[0].MODELCATID;	
+				modelType = result.recordset[0].MODELCATID;
 
-				var fileParams = { MODELID : req.query.id};
+				var fileParams = { MODELID: req.query.id };
 
-				Mssql.SelectAllFileList(fileParams , function(file_result){
+				Mssql.SelectAllFileList(fileParams, function (file_result) {
 					//console.log(file_result);
 
-					if(file_result.rowsAffected !=0 ){
+					if (file_result.rowsAffected != 0) {
 						JsFileList = file_result.recordset;
 					}
 
-					res.render('modeler', {	
-							name : xmlData, 
-							modelID : modelID,
-							JsmodelName : modelName,
-							JsmodelDetailName : modelDetailName,
-							JsFileList : JsFileList,
-							type : modelType,
-							data : result_data.recordset,
-							sess : req.session.user.id
-							});
+					res.render('modeler', {
+						name: xmlData,
+						modelID: modelID,
+						JsmodelName: modelName,
+						JsmodelDetailName: modelDetailName,
+						JsFileList: JsFileList,
+						type: modelType,
+						data: result_data.recordset,
+						sess: req.session.user.id
+					});
 
 				});
 			});
@@ -224,12 +224,10 @@ server.get('/modeler' , function(req , res){
 
 });
 
-server.get('/about' , function(req , res){
+server.get('/about', function (req, res) {
 	console.log("about...")
 	res.send('about directory.. LG CNS modeler...');
 });
-
-
 
 function Padder(len, pad) {
 	if (len === undefined) {
@@ -249,193 +247,238 @@ function Padder(len, pad) {
 	};
 }
 
-function InsertModelData(req, callback){
-	var params = { 
-				   MODELCATID : req.body.type,
-				   PROCESSID : req.body.processID ,
-				   MODEL_XML : req.body.id,
-				   MODELNAME : req.body.modelName,
-				   MODELDESC : req.body.modelDetailName,
-				   INSUSER : 'LGCNS' ,
-				   UPDUSER : 'LGCNS'}
+function InsertModelData(req, callback) {
+	var params = {
+		MODELCATID: req.body.type,
+		PROCESSID: req.body.processID,
+		MODEL_XML: req.body.id,
+		MODELNAME: req.body.modelName,
+		MODELDESC: req.body.modelDetailName,
+		INSUSER: 'LGCNS',
+		UPDUSER: 'LGCNS'
+	}
 
 
-	Mssql.InsertModel(params, function(result, newModelID){
+	Mssql.InsertModel(params, function (result, newModelID) {
 		console.log(11);
-		console.log(result);	
-		console.log(newModelID);	
-		
-		if(isNotEmpty(req.files)){
+		console.log(result);
+		console.log(newModelID);
 
-			Mssql.getNewReposID(newModelID, function(repoID){
+		if (isNotEmpty(req.files)) {
+
+			Mssql.getNewReposID(newModelID, function (repoID) {
 
 				var newRepoID;
 				var pramsArray = [];
 
-				if(isNotEmpty(repoID)){
+				if (isNotEmpty(repoID)) {
 					newRepoID = repoID;
 				}
-				else
-				{
+				else {
 					newRepoID = 1;
 				}
 
-				for(var i=0; i < req.files.length; i++){
-				
-					var pramsFile = { 
-							REPOSID : Number(newRepoID) +1, 
-						    REPOSINFO : req.files[i].filename , 
-						    REPOSNAME : req.files[i].originalFilename ,
-							MODELID : newModelID
-							};
+				for (var i = 0; i < req.files.length; i++) {
+					var pramsFile = {
+						REPOSID: Number(newRepoID) + 1,
+						REPOSINFO: req.files[i].filename,
+						REPOSNAME: req.files[i].originalFilename,
+						MODELID: newModelID
+					};
 
-					newRepoID = Number(newRepoID) +1;
+					newRepoID = Number(newRepoID) + 1;
 					pramsArray.push(pramsFile);
-
 				}
 
-				Mssql.InsertModelRepos(pramsArray , function(file_result){
+				Mssql.InsertModelRepos(pramsArray, function (file_result) {
 					console.log(22);
 					console.log(file_result);
 					callback(file_result);
 				});
 
 			});
-			
-		}else{
+
+		} else {
 			callback(result);
 		}
 	});
 }
 
-server.post('/insert' , upload.any() ,function(req , res){
+server.post('/insert', upload.any(), function (req, res) {
 
 	console.log(req.body);
 	console.log(req.files);
 	console.log("insert...");
 
-	InsertModelData(req, function(file_result){
+	InsertModelData(req, function (file_result) {
 		console.log(file_result);
 		res.send("OK");
 	});
 });
 
 
-server.post('/update' , upload.any() ,  function(req , res){
+server.post('/update', upload.any(), function (req, res) {
 	console.log("update...");
 	//console.log(req.body);
 	console.log(req.body.id);
 	console.log(req.body.modelID);
+	console.log(req.body.historyYN);
 
-	var params = { MODELID : req.body.modelID , 
-			       MODELID_REVISION : "NEW ID",
-				   MODEL_XML : req.body.id ,
-				   MODELNAME : req.body.modelName,
-				   MODELDESC : req.body.modelDetailName
-				 };
+	if (req.body.historyYN) {
+		InsertModelData(req, function (file_result) {
+			console.log(file_result);
+			console.log("history updates..");
+			
+			res.send("OK");
+		});
+	} else {
+		var params = {
+			MODELID: req.body.modelID,
+			MODEL_XML: req.body.id,
+			MODELNAME: req.body.modelName,
+			MODELDESC: req.body.modelDetailName
+		};
 
-	Mssql.UdataModelParams(params, function(result){
-		console.log(result);
+		Mssql.UdataModelParams(params, function (result) {
+			console.log(result);
 
-		if(isNotEmpty(req.files)){
-			var pramsFile = { REPOSINFO : req.files[0].filename , 
-							  REPOSNAME : req.files[0].originalFilename ,
-							  MODELID : req.body.modelID 
-							};
-			Mssql.InsertModelRepos(pramsFile , function(file_result){
-				res.send("OK");	
-			});
-		}else{ 
-			res.send("OK");		
-		}
-	});
+			if (isNotEmpty(req.files)) {
+				/*
+				Mssql.getNewReposID(newModelID, function (repoID) {
+	
+					var newRepoID;
+					var pramsArray = [];
+	
+					if (isNotEmpty(repoID)) {
+						newRepoID = repoID;
+					}
+					else {
+						newRepoID = 1;
+					}
+	
+					for (var i = 0; i < req.files.length; i++) {
+						var pramsFile = {
+							REPOSID: Number(newRepoID) + 1,
+							REPOSINFO: req.files[i].filename,
+							REPOSNAME: req.files[i].originalFilename,
+							MODELID: newModelID
+						};
+	
+						newRepoID = Number(newRepoID) + 1;
+						pramsArray.push(pramsFile);
+					}
+	
+					Mssql.InsertModelRepos(pramsArray, function (file_result) {
+						console.log(22);
+						console.log(file_result);
+						callback(file_result);
+					});
+	
+				});
+				*/
+				/*
+				var pramsFile = {
+					REPOSINFO: req.files[0].filename,
+					REPOSNAME: req.files[0].originalFilename,
+					MODELID: req.body.modelID
+				};
+				Mssql.InsertModelRepos(pramsFile, function (file_result) {
+					res.send("OK");
+				});
+				*/
+
+			} else {
+				res.send("OK");
+			}
+		});
+	}
 });
 
 
-server.get('/delete' , function(req , res){
+server.get('/delete', function (req, res) {
 	console.log("delete...");
 	//console.log(req.query.id);
-	var params = { MODELID : req.query.id };
+	var params = { MODELID: req.query.id };
 
-	Mssql.DeleteModel(params , function(result){
+	Mssql.DeleteModel(params, function (result) {
 
-		Mssql.NonQuery(sqlQurey,function(result){
+		Mssql.NonQuery(sqlQurey, function (result) {
 
-			res.render('home' , { 
-				data : result.recordset,
-				page : 1,
-				page_num : 10,
+			res.render('home', {
+				data: result.recordset,
+				page: 1,
+				page_num: 10,
 				pass: true,
-				length : result.recordset.length -1,
-				sess : req.session.user.id
+				length: result.recordset.length - 1,
+				sess: req.session.user.id
 			});
 		});
 	});
 });
 
-server.get('/download',function(req,res){
+server.get('/download', function (req, res) {
 	res.download("./uploads/" + req.query.id);
 });
 
-server.get('/' , function(req , res){
+server.get('/', function (req, res) {
 	res.redirect('/login');
 });
 
-server.get('/login' , function(req , res){
-	console.log("Login...");	
+server.get('/login', function (req, res) {
+	console.log("Login...");
 	var session = req.session.user;
 
-	if(isNotEmpty(session)){
+	if (isNotEmpty(session)) {
 		res.redirect('/home2');
-	}else{
+	} else {
 		res.render('login');
 	}
 });
 
 
-server.get('/loginUser', function(req, res){
+server.get('/loginUser', function (req, res) {
 	console.log("login...User");
 
-	var user = { id : req.param("id") };
+	var user = { id: req.param("id") };
 	res.cookie("user", user);
 	console.log(req.cookies);
 
 	req.session.user = {
-		id : req.param("id"),
-		currentTime : new Date()
+		id: req.param("id"),
+		currentTime: new Date()
 	};
 
 	console.log(req.session.user);
 
-	req.session.save(function(){
+	req.session.save(function () {
 		res.redirect('/home2');
 	});
 	//res.json({'result' : 'ok'});
 });
 
-server.get('/logout' , function(req , res){
-	req.session.destroy(function(err){
-		if(err){ 
+server.get('/logout', function (req, res) {
+	req.session.destroy(function (err) {
+		if (err) {
 			console.log(err);
 		}
-		else{
+		else {
 			res.redirect('/login');
 		}
 	})
 });
 
-server.post('/createUser', function(req, res){
+server.post('/createUser', function (req, res) {
 	console.log("Create...User");
 
 	console.log(req.body.id);
 	console.log(req.body.pass);
 	console.log(req.body.email);
 
-	res.json({'result' : 'ok'});
+	res.json({ 'result': 'ok' });
 
 });
 
-server.get('/userPopup', function(req, res){
+server.get('/userPopup', function (req, res) {
 	res.render('userPopup');
 });
 
@@ -443,48 +486,70 @@ server.get('/userPopup', function(req, res){
 //Mail app
 var nodemailer = require('nodemailer');
 
-server.get('/mailSend' , function(req , res){
+server.get('/mailSend', function (req, res) {
 
 	var mailAddress = req.query.email;
 	console.log(mailAddress);
 
-	if(mailAddress){
+	if (mailAddress) {
 
 		var transporter = nodemailer.createTransport({
-		    host:'smtp.gmail.com',
-		    port : '587',
-		    auth: {
-		        user : 'dugudcjfwin@gmail.com',
-		        pass : 'ahddl7411@'
-		    },
-		    secureConnection: 'false',
-	        tls: {
-	            ciphers: 'SSLv3',
-	            rejectUnauthorized: false
-	        }
+			host: 'smtp.gmail.com',
+			port: '587',
+			auth: {
+				user: 'dugudcjfwin@gmail.com',
+				pass: 'ahddl7411@'
+			},
+			secureConnection: 'false',
+			tls: {
+				ciphers: 'SSLv3',
+				rejectUnauthorized: false
+			}
 		});
 
 		var mailOption = {
-		    from : 'dugudcjfwin@gmail.com',
-		    to : mailAddress,
-		    subject : '모델러에 초대합니다',
-		    //text : 'Invite You Modeler.'
-		    html : '<h1>공정운영시나리오 모델러 초대합니다.!</h1><a href="http://10.65.78.213:3000/login">초대수락</a>'
+			from: 'dugudcjfwin@gmail.com',
+			to: mailAddress,
+			subject: '모델러에 초대합니다',
+			//text : 'Invite You Modeler.'
+			html: '<h1>공정운영시나리오 모델러 초대합니다.!</h1><a href="http://10.65.78.213:3000/login">초대수락</a>'
 		};
 
-		transporter.sendMail(mailOption, function(err, info) {
-		    if ( err ) {
-		        console.error('Send Mail error : ', err);
-		        res.json({'result' : 'ng'});
-		    }
-		    else {
-		        console.log('Message sent : ', info);
-		         res.json({'result' : 'ok'});
-		    }
+		transporter.sendMail(mailOption, function (err, info) {
+			if (err) {
+				console.error('Send Mail error : ', err);
+				res.json({ 'result': 'ng' });
+			}
+			else {
+				console.log('Message sent : ', info);
+				res.json({ 'result': 'ok' });
+			}
 		});
 	}
 })
 
+
+server.get('/history/:page' , function(req ,res){
+	
+	if (isNotEmpty(req.session.user)) {
+		Mssql.NonQuery(sqlQurey, function (result) {
+			//console.log(result);
+			var page = req.params.page;
+			console.log(req.session.user);
+
+			res.render('history', {
+				data: result.recordset,
+				page: page,
+				page_num: 10,
+				pass: true,
+				length: result.recordset.length - 1,
+				sess: req.session.user.id
+			});
+		});
+	} else {
+		res.redirect('login');
+	}
+});
 
 server.listen(3000, () => {
 	console.log("Server is Listening")
