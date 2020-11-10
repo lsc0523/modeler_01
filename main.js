@@ -88,7 +88,7 @@ server.get('/home2' , function(req , res){
 	console.log(req.cookies);
 
 
-	if(req.session.user.id){
+	if(isNotEmpty(req.session.user)){
 		var reasonTypeQurey = "SELECT A.* FROM REASONCODE A WHERE A.CODE_TYPE = 'LG_C_TYPE'";
 		Mssql.NonQuery(reasonTypeQurey,function(result){
 			res.render('home2' , { 
@@ -99,27 +99,31 @@ server.get('/home2' , function(req , res){
 	}
 	else
 	{
-		res.render('login');
+		res.redirect('login');
 	}
 });
 
 
 server.get('/home/:page' , function(req , res){
 	console.log("home...");
-	Mssql.NonQuery(sqlQurey,function(result){
-		//console.log(result);
-		var page = req.params.page;
-		console.log(req.session.user);
+	if(isNotEmpty(req.session.user)){
+		Mssql.NonQuery(sqlQurey,function(result){
+			//console.log(result);
+			var page = req.params.page;
+			console.log(req.session.user);
 
-		res.render('home' , { 
-				data : result.recordset,
-				page : page,
-				page_num : 10,
-				pass: true,
-				length : result.recordset.length -1,
-				sess : req.session.user.id
-			});
-	});
+			res.render('home' , { 
+					data : result.recordset,
+					page : page,
+					page_num : 10,
+					pass: true,
+					length : result.recordset.length -1,
+					sess : req.session.user.id
+				});
+		});
+	}else{
+		res.redirect('login');
+	}
 });
 
 server.get('/viewer' , function(req , res){
@@ -372,7 +376,9 @@ server.get('/download',function(req,res){
 	res.download("./uploads/" + req.query.id);
 });
 
-
+server.get('/' , function(req , res){
+	res.redirect('/login');
+});
 
 server.get('/login' , function(req , res){
 	console.log("Login...");	
@@ -400,7 +406,9 @@ server.get('/loginUser', function(req, res){
 
 	console.log(req.session.user);
 
-	res.redirect('/home2');
+	req.session.save(function(){
+		res.redirect('/home2');
+	});
 	//res.json({'result' : 'ok'});
 });
 

@@ -99,13 +99,58 @@
             display: block;
    }
 
+
+/* Remove default bullets */
+ul, #myUL {
+  list-style-type: none;
+}
+
+/* Remove margins and padding from the parent ul */
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the caret/arrow */
+.caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+  font-size: 20px;
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block; 
+  margin-right: 6px;
+}
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+  transform: rotate(90deg);
+}
+
+/* Hide the nested list */
+.nested {
+  display: none;
+  font-size: 20px;
+}
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+.active {
+  display: block;
+}
+
 </style>
 </head>
 <body>
 
+<!--
   <div id = "Progress_Loading">
     <img src="/Progress_Loading.gif"/>
   </div>
+-->
  <div style="height: 50px; 
             padding-top: 10px;
   ">
@@ -197,61 +242,76 @@
 <p id="xmlData" style="display:none;"><%=name%></p>
 <p id="modelID" style="display:none;"><%=modelID%></p>
 <input type = "hidden" id = "modelType" value="<%=type%>">
-  
-
-<!--
-<div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')">MODEL_01</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">MODEL_02</button>
-  <button class="tablinks" onclick="openCity(event, 'Tokyo')">MODEL_03</button>
-</div>
-
-<div id="London" class="tabcontent">
-  <div class="content with-diagram" id="js-drop-zone">
-
-    <div class="message intro">
-      <div class="note">
-        Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
-      </div>
-    </div>
-
-    <div class="message error">
-      <div class="note">
-        <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
-
-        <div class="details">
-          <span>Import Error Details</span>
-          <pre></pre>
-        </div>
-      </div>
-    </div>
-
-    <div class="canvas" id="js-canvas"></div>
-    <div class="properties-panel-parent" id="js-properties-panel">
-    </div>
-</div>
-
-
-<div id="Paris" class="tabcontent">
-  <h3>MODEL_02</h3>
-  <p>Paris is the capital of France.</p>
-</div>
-
-<div id="Tokyo" class="tabcontent">
-  <h3>MODEL_03</h3>
-  <p>Tokyo is the capital of Japan.</p>
-</div>
--->
-
 
 <div id="mySidenav" class="sidenav" 
      style="border-right: : 1px solid hsl(0 0% 87% / 1);">
- <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+
+<ul id="myUL">
+
+  <% for(var j=0; j < 3; j++){ %> 
+  <% var text = "";  %>
+  <% if(j == 0 ){ text = '전극'} %>
+  <% if(j == 1 ){ text = '조립'} %>
+  <% if(j == 2 ){ text = '활성'} %>
+  <li><span class="caret"><%=text%></span>
+    <ul class="nested">
+      
+      <li><span class="caret">A동</span>
+          <ul class="nested">
+            <% for(var i=0; i < data.length; i++){ %>
+            <% if( j==0 && data[i].MODELCATID == "A"){ %>
+            <li>
+            <a href="/modeler?id=<%=data[i].MODELID%>" 
+               style="font-size: 12px;"> <%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a>
+            </li>
+           <% } %>
+
+            <% if(j==1 && data[i].MODELCATID == "B"){ %>
+            <li>
+            <a href="/modeler?id=<%=data[i].MODELID%>" 
+               style="font-size: 12px;"> <%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a>
+            </li>
+           <% } %>
+
+            <% if(j==2 && data[i].MODELCATID == "C"){ %>
+            <li>
+            <a href="/modeler?id=<%=data[i].MODELID%>" 
+               style="font-size: 12px;"> <%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a>
+            </li>
+           <% } %>
+
+           <% } %>
+        </ul>
+     </li>
+
+     <li><span class="caret">B동</span>
+          <ul class="nested">
+          <li>모델 ID</li>
+          <li>모델 ID</li>
+        </ul>
+     </li>
+
+      <li><span class="caret">C동</span>
+        <ul class="nested">
+          <li>모델 ID</li>
+          <li>모델 ID</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <% } %>
+</ul>
+
+  <!--
   <a href="#" class="sideListMenu">전극</a>
   <div class="panel">
     <% for(var i=0; i < data.length; i++){ %>
     <% if(data[i].MODELCATID == "A"){ %>
-      <a href="/modeler?id=<%=data[i].MODELID%>" style="font-size: 15px;"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a><br>
+      <button class="btn_model_plus">+</button>
+      <a href="/modeler?id=<%=data[i].MODELID%>" 
+           style="font-size: 15px;"
+           class="panel_row"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a>
+       </br>
     <% } %>
     <% } %>
   </div>
@@ -271,6 +331,7 @@
       <% } %>
       <% } %>
     </div>
+  -->
 </div>
 
 <div class="content with-diagram" id="js-drop-zone">
@@ -324,48 +385,15 @@
 
 <script type="text/javascript">
 
-//model list side bar..
-var acc = document.getElementsByClassName('sideListMenu');
+var toggler = document.getElementsByClassName("caret");
 var i;
 
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight) {
-      panel.style.maxHeight = null;
-    } else {
-      //panel.style.maxHeight = panel.scrollHeight + "px";
-      panel.style.maxHeight = "500px";
-    } 
-   });
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
 }
-
-//btn tooltip..
-//$('[data-toggle="tooltip"]').tooltip()
-
-/*
-function openCity(evt, cityName) {
-  // Declare all variables
-  var i, tabcontent, tablinks;
-
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-
-  // Get all elements with class="tablinks" and remove the class "active"
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
-}
-*/
 
 </script>
 
