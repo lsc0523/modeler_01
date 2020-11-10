@@ -532,6 +532,24 @@ server.get('/mailSend', function (req, res) {
 server.get('/history/:page' , function(req ,res){
 	
 	if (isNotEmpty(req.session.user)) {
+		var params = { MODELID_REVISION : 'MOD00002_20200911-11306'};
+		Mssql.SelectModelHistory(params , function(result){
+			
+			var page = req.params.page;
+			//console.log(req.session.user);
+
+			res.render('history', {
+				data: result.recordset,
+				page: page,
+				page_num: 10,
+				pass: true,
+				length: result.recordset.length - 1,
+				sess: req.session.user.id
+			
+			});
+		});
+
+		/*
 		Mssql.NonQuery(sqlQurey, function (result) {
 			//console.log(result);
 			var page = req.params.page;
@@ -546,6 +564,7 @@ server.get('/history/:page' , function(req ,res){
 				sess: req.session.user.id
 			});
 		});
+		*/
 	} else {
 		res.redirect('login');
 	}
