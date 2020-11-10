@@ -500,6 +500,7 @@ function ExecuteNonQuery(sqlQurey, callback) {
 module.exports = {
 	NonQuery: ExecuteNonQuery,
 	SelectModel: ExcuteSQLSelectModelbyPromises,
+	//모델 변경 이력 조회
 	SelectModelHistory: ExcuteSQLSelectModelHistory,
 	SelectModelRepos: ExcuteSQLSelectModelReposbyPromises,
 	UpdateModel: ExcuteSQLUpdateModelbyPromises,
