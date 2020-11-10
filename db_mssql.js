@@ -312,11 +312,9 @@ function ExcuteSQLInsertModel(params, callback) {
 		ps.input('UPDDTTM', sql.DateTimeOffset);
 		ps.input('REPOSIGRUPID', sql.NVarChar);
 
-
 		getNewModelID(function (result) {
 			console.log(result);
 		});
-
 
 		ps.prepare(sqlUpdateModelQuery, function (err) {
 
