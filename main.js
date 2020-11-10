@@ -328,6 +328,7 @@ server.post('/update' , upload.any() ,  function(req , res){
 	console.log(req.body.modelID);
 
 	var params = { MODELID : req.body.modelID , 
+			       MODELID_REVISION : "NEW ID",
 				   MODEL_XML : req.body.id ,
 				   MODELNAME : req.body.modelName,
 				   MODELDESC : req.body.modelDetailName

@@ -28,6 +28,7 @@ var ModelRepostableName = "PROCESSMODELREPOSITORY";
 
 //sql Qurey
 var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@MODELID order by upddttm';
+var sqlSelectModelHistory = 'select * from ' + ModeltableName + ' where MODELID_REVISION=@MODELID_REVISION order by upddttm';
 var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@MODELID';
 
 var sqlDeleteModelQuery = 'delete from ' + ModeltableName + ' where MODELID=@id';
@@ -38,8 +39,8 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' w
 var sqlSelectModelReposIDQurey = 'select top(1) * from ' + ModelRepostableName + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
 
-var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MODELTYPE, MODELID, MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
-	+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
+var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+	+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELID_REVISION, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
 
 var sqlInsertModelReposQuery = 'insert into ' 
 							+ ModelRepostableName + 
@@ -86,6 +87,27 @@ function ExcuteSQLSelectModelbyPromises(params, callback) {
 		// ... error checks
 	})
 }
+
+function ExcuteSQLSelectModelHistory(params, callback) {
+
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			//.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)
+			.query(sqlSelectModelHistory)
+
+	}).then(result => {
+		console.dir(result);
+
+		return callback(result);
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	})
+}
+
+
 
 
 function ExcuteSQLSelectModelReposbyPromises(params, callback) {
@@ -267,7 +289,7 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 	});
 }
 
-sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
+sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELID_REVISION=@MODELID_REVISION,  MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
 
 function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();
@@ -275,6 +297,7 @@ function ExcuteSQLUpdateModelParams(params, callback) {
 		// Query		    
 		return pool.request()
 			.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)	
 			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
 			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
 			.input('MODELDESC', sql.NVarChar, params.MODELDESC)
@@ -419,6 +442,7 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 			return pool.request()
 				.input('MODELCATID', sql.NVarChar, params.MODELCATID)
 				.input('MODELTYPE', sql.NVarChar, params.MODELTYPE)
+				.intput('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)
 				.input('MODELID', sql.NVarChar, newModelID)
 				.input('MODELNAME', sql.NVarChar, params.MODELNAME)
 				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
@@ -476,6 +500,7 @@ function ExecuteNonQuery(sqlQurey, callback) {
 module.exports = {
 	NonQuery: ExecuteNonQuery,
 	SelectModel: ExcuteSQLSelectModelbyPromises,
+	SelectModelHistory: ExcuteSQLSelectModelHistory,
 	SelectModelRepos: ExcuteSQLSelectModelReposbyPromises,
 	UpdateModel: ExcuteSQLUpdateModelbyPromises,
 	InsertModel: ExcuteSQLInsertModelbyPromises,
