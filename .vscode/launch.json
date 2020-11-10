@@ -4,6 +4,7 @@
     // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
     "version": "0.2.0",
     "configurations": [
+<<<<<<< HEAD
         {
             "type": "node",
             "request": "attach",
@@ -30,5 +31,29 @@
             "url": "http://localhost:3000/",
             "webRoot": "${workspaceFolder}"
         }
+=======
+        
+        
+
+
+        {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/main.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "pwa-chrome",
+            "url": "http://localhost:3000/login",
+            "webRoot": "${workspaceFolder}"
+        },
+
+>>>>>>> d7362ba6fcb182d95b939d0f3902b76e50cb9210
     ]
 }
