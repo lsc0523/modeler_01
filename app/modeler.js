@@ -44,8 +44,8 @@ var bpmnModeler = new BpmnModeler({
   CliModule,
   customTranslateModule,
   //tooltips,
-  plugin
-  //customContextPad
+  plugin,
+  customContextPad
   //BpmnColor
   //require('bpmn-js-in-color')
   ],
@@ -192,6 +192,18 @@ $(function() {
     }
   });
 
+  //side menu event..
+  $('.btn_model_plus').click(function(e){
+
+    var panelRow = this.nextElementSibling;
+
+    if (panelRow.style.maxHeight) {
+       panelRow.style.height = null;
+    } else {
+       panelRow.style.height = "1500px";
+    } 
+  });
+
 
   /*
   var test = document.getElementById('js-drop-zone');
@@ -271,13 +283,13 @@ $(function() {
   /* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
   function openNav() {
     document.getElementById("mySidenav").style.width = "400px";
-    document.getElementById("main_list").style.marginLeft = "400px";
+    //document.getElementById("main_list").style.marginLeft = "400px";
   }
 
   /* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
   function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main_list").style.marginLeft = "0";
+    //document.getElementById("main_list").style.marginLeft = "0";
   }
 
 
@@ -427,6 +439,7 @@ $(function() {
 
       const { xml } = await bpmnModeler.saveXML({ format: true });
       var today = new Date();
+      /*
       $('#save-time').hide();
       $('#Progress_Loading').show();
 
@@ -440,6 +453,7 @@ $(function() {
           $('#save-time').val(" Autosaved at "+ hours + ":" + minutes + ":" + seconds);
 
       }, 500);
+      */
 
       //setEncoded(downloadLink, 'diagram.bpmn', xml);
     } catch (err) {
