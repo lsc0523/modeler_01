@@ -98,7 +98,7 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 			.query(sqlSelectModelHistory)
 
 	}).then(result => {
-		console.dir(result);
+		//console.dir(result);
 
 		return callback(result);
 	}).catch(err => {
@@ -106,8 +106,6 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 		// ... error checks
 	})
 }
-
-
 
 
 function ExcuteSQLSelectModelReposbyPromises(params, callback) {
