@@ -358,11 +358,11 @@ $(function () {
       urlLink = '/update'
     }
 
-    var historyResult = confirm("이력 저장 하시겠습니까? 취소 시 모델정보만 저장됩니다.");
-
-    //if(historyResult)
-   
-
+    //var historyResult = confirm("이력 저장 하시겠습니까? 취소 시 모델정보만 저장됩니다.");
+    var historyYN = false;
+    //if(historyResult){
+    //  historyYN = true;
+    //}
 
     var JSmodeName = $('#modelName').val();
     var modelDetailName = $('#modelDetailName').val();
@@ -376,14 +376,11 @@ $(function () {
     formData.append("modelName", JSmodeName);
     formData.append("modelDetailName", modelDetailName);
     formData.append("processID", ProcessID);
+    formData.append("historyYN", historyYN);
 
-    //formData.append("files", fileInput.files);
-    //var fileCheck = document.getElementById("fileInput").value;
-    //if(isNotEmpty(fileCheck)){
     $.each($("input[type='file']")[0].files, function (i, file) {
       formData.append('files', file);
     });
-    //}
 
     $.ajax({
       url: urlLink,
@@ -395,7 +392,8 @@ $(function () {
       async: false,
       success: function (data) {
         alert("저장이 완료 되었습니다.");
-        window.location.href = 'home/1';
+        //window.location.href = 'home/1';
+        window.location.href = 'modeler?id=' + data.id;
       },
       error: function (error) {
         alert("Error!");
@@ -441,12 +439,12 @@ $(function () {
 
       const { xml } = await bpmnModeler.saveXML({ format: true });
       var today = new Date();
-      /*
+      
       $('#save-time').hide();
-      $('#Progress_Loading').show();
+      //$('#Progress_Loading').show();
 
       setTimeout(function(){
-          $('#Progress_Loading').hide();
+          //$('#Progress_Loading').hide();
           $('#save-time').show();
           var hours = today.getHours();      
           var minutes = today.getMinutes();  
@@ -455,7 +453,7 @@ $(function () {
           $('#save-time').val(" Autosaved at "+ hours + ":" + minutes + ":" + seconds);
 
       }, 500);
-      */
+      
 
       //setEncoded(downloadLink, 'diagram.bpmn', xml);
     } catch (err) {

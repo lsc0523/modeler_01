@@ -168,7 +168,7 @@ server.get('/modeler', function (req, res) {
 
 	Mssql.NonQuery(sqlQurey, function (result_data) {
 
-		if (req.query.id == "" || req.query.id == undefined) {
+		if (req.query.id == "" || req.query.id == undefined || req.query.id == 'undefined') {
 
 			res.render('modeler', {
 				name: "",
@@ -254,6 +254,7 @@ function InsertModelData(req, callback) {
 		MODEL_XML: req.body.id,
 		MODELNAME: req.body.modelName,
 		MODELDESC: req.body.modelDetailName,
+		MODELID_REVISION : '',
 		INSUSER: 'LGCNS',
 		UPDUSER: 'LGCNS'
 	}
@@ -293,26 +294,27 @@ function InsertModelData(req, callback) {
 				Mssql.InsertModelRepos(pramsArray, function (file_result) {
 					console.log(22);
 					console.log(file_result);
-					callback(file_result);
+					callback(file_result, newModelID);
 				});
 
 			});
 
 		} else {
-			callback(result);
+			callback(result, newModelID);
 		}
 	});
 }
 
 server.post('/insert', upload.any(), function (req, res) {
 
-	console.log(req.body);
-	console.log(req.files);
+	//console.log(req.body);
+	//console.log(req.files);
 	console.log("insert...");
 
-	InsertModelData(req, function (file_result) {
+	InsertModelData(req, function (file_result, newModelID) {
 		console.log(file_result);
-		res.send("OK");
+		console.log(newModelID);
+		res.json({ id : newModelID});
 	});
 });
 
@@ -320,11 +322,13 @@ server.post('/insert', upload.any(), function (req, res) {
 server.post('/update', upload.any(), function (req, res) {
 	console.log("update...");
 	//console.log(req.body);
-	console.log(req.body.id);
+	//console.log(req.body.id);
 	console.log(req.body.modelID);
+	/*
 	console.log(req.body.historyYN);
+	var historyYN = req.body.historyYN;
 
-	if (req.body.historyYN) {
+	if (historyYN) {
 		InsertModelData(req, function (file_result) {
 			console.log(file_result);
 			console.log("history updates..");
@@ -332,6 +336,7 @@ server.post('/update', upload.any(), function (req, res) {
 			res.send("OK");
 		});
 	} else {
+	*/
 		var params = {
 			MODELID: req.body.modelID,
 			MODEL_XML: req.body.id,
@@ -343,8 +348,8 @@ server.post('/update', upload.any(), function (req, res) {
 			console.log(result);
 
 			if (isNotEmpty(req.files)) {
-				/*
-				Mssql.getNewReposID(newModelID, function (repoID) {
+				
+				Mssql.getNewReposID(params.MODELID, function (repoID) {
 	
 					var newRepoID;
 					var pramsArray = [];
@@ -361,7 +366,7 @@ server.post('/update', upload.any(), function (req, res) {
 							REPOSID: Number(newRepoID) + 1,
 							REPOSINFO: req.files[i].filename,
 							REPOSNAME: req.files[i].originalFilename,
-							MODELID: newModelID
+							MODELID: params.MODELID
 						};
 	
 						newRepoID = Number(newRepoID) + 1;
@@ -371,11 +376,11 @@ server.post('/update', upload.any(), function (req, res) {
 					Mssql.InsertModelRepos(pramsArray, function (file_result) {
 						console.log(22);
 						console.log(file_result);
-						callback(file_result);
+						res.json({id : params.MODELID});
 					});
 	
 				});
-				*/
+				
 				/*
 				var pramsFile = {
 					REPOSINFO: req.files[0].filename,
@@ -383,15 +388,16 @@ server.post('/update', upload.any(), function (req, res) {
 					MODELID: req.body.modelID
 				};
 				Mssql.InsertModelRepos(pramsFile, function (file_result) {
-					res.send("OK");
+					res.json({id : params.MODELID});
 				});
 				*/
 
 			} else {
-				res.send("OK");
+				//res.send("OK");
+				res.json({id : params.MODELID});
 			}
 		});
-	}
+	//}
 });
 
 
@@ -532,7 +538,8 @@ server.get('/mailSend', function (req, res) {
 server.get('/history/:page' , function(req ,res){
 	
 	if (isNotEmpty(req.session.user)) {
-		var params = { MODELID_REVISION : 'MOD00002_20200911-11306'};
+		var modelID = req.query.id;
+		var params = { MODELID_REVISION : modelID};
 		Mssql.SelectModelHistory(params , function(result){
 			
 			var page = req.params.page;

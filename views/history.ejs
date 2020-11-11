@@ -11,7 +11,7 @@
 
   <style type="text/css">
     @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-  
+
     body,
     html {
       font-family: "Noto Sans KR", sans-serif !important;
@@ -21,11 +21,12 @@
       padding: 0;
       margin: 0;
     }
-  
+
     .active {
       text-decoration: underline;
+      cursor: pointer;
     }
-  
+
     #Progress_Loading {
       position: absolute;
       left: 50%;
@@ -37,49 +38,50 @@
 </head>
 
 <body>
-<!-- 로딩바 -->
-<div id = "Progress_Loading">
-  <img src="/Progress_Loading.gif"/>
-</div>
+  <!--
+  <div id="Progress_Loading">
+    <img src="/Progress_Loading.gif" />
+  </div>
+  -->
 
-<!-- Popup Layer -->
+  <!-- Popup Layer -->
 
-<div id="delete_layer" style="display: none;">
-  <div style="height: 50px; 
+  <div id="delete_layer" style="display: none;">
+    <div style="height: 50px; 
               padding-top: 10px;
               padding-bottom: 20px;
   ">
-    <button style="border: 1px solid hsl(0 0% 87% / 1); 
+      <button style="border: 1px solid hsl(0 0% 87% / 1); 
                                padding-right: 20px; 
                                padding-left: 20px; ">
-    삭제                             
-    </button>
+        삭제
+      </button>
+    </div>
   </div>
-</div>
 
-   <div style="height: 50px; 
+  <div style="height: 50px; 
             padding-top: 10px;
             padding-bottom: 20px;
   ">
-  <img src="/logo.png" style="border-right: 1px solid hsl(0 0% 87% / 1); 
+    <img src="/logo.png" style="border-right: 1px solid hsl(0 0% 87% / 1); 
                                padding-right: 20px; 
                                padding-left: 20px; 
   ">
-  <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HOME</a>
-  <a href="/home/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODEL LIST</a>
-  <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODELER</a>
-  <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HISTORY</a>
-  <% if(sess) { %>
-  <a href="/logout" style="padding-left: 20px; 
+    <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HOME</a>
+    <a href="/home/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODEL LIST</a>
+    <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODELER</a>
+    <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HISTORY</a>
+    <% if(sess) { %>
+    <a href="/logout" style="padding-left: 20px; 
                            position: absolute; 
                            right: 50px; 
                            top : 17px; 
                            color: hsl(0 0% 50% / 1);">
-                           LOGOUT</a>
-  <% } %>
-</div>
+      LOGOUT</a>
+    <% } %>
+  </div>
 
-<div  style="background-color: hsl(0,0%,97%); 
+  <div style="background-color: hsl(0,0%,97%); 
             padding: 25px 100px; 
             position: relative; 
             height: 10%;
@@ -88,75 +90,60 @@
             margin-top: 10px;
             font-size: 19px;
             ">
-  Welcome, <%=sess%> 님
-</div>
+    Welcome, <%=sess%> 님
+  </div>
 
-  <div class="section"style="padding-left: 100px; 
-                             //background-color: hsl(0,0%,97%); 
+  <div class="section" style="padding-left: 100px; 
                              height: 100%;
                              width : 100%;">
     <label style="padding-top: 10px;">이력 조회 모델 ID</label>
     <div style="padding-top: 10px; padding-bottom: 10px;">
-      <span> <input type="text" id="modelHistID" 
-                    style="height: 36px; 
-                           width: 30%; 
-                           border: 1px solid hsl(0 0% 80% / 1);
-                           padding-left: 15px;
-                           font-size : 13px; "></span>
+      <span>
+       <form name="historyForm" method="get" action="/history/1">
+          <input type="text" id="modelHistID" name="id" style="height: 36px; 
+                               width: 30%; 
+                               border: 1px solid hsl(0 0% 80% / 1);
+                               padding-left: 15px;
+                               font-size : 13px; ">
+      </form>  
+      </span>
     </div>
-    <table class="table table-hover" 
-            style="width: 90%;">
-     <thead>
-      <tr>
-        <th style="width: 20%">모델 ID</th>
-        <th style="width: 15%">프로세스 ID</th>
-        <th style="width: 15%">모델 이름</th>
-        <th style="width: 35%">모델 세부사항</th>
-        <th style="width: 5%">열기</th>
-        <th style="width: 5%">수정</th>
-        <th style="width: 5%">삭제</th>
-      </tr>
-    </thead>
+    <table class="table table-hover" style="width: 90%;">
+      <thead>
+        <tr>
+          <th style="width: 20%">모델 ID</th>
+          <th style="width: 15%">프로세스 ID</th>
+          <th style="width: 15%">모델 이름</th>
+          <th style="width: 35%">모델 세부사항</th>
+          <th style="width: 5%">열기</th>
+          <th style="width: 5%">수정</th>
+          <th style="width: 5%">삭제</th>
+        </tr>
+      </thead>
 
-    <tbody>
-     
-      <% for(var i = (page * page_num) - page_num; i < (page * page_num); i++) {  %>
-      <%      if(i > length){
+      <tbody>
+
+        <% for(var i = (page * page_num) - page_num; i < (page * page_num); i++) {  %>
+        <%      if(i > length){
                 i++;
               }
               else{  var rows = data[i]; %>
-      <!--
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      -->
-      <!--
-         style="border-radius: 3px;
-                  border: 1px solid hsl(0 0% 87% / 1);
-                  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;"
-      -->
-      <tr>
-        <td><%= rows.MODELID  %></td>
-        <td><%= rows.PROCESSID  %></td>
-        <td><%= rows.MODELNAME %></td>
-        <td><%= rows.MODELDESC %></td>
-        <td><a href="/viewer?id=<%= rows.MODELID %>">열기</a></td>
-        <td><a href="/modeler?id=<%= rows.MODELID %>">수정</a></td>
-        <td><a href="/delete?id=<%= rows.MODELID %>">삭제</a></td>        
-      </tr>
-    <% } %>
-    <% } %>
+        <tr>
+          <td><%= rows.MODELID  %></td>
+          <td><%= rows.PROCESSID  %></td>
+          <td><%= rows.MODELNAME %></td>
+          <td><%= rows.MODELDESC %></td>
+          <td><a href="/viewer?id=<%= rows.MODELID %>">열기</a></td>
+          <td><a href="/modeler?id=<%= rows.MODELID %>">수정</a></td>
+          <td><a href="/delete?id=<%= rows.MODELID %>">삭제</a></td>
+        </tr>
+        <% } %>
+        <% } %>
 
-    <tr>
-        <td colspan="7" align="center" style="background-color: white">
+        <tr>
+          <td colspan="7" align="center" style="background-color: white">
             <% for(var j = 0; j < (length + 1) / page_num; j++){ %>
-            [<a href="/home/<%= j + 1 %>"><%= j + 1 %></a>]
+            [<a href="/history/<%= j + 1 %>"><%= j + 1 %></a>]
             <%}%>
         </td>
     </tr>
@@ -168,20 +155,37 @@
 
 <script type="text/javascript">
 
-  $(document).ready(function(){
+  $(document).ready(function () {
 
-     $('#Progress_Loading').hide();
-  
-    $(document).ajaxStart(function(){
-      $('#Progress_Loading').show(); //ajax실행시 로딩바를 보여준다.
-    })
-
-    $(document).ajaxStop(function(){
-      $('#Progress_Loading').hide(); //ajax종료시 로딩바를 숨겨준다.
+    $('#modelHistID').on('keypress', function (e) {
+      if (e.keyCode == 13) {
+        var submitData = document.historyForm;
+        submitData.submit();
+      }
     });
-  });
-  
+
+    /*
+      $('#modelHistID').on('keypress', function (e) {
+        //Enter Event
+        if (e.keyCode == 13) {
+          $.ajax({
+            url: '/history/1',
+            type: 'GET',
+            data: {
+              id: $('#modelHistID').val()
+            },
+            dataType: "json",
+            success: function (data) {
+              alert("조회 되었습니다.");
+            },
+            error: function (error) {
+              alert("조회에 실패하였습니다 재 조회하시기 바랍니다.");
+            }
+          })
+        }
+      });
+    */
+    });
+
 </script>
 </html>
-
-

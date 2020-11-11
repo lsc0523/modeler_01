@@ -161,7 +161,8 @@ function getNewReposID(id, callback) {
 			var data = result.recordset[0].REPOSID;
 			//var cnt = data.split('REPOS');
 			console.log(data);
-			var cnt	= data.substr(5,5);
+			//var cnt	= data.substr(5,5);
+			var cnt = data;
 			console.log(cnt);
 
 		}
@@ -287,7 +288,9 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 	});
 }
 
-sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELID_REVISION=@MODELID_REVISION,  MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
+sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + 
+						  ' set MODELNAME=@MODELNAME, MODELID_REVISION=@MODELID_REVISION,  MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID' +
+						  ' where MODELID=@MODELID';
 
 function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();
@@ -393,8 +396,6 @@ function ExcuteSQLInsertModelRepository(params, callback) {
 			];
 			*/
 						
-
-
 			//console.log(format('INSERT INTO test_table (id, name) VALUES %L', values));
 			var query = 'INSERT INTO ' + ModelRepostableName +
 			' (MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)' +
@@ -438,7 +439,7 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 			return pool.request()
 				.input('MODELCATID', sql.NVarChar, params.MODELCATID)
 				.input('MODELTYPE', sql.NVarChar, params.MODELTYPE)
-				.intput('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)
+				.input('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)
 				.input('MODELID', sql.NVarChar, newModelID)
 				.input('MODELNAME', sql.NVarChar, params.MODELNAME)
 				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
