@@ -46,7 +46,7 @@ var sqlInsertModelReposQuery = 'insert into '
 							+ ModelRepostableName + 
 							'(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
 							+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
-
+//Select Model
 function ExcuteSQLSelectModel(params, callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
 		if (err) {
@@ -69,6 +69,7 @@ function ExcuteSQLSelectModel(params, callback) {
 	});
 }
 
+//Select Model Promises
 function ExcuteSQLSelectModelbyPromises(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
@@ -88,6 +89,7 @@ function ExcuteSQLSelectModelbyPromises(params, callback) {
 	})
 }
 
+//Select Model History
 function ExcuteSQLSelectModelHistory(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
@@ -107,7 +109,7 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 	})
 }
 
-
+//Select Model Repository
 function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
