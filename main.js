@@ -69,11 +69,9 @@ function getFile(file) {
 	return Date.now() + '-' + rnd + '-' + name + ext;
 }
 
-
 var upload = multer({
 	storage: storage
 });
-
 
 //Util...
 function isNotEmpty(_str) {
@@ -165,10 +163,11 @@ server.get('/modeler', function (req, res) {
 	var modelDetailName = "";
 	var JsFileList = "";
 
-
 	Mssql.NonQuery(sqlQurey, function (result_data) {
 
-		if (req.query.id == "" || req.query.id == undefined || req.query.id == 'undefined') {
+		if (req.query.id == "" || 
+			req.query.id == undefined || 
+			req.query.id == 'undefined') {
 
 			res.render('modeler', {
 				name: "",
@@ -222,11 +221,6 @@ server.get('/modeler', function (req, res) {
 	});
 
 
-});
-
-server.get('/about', function (req, res) {
-	console.log("about...")
-	res.send('about directory.. LG CNS modeler...');
 });
 
 function Padder(len, pad) {
@@ -380,17 +374,6 @@ server.post('/update', upload.any(), function (req, res) {
 					});
 	
 				});
-				
-				/*
-				var pramsFile = {
-					REPOSINFO: req.files[0].filename,
-					REPOSNAME: req.files[0].originalFilename,
-					MODELID: req.body.modelID
-				};
-				Mssql.InsertModelRepos(pramsFile, function (file_result) {
-					res.json({id : params.MODELID});
-				});
-				*/
 
 			} else {
 				//res.send("OK");
@@ -459,7 +442,6 @@ server.get('/loginUser', function (req, res) {
 	req.session.save(function () {
 		res.redirect('/home2');
 	});
-	//res.json({'result' : 'ok'});
 });
 
 server.get('/logout', function (req, res) {

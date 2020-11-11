@@ -2,28 +2,24 @@ import $ from 'jquery';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/bpmn';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda.json';
 import minimapModule from 'diagram-js-minimap';
-import minimap from 'diagram-js-minimap/lib/Minimap';
 import diagramXML from '../resources/newDiagram.bpmn';
 import CliModule from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
-import BpmnViewer from 'bpmn-js/lib/Viewer';
 import customContextPad from './custom';
-//import tooltips from "diagram-js/lib/features/tooltips";
-//import BpmnColor from 'bpmn-js-in-color';
 
 var common = require('./common');
 var colorPick = require('./colorPick')
 
-//var BpmnColor = require('bpmn-js-in-color');
-
+/*
 import {
   registerBpmnJSPlugin
 } from 'camunda-modeler-plugin-helpers';
+*/
 
-import plugin from './TooltipInfoService';
+import tooliplugin from './TooltipInfoService';
 
 var container = $('#js-drop-zone');
 var canvas = $('#js-canvas');
@@ -43,8 +39,7 @@ var bpmnModeler = new BpmnModeler({
     propertiesProviderModule,
     CliModule,
     customTranslateModule,
-    //tooltips,
-    plugin,
+    tooliplugin,
     customContextPad
     //BpmnColor
     //require('bpmn-js-in-color')
@@ -184,12 +179,15 @@ $(function () {
     $('#btn-download').css({ color: "green" });
   }
 
+  /*
   $('.buttons a').click(function (e) {
     if (!$(this).is('.active')) {
       e.preventDefault();
       e.stopPropagation();
     }
   });
+  */
+  //$('camunda-id').attr("readonly", true);
 
   //side menu event..
   $('.btn_model_plus').click(function (e) {
