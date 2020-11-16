@@ -24,17 +24,20 @@
 
   .active {
     text-decoration: underline;
+    cursor: pointer;
   }
 
   .section , aside{
         float:left;
-        height:300px;
+       /* height:300px; */
         margin-top: -1px;
+        width: 80%;
   }
 
   aside {
-        width:400px;
+        width:20%;
         background:hsl(0 0% 97% / 1);
+        float: right;
   }
 
   .collaborator{
@@ -154,13 +157,14 @@ td
     <br>
 
     <table class="table table-striped" 
-            style="width: 1400px;">
+            style="width: 100%;">
      <thead>
       <tr>
+        <th></th>
         <th style="width: 20%">모델 ID</th>
         <th style="width: 15%">프로세스 ID</th>
-        <th style="width: 15%">모델 이름</th>
-        <th style="width: 35%">모델 세부사항</th>
+        <th style="width: 15%">프로세스 명</th>
+        <th style="width: 35%">프로세스 세부사항</th>
         <th style="width: 5%">열기</th>
         <th style="width: 5%">수정</th>
         <th style="width: 5%">삭제</th>
@@ -183,24 +187,26 @@ td
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
       </tr>
 <!-- border-radius: 3px;
      border: 1px solid hsl(0 0% 87% / 1);
      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;-->
       <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);">
+        <td><input type="checkbox"</td>
         <td><img src="/folder_icon.svg" style="padding-right: 10px;"><%= rows.MODELID  %></td>
         <td><%= rows.PROCESSID  %></td>
         <td><%= rows.MODELNAME %></td>
         <td><%= rows.MODELDESC %></td>
-        <td><a href="/viewer?id=<%= rows.MODELID %>">열기</a></td>
-        <td><a href="/modeler?id=<%= rows.MODELID %>">수정</a></td>
-        <td><a class="delete" href="/delete?id=<%= rows.MODELID %>">삭제</a></td>        
+        <td><a href="/viewer?id=<%= rows.MODELID %>"><img src="/folder_icon.svg"></a></td>
+        <td><a href="/modeler?id=<%= rows.MODELID %>"><img src="/edit.svg" style="width: 30px; height: 30px; " ></a></td>
+        <td><a class="delete" href="/delete?id=<%= rows.MODELID %>"><img src="/delete.svg" style="width: 30px; height: 30px;"></a></td>        
       </tr>
     <% } %>
     <% } %>
 
     <tr>
-        <td colspan="7" align="center" style="background-color: white">
+        <td colspan="7" align="center">
             <% for(var j = 0; j < (length + 1) / page_num; j++){ %>
             [<a href="/home/<%= j + 1 %>"><%= j + 1 %></a>]
             <%}%>
@@ -280,13 +286,34 @@ td
       $('#Progress_Loading').hide(); //ajax종료시 로딩바를 숨겨준다.
     });
 
-    $(".delete").on('click',function (e) {
+    $(".delete").on('click', function (e) {
       e.preventDefault();
       var checkDelete = confirm("삭제 하시겠습니까?");
 
       if (checkDelete) {
+        var returnurl = window.location.pathname;
         var href = $(this).attr("href");
-        window.location = href;
+        //window.location = href;
+        //window.location = returnurl;
+        $.ajax({
+          url: '/delete',
+          type: 'GET',
+          data: {
+            id: href.split('=')[1],
+            page : returnurl.split('/')[2]
+          },
+          dataType: 'text',
+          success: function (data) {
+              //Row 삭제
+              e.target.parentNode.parentNode.parentNode.remove();
+              alert("삭제 성공하였습니다.");
+          },
+          error: function (error) {
+            alert("삭제 실패하였습니다. 재시도 하시기 바랍니다.");
+            window.location = returnurl;
+          }
+        })
+        
       }
     });
 
@@ -326,6 +353,11 @@ td
 
   })
   */
+
+  $(document).on('click','#deleteRow',function(){
+    this.parentNode.remove()
+  });
+
 
   $(document).on('click','#SendMail',function(){
     //var pcode=$(this).attr('id'); //이거는 해당 element의 id value값을 가져오는것.
