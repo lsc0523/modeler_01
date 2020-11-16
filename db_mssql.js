@@ -546,8 +546,8 @@ module.exports = {
 	InsertModel: ExcuteSQLInsertModelbyPromises,
 //	InsertModelHistory: ExcuteSQLInsertModelHistorybyPromises,
 	DeleteModel: ExcuteSQLDeleteModelbyPromises,
-	UdataModelParams: ExcuteSQLUpdateModelParams, 
-	UdataModelandInsertHistory: ExcuteSQLUpdateModelHistory,
+	UpdataModelParams: ExcuteSQLUpdateModelParams, 
+	UpdataModelandInsertHistory: ExcuteSQLUpdateModelHistory,
 	InsertModelRepos: ExcuteSQLInsertModelRepository,
 
 	//FileList...
