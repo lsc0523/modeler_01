@@ -194,7 +194,7 @@ td
         <td><%= rows.MODELDESC %></td>
         <td><a href="/viewer?id=<%= rows.MODELID %>">열기</a></td>
         <td><a href="/modeler?id=<%= rows.MODELID %>">수정</a></td>
-        <td><a href="/delete?id=<%= rows.MODELID %>">삭제</a></td>        
+        <td><a class="delete" href="/delete?id=<%= rows.MODELID %>">삭제</a></td>        
       </tr>
     <% } %>
     <% } %>
@@ -279,6 +279,17 @@ td
     $(document).ajaxStop(function(){
       $('#Progress_Loading').hide(); //ajax종료시 로딩바를 숨겨준다.
     });
+
+    $(".delete").on('click',function (e) {
+      e.preventDefault();
+      var checkDelete = confirm("삭제 하시겠습니까?");
+
+      if (checkDelete) {
+        var href = $(this).attr("href");
+        window.location = href;
+      }
+    });
+
   });
   
   $('#btn_user').on('click', function(){
@@ -295,6 +306,7 @@ td
      var x = e.clientX;
   })
 
+  /*
   $(document).on('click' , 'span' , function(e){
 
     if($('#delete_layer').is(':visible')){
@@ -313,6 +325,7 @@ td
     }
 
   })
+  */
 
   $(document).on('click','#SendMail',function(){
     //var pcode=$(this).attr('id'); //이거는 해당 element의 id value값을 가져오는것.

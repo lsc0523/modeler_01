@@ -594,7 +594,7 @@ function TooltipInfoService(eventBus, overlays, elementRegistry, editorActions) 
               <div class="tooltip-content">'
                 + tooltipHeader(element)
                 + emptyPropertiesIfNoLines([
-                    //tooltipGeneral(element),
+                    tooltipGeneral(element),
                     tooltipDetails(element),
                     tooltipMultiInstance(element),
                     tooltipExternalTaskConfiguration(element),
