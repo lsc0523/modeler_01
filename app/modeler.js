@@ -161,7 +161,89 @@ if (!window.FileList || !window.FileReader) {
 
 // bootstrap diagram functions
 
+function switchDiagram(e) {
+  let diagramSwitch = bpmnModeler.get('diagramSwitch');
+  diagramSwitch.switchDiagram(e.target.value);
+}
+
+function addDiagram() {
+  let diagramSwitch = bpmnModeler.get('diagramSwitch');
+  diagramSwitch.addDiagram();
+  populateDiagramCombo();
+}
+
+function deleteDiagram() {
+  let diagramSwitch = bpmnModeler.get('diagramSwitch');
+  diagramSwitch.deleteDiagram();
+  populateDiagramCombo();
+}
+
+function renameDiagram(e) {
+  let diagramSwitch = bpmnModeler.get('diagramSwitch');
+  diagramSwitch.renameDiagram(e.target.value);
+  populateDiagramCombo();
+}
+
+function populateDiagramCombo() {
+  var diagramSwitch = bpmnModeler.get('diagramSwitch');
+  const select = $('.djs-select');
+  select.empty();
+
+  const currentDiagram = diagramSwitch._diagramUtil.currentDiagram();
+  const diagrams = diagramSwitch._diagramUtil.diagrams();
+
+  diagrams.forEach((diagram) => {
+    const diagramName = diagram.name || diagram.id;
+    select.append(`
+        <option
+          value="${diagram.id}"
+          ${currentDiagram.id == diagram.id ? 'selected' : ''}>
+            ${diagramName}
+        </option>
+      `);
+  });
+}
+
+function handleEndRenameEvent(e) {
+  if (e.keyCode && e.keyCode !== 13) {
+    return;
+  }
+
+  displaySelectInterface();
+}
+
+function displayRenameInterface() {
+  hideInterface();
+
+  var diagramSwitch = bpmnModeler.get('diagramSwitch');
+  const renameWrapper = document.querySelector('.djs-rename-wrapper');
+  renameWrapper.style.display = 'flex';
+
+  const renameInput = document.querySelector('.djs-rename');
+  const currentDiagram = diagramSwitch._diagramUtil.currentDiagram();
+  renameInput.value = currentDiagram.name || currentDiagram.id;
+  renameInput.focus();
+  renameInput.select();
+}
+
+function displaySelectInterface() {
+  hideInterface();
+
+  populateDiagramCombo();
+  const selectWrapper = document.querySelector('.djs-select-wrapper');
+  selectWrapper.style.display = 'flex';
+}
+
+function hideInterface() {
+  const renameWrapper = document.querySelector('.djs-rename-wrapper');
+  renameWrapper.style.display = 'none';
+
+  const selectWrapper = document.querySelector('.djs-select-wrapper');
+  selectWrapper.style.display = 'none';
+}
+
 $(function () {
+
   var data = $("#xmlData");
   console.log(data);
   createNewDiagram(data[0].innerText);
@@ -179,14 +261,14 @@ $(function () {
     $('#btn-download').css({ color: "green" });
   }
 
-  /*
+
   $('.buttons a').click(function (e) {
     if (!$(this).is('.active')) {
       e.preventDefault();
       e.stopPropagation();
     }
   });
-  */
+
   //$('camunda-id').attr("readonly", true);
 
   //side menu event..
@@ -259,18 +341,6 @@ $(function () {
     else {
       closeNav();
     }
-    /*
-    if($('.accordion').is(':visible')){
-      $('.accordion').hide();
-      $('.panel').hide();
-    }
-    else{
-      $('.accordion').show();
-      $('.panel').show();
-    }
-    */
-
-    //$('.accordion').hide();
   })
 
 
@@ -335,13 +405,12 @@ $(function () {
     var myWindow = window.open(url, "downloadPopup", popupOption);
   });
 
-  downloadLink.on( 'click', async function (e) {
+  downloadLink.on('click', async function (e) {
     //console.log("download xml...");
     var modelID = $("#modelID");
-    //console.log(modelID[0].innerText);
     var saveResult = confirm("저장 하시겠습니까?");
-    
-    if(!saveResult){
+
+    if (!saveResult) {
       return;
     }
 
@@ -366,15 +435,26 @@ $(function () {
     var modelDetailName = $('#modelDetailName').val();
     var modelType = $('#modelType').val();
     var ProcessID = bpmnModeler._definitions.rootElements[0].id;
+    var ProcessName = bpmnModeler._definitions.rootElements[0].name;
+    var docText = "";
+
+    if (common.isEmpty(bpmnModeler._definitions.rootElements[0].documentation[0])) {
+      docText = "";
+    }
+    else {
+      docText = bpmnModeler._definitions.rootElements[0].documentation[0].text;
+    }
 
     var formData = new FormData();
     formData.append("id", xmlData.replace(/(\r\n|\n|\r)/gm, ""));
     formData.append("modelID", modelID[0].innerText);
     formData.append("type", modelType);
-    formData.append("modelName", JSmodeName);
-    formData.append("modelDetailName", modelDetailName);
+    //formData.append("modelName", JSmodeName);
+    //formData.append("modelDetailName", modelDetailName);
     formData.append("processID", ProcessID);
     formData.append("historyYN", historyYN);
+    formData.append("modelName", common.NVC(ProcessName));
+    formData.append("modelDetailName", common.NVC(docText));
 
     $.each($("input[type='file']")[0].files, function (i, file) {
       formData.append('files', file);
@@ -437,21 +517,21 @@ $(function () {
 
       const { xml } = await bpmnModeler.saveXML({ format: true });
       var today = new Date();
-      
+
       $('#save-time').hide();
       //$('#Progress_Loading').show();
 
-      setTimeout(function(){
-          //$('#Progress_Loading').hide();
-          $('#save-time').show();
-          var hours = today.getHours();      
-          var minutes = today.getMinutes();  
-          var seconds = today.getSeconds();  
+      setTimeout(function () {
+        //$('#Progress_Loading').hide();
+        $('#save-time').show();
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
 
-          $('#save-time').val(" Autosaved at "+ hours + ":" + minutes + ":" + seconds);
+        $('#save-time').val(" Autosaved at " + hours + ":" + minutes + ":" + seconds);
 
       }, 500);
-      
+
 
       //setEncoded(downloadLink, 'diagram.bpmn', xml);
     } catch (err) {
@@ -463,8 +543,31 @@ $(function () {
   }, 500);
 
   bpmnModeler.on('commandStack.changed', exportArtifacts);
-
-
+  
+   var eventBus = bpmnModeler.get('eventBus');
+   eventBus.once('import.render.complete', populateDiagramCombo);
+ 
+ 
+   $('.djs-palette').append(`<div class="djs-select-wrapper">
+     <select class="djs-select"></select>
+     <button id="start-rename-diagram" class="bpmn-icon-screw-wrench" title="Rename this diagram"></button>
+     <button id="delete-diagram" class="bpmn-icon-trash" title="Delete this diagram"></button>
+     <button id="add-diagram" class="bpmn-icon-sub-process-marker" title="Add a new diagram"></button>
+   </div>
+   <div class="djs-rename-wrapper">
+     <input class="djs-rename" type="text">
+     <button id="end-rename-diagram" class="djs-button">Rename</button>
+   </div>`);
+ 
+   $('.djs-select').on('change', switchDiagram);
+   $('#add-diagram').on('click', addDiagram);
+   $('#delete-diagram').on('click', deleteDiagram);
+ 
+   $('#start-rename-diagram').on('click', displayRenameInterface);
+   $('.djs-rename').on('change', renameDiagram);
+   $('.djs-rename').on('keyup', handleEndRenameEvent);
+   $('#end-rename-diagram').on('click', handleEndRenameEvent);
+   
   //color picker..
   $.fn.colorPick = function (config) {
 
