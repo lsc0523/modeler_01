@@ -21,29 +21,33 @@ sql.on('error', err => {
 });
 
 
-var ModeltableName = "PROCESSMODEL";
-var ModelRepostableName = "PROCESSMODELREPOSITORY";
-
+var Modeltable = "PROCESSMODEL";
+var ModelRepostable = "PROCESSMODELREPOSITORY";
+var ModelHistory = "PROCESSMODELHISTORY";
 
 
 //sql Qurey
-var sqlSelectModelQurey = 'select * from ' + ModeltableName + ' where MODELID=@MODELID order by upddttm';
-var sqlSelectModelHistory = 'select * from ' + ModeltableName + ' where MODELID_REVISION=@MODELID_REVISION order by upddttm';
-var sqlUpdateModelQuery = 'update ' + ModeltableName + ' set MODEL_XML=@XML where MODELID=@MODELID';
+var sqlSelectModelQurey = 'select * from ' + Modeltable + ' where MODELID=@MODELID order by upddttm';
+var sqlSelectModelHistory = 'select * from ' + Modeltable + ' where MODELID_REVISION=@MODELID_REVISION order by upddttm';
+var sqlUpdateModelQuery = 'update ' + Modeltable + ' set MODEL_XML=@XML where MODELID=@MODELID';
 
-var sqlDeleteModelQuery = 'delete from ' + ModeltableName + ' where MODELID=@id';
-var sqlInsertModelQuery = 'insert into ' + ModeltableName + '(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+var sqlDeleteModelQuery = 'delete from ' + Modeltable + ' where MODELID=@id';
+var sqlInsertModelQuery = 'insert into ' + Modeltable + '(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
 	+ ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
-var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + ModeltableName + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID) DESC'
+var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + Modeltable + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID) DESC'
 
-var sqlSelectModelReposIDQurey = 'select top(1) * from ' + ModelRepostableName + ' where MODELID=@MODELID order by (REPOSID) DESC'
+var sqlSelectModelReposIDQurey = 'select top(1) * from ' + ModelRepostable + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
+var sqlInsertModelHistoryQuery = 'insert into ' + ModelHistory + 
+									'(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+								+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELID_REVISION, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
 
-var sqlInsertModelQuery_Dev = 'insert into ' + ModeltableName + '(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
-	+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELID_REVISION, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
+var sqlInsertModelQuery_Dev = 'insert into ' + Modeltable + 
+									'(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+								+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELID_REVISION, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
 
 var sqlInsertModelReposQuery = 'insert into ' 
-							+ ModelRepostableName + 
+							+ ModelRepostable + 
 							'(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
 							+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
 //Select Model
@@ -131,7 +135,7 @@ function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 
 
 //All file List from db
-var allFileList = 'select * from ' + ModelRepostableName + ' where MODELID=@MODELID order by (REPOSID) DESC'
+var allFileList = 'select * from ' + ModelRepostable + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
 function ExcuteSQLSelectAllFileList(params, callback) {
 
@@ -150,8 +154,6 @@ function ExcuteSQLSelectAllFileList(params, callback) {
 		// ... error checks
 	})
 }
-
-
 
 function getNewReposID(id, callback) {
 
@@ -218,8 +220,6 @@ function getNewModelID(callback) {
 
 }
 
-
-
 //  Number.prototype.padLeft = function (n,str){
 //	    return Array(n-String(this).length+1).join(str||'0')+this;
 //	}
@@ -240,8 +240,6 @@ function Padder(len, pad) {
 		return pads.substring(0, pads.length - s.length) + s;
 	};
 }
-
-
 // Model  
 function ExcuteSQLUpdateModel(params , callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
@@ -289,7 +287,7 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 	});
 }
 
-sqlUpdateModelQuery_Dev = 'update ' + ModeltableName + ' set MODELNAME=@MODELNAME, MODELID_REVISION=@MODELID_REVISION,  MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
+sqlUpdateModelQuery_Dev = 'update ' + Modeltable + ' set MODELNAME=@MODELNAME, MODELID_REVISION=@MODELID_REVISION,  MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
 
 function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();
@@ -314,7 +312,6 @@ function ExcuteSQLUpdateModelParams(params, callback) {
 		// ... error checks
 	});
 }
-
 
 
 function ExcuteSQLInsertModel(params, callback) {
@@ -365,7 +362,6 @@ function ExcuteSQLInsertModel(params, callback) {
 	});
 }
 
-
 function ExcuteSQLInsertModelRepository(params, callback) {
 
 		//getNewReposID(params[i].MODELID, function (result) {
@@ -398,7 +394,7 @@ function ExcuteSQLInsertModelRepository(params, callback) {
 
 
 			//console.log(format('INSERT INTO test_table (id, name) VALUES %L', values));
-			var query = 'INSERT INTO ' + ModelRepostableName +
+			var query = 'INSERT INTO ' + ModelRepostable +
 			' (MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)' +
 			' VALUES %L';
 
@@ -429,7 +425,6 @@ function ExcuteSQLInsertModelRepository(params, callback) {
 		//});
 	
 }
-
 
 function ExcuteSQLInsertModelbyPromises(params, callback) {
 	getNewModelID(function (newModelID) {
@@ -463,6 +458,41 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 		});
 	});
 }
+// Save Model History
+function ExcuteSQLInsertModelHistorybyPromises(params, callback) {
+
+		var now = new Date();
+		sql.connect(dbConnectionConfig).then(pool => {
+			// Query		    
+			return pool.request()
+				.input('MODELCATID', sql.NVarChar, params.MODELCATID)
+				.input('MODELID', sql.NVarChar, newModelID)
+				.input('CRETDTTM', sql.DateTimeOffset, now)
+				.input('MODELTYPE', sql.NVarChar, params.MODELTYPE)
+				.input('MODELNAME', sql.NVarChar, params.MODELNAME)
+				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
+				.intput('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)
+				.input('MODELID_PR', sql.Xml, params.MODELID_PR)
+				.input('MODELID_PR_NODEID', sql.Xml, params.MODELID_PR_NODEID)
+				.input('PROCESSID', sql.NVarChar, params.PROCESSID)
+				.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+				.input('MODELHISTDESC', sql.DateTimeOffset, now)
+				.input('USERID', sql.NVarChar, params.USERID)
+				.input('INSUSER', sql.NVarChar, params.INSUSER)
+				.input('INSDTTM', sql.DateTimeOffset, now)
+				.input('UPDUSER', sql.NVarChar, params.UPDUSER)
+				.input('UPDDTTM', sql.DateTimeOffset, now)
+				.query(sqlInsertModelQuery_Dev)
+		}).then(result => {
+			// console.dir(result);
+			return callback(result, newModelID);
+		}).catch(err => {
+			console.dir(err);
+			// ... error checks
+		});
+	}
+
+
 
 function ExcuteSQLDeleteModelbyPromises(params, callback) {
 
@@ -494,15 +524,15 @@ function ExecuteNonQuery(sqlQurey, callback) {
 	})
 }
 
-
 module.exports = {
 	NonQuery: ExecuteNonQuery,
 	SelectModel: ExcuteSQLSelectModelbyPromises,
 	//모델 변경 이력 조회
 	SelectModelHistory: ExcuteSQLSelectModelHistory,
 	SelectModelRepos: ExcuteSQLSelectModelReposbyPromises,
-	UpdateModel: ExcuteSQLUpdateModelbyPromises,
-	InsertModel: ExcuteSQLInsertModelbyPromises,
+	UpdateModel: ExcuteSQLInsertModelHistorybyPromises,
+	InsertModel: ExcuteSQLInsertModelHistorybyPromises,
+//	InsertModelHistory: ExcuteSQLInsertModelHistorybyPromises,
 	DeleteModel: ExcuteSQLDeleteModelbyPromises,
 	UdataModelParams: ExcuteSQLUpdateModelParams,
 	InsertModelRepos: ExcuteSQLInsertModelRepository,
