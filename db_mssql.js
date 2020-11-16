@@ -28,7 +28,7 @@ var ModelHistory = "PROCESSMODELHISTORY";
 
 //sql Qurey
 var sqlSelectModelQurey = 'select * from ' + Modeltable + ' where MODELID=@MODELID order by upddttm';
-var sqlSelectModelHistory = 'select * from ' + Modeltable + ' where MODELID_REVISION=@MODELID_REVISION order by upddttm';
+var sqlSelectModelHistory = 'select * from ' + ModelHistory + ' where MODELID=@MODELID order by upddttm';
 var sqlUpdateModelQuery = 'update ' + Modeltable + ' set MODEL_XML=@XML where MODELID=@MODELID';
 
 var sqlDeleteModelQuery = 'delete from ' + Modeltable + ' where MODELID=@id';
@@ -38,9 +38,8 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + Modeltable + ' where
 
 var sqlSelectModelReposIDQurey = 'select top(1) * from ' + ModelRepostable + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
-var sqlInsertModelHistoryQuery = 'insert into ' + ModelHistory + 
-									'(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
-								+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELID_REVISION, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
+
+
 
 var sqlInsertModelQuery_Dev = 'insert into ' + Modeltable + 
 									'(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
@@ -99,8 +98,7 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
 		return pool.request()
-			//.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)
+			.input('MODELID', sql.NVarChar, params.MODELID)
 			.query(sqlSelectModelHistory)
 
 	}).then(result => {
@@ -288,7 +286,7 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 	});
 }
 
-sqlUpdateModelQuery_Dev = 'update ' + Modeltable + ' set MODELNAME=@MODELNAME, MODELID_REVISION=@MODELID_REVISION,  MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
+sqlUpdateModelQuery_Dev = 'update ' + Modeltable + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
 
 function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();
@@ -296,7 +294,32 @@ function ExcuteSQLUpdateModelParams(params, callback) {
 		// Query		    
 		return pool.request()
 			.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)	
+			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
+			.input('MODELDESC', sql.NVarChar, params.MODELDESC)
+			.input('MODELID_PR', sql.NVarChar, params.MODELID_PR)
+			.input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
+			.input('UPDUSER', sql.NVarChar, params.UPDUSER)
+			.input('UPDDTTM', sql.DateTimeOffset, now)
+			.query(sqlUpdateModelQuery_Dev)
+	}).then(result => {
+		console.dir(result);
+		return callback(result.rowsAffected);
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	});
+}
+
+function ExcuteSQLUpdateModelHistory(params, callback) {
+	
+	ExcuteSQLInsertModelHistory(params);
+	
+	var now = new Date();
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			.input('MODELID', sql.NVarChar, params.MODELID)
 			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
 			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
 			.input('MODELDESC', sql.NVarChar, params.MODELDESC)
@@ -457,39 +480,29 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 		});
 	});
 }
-// Save Model History
-function ExcuteSQLInsertModelHistorybyPromises(params, callback) {
+// Save Model History 
+function ExcuteSQLInsertModelHistory(params, callback) {
 
-		var now = new Date();
-		sql.connect(dbConnectionConfig).then(pool => {
-			// Query		    
-			return pool.request()
-				.input('MODELCATID', sql.NVarChar, params.MODELCATID)
-				.input('MODELID', sql.NVarChar, newModelID)
-				.input('CRETDTTM', sql.DateTimeOffset, now)
-				.input('MODELTYPE', sql.NVarChar, params.MODELTYPE)
-				.input('MODELNAME', sql.NVarChar, params.MODELNAME)
-				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
-				.intput('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)
-				.input('MODELID_PR', sql.Xml, params.MODELID_PR)
-				.input('MODELID_PR_NODEID', sql.Xml, params.MODELID_PR_NODEID)
-				.input('PROCESSID', sql.NVarChar, params.PROCESSID)
-				.input('MODEL_XML', sql.Xml, params.MODEL_XML)
-				.input('MODELHISTDESC', sql.DateTimeOffset, now)
-				.input('USERID', sql.NVarChar, params.USERID)
-				.input('INSUSER', sql.NVarChar, params.INSUSER)
-				.input('INSDTTM', sql.DateTimeOffset, now)
-				.input('UPDUSER', sql.NVarChar, params.UPDUSER)
-				.input('UPDDTTM', sql.DateTimeOffset, now)
-				.query(sqlInsertModelQuery_Dev)
-		}).then(result => {
-			// console.dir(result);
-			return callback(result, newModelID);
-		}).catch(err => {
-			console.dir(err);
-			// ... error checks
-		});
-	}
+	strSql = 'INSERT INTO '+ ModelHistory +' (MODELCATID, MODELTYPE, MODELID, CRETDTTM, MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODE, PROCESSID, MODEL_XML, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)' 
+	strSql = strSql + ' SELECT MODELCATID, MODELTYPE, MODELID, getdate(), MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODEID, PROCESSID, MODEL_XML, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM FROM PROCESSMODEL'
+	strSql = strSql + ' WHERE MODELID=@MODELID';	
+
+	console.dir(strSql);
+
+	sql.connect(dbConnectionConfig).then(pool => {
+
+		return pool.request()
+			.input('MODELID', sql.NVarChar, params.MODELID)
+			.query(strSql)		
+
+	}).then(result => {
+		 console.dir(result);
+		return result;
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	});
+}
 
 
 
@@ -529,11 +542,12 @@ module.exports = {
 	//모델 변경 이력 조회
 	SelectModelHistory: ExcuteSQLSelectModelHistory,
 	SelectModelRepos: ExcuteSQLSelectModelReposbyPromises,
-	UpdateModel: ExcuteSQLInsertModelHistorybyPromises,
-	InsertModel: ExcuteSQLInsertModelHistorybyPromises,
+	UpdateModel: ExcuteSQLUpdateModelbyPromises,
+	InsertModel: ExcuteSQLInsertModelbyPromises,
 //	InsertModelHistory: ExcuteSQLInsertModelHistorybyPromises,
 	DeleteModel: ExcuteSQLDeleteModelbyPromises,
-	UdataModelParams: ExcuteSQLUpdateModelParams,
+	UdataModelParams: ExcuteSQLUpdateModelParams, 
+	UdataModelandInsertHistory: ExcuteSQLUpdateModelHistory,
 	InsertModelRepos: ExcuteSQLInsertModelRepository,
 
 	//FileList...
