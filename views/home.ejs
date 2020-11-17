@@ -100,8 +100,7 @@ td
 </div>
 
 <!-- Popup Layer -->
-
-<div id="delete_layer" style="display: none;">
+<div id="history_layer" style="display: none;">
   <div style="height: 50px; 
               padding-top: 10px;
               padding-bottom: 20px;
@@ -109,7 +108,7 @@ td
     <button style="border: 1px solid hsl(0 0% 87% / 1); 
                                padding-right: 20px; 
                                padding-left: 20px; ">
-    삭제                             
+    이력보기                             
     </button>
   </div>
 </div>
@@ -155,19 +154,21 @@ td
     <br>
     <br>
     <br>
-
-    <table class="table table-striped" 
+    <!-- table-striped-->
+    <table class="table table-hover" 
             style="width: 100%;">
      <thead>
       <tr>
         <th></th>
         <th style="width: 20%">모델 ID</th>
-        <th style="width: 15%">프로세스 ID</th>
-        <th style="width: 15%">프로세스 명</th>
+        <th style="width: 10%">프로세스 ID</th>
+        <th style="width: 10%">프로세스 명</th>
         <th style="width: 35%">프로세스 세부사항</th>
         <th style="width: 5%">열기</th>
         <th style="width: 5%">수정</th>
         <th style="width: 5%">삭제</th>
+        <th style="width: 5%">등록자</th>
+        <th style="width: 5%">수정자</th>
       </tr>
     </thead>
 
@@ -178,7 +179,7 @@ td
                 i++;
               }
               else{  var rows = data[i]; %>
-      
+      <!--
       <tr>
         <td></td>
         <td></td>
@@ -188,11 +189,15 @@ td
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+        <td></td>
       </tr>
+      -->
 <!-- border-radius: 3px;
      border: 1px solid hsl(0 0% 87% / 1);
      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;-->
-      <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);">
+      <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);"
+          class="viewHistory">
         <td><input type="checkbox"</td>
         <td><img src="/folder_icon.svg" style="padding-right: 10px;"><%= rows.MODELID  %></td>
         <td><%= rows.PROCESSID  %></td>
@@ -200,13 +205,15 @@ td
         <td><%= rows.MODELDESC %></td>
         <td><a href="/viewer?id=<%= rows.MODELID %>"><img src="/folder_icon.svg"></a></td>
         <td><a href="/modeler?id=<%= rows.MODELID %>"><img src="/edit.svg" style="width: 30px; height: 30px; " ></a></td>
-        <td><a class="delete" href="/delete?id=<%= rows.MODELID %>"><img src="/delete.svg" style="width: 30px; height: 30px;"></a></td>        
+        <td><a class="delete" href="/delete?id=<%= rows.MODELID %>"><img src="/delete.svg" style="width: 30px; height: 30px;"></a></td>     
+        <td><%= rows.INSUSER %></td>   
+        <td><%= rows.UPDUSER %></td>   
       </tr>
     <% } %>
     <% } %>
 
     <tr>
-        <td colspan="7" align="center">
+        <td colspan="10" align="center">
             <% for(var j = 0; j < (length + 1) / page_num; j++){ %>
             [<a href="/home/<%= j + 1 %>"><%= j + 1 %></a>]
             <%}%>
@@ -263,7 +270,6 @@ td
       </ul>
   </div>
 </aside>
-
 
 
 <br>
@@ -327,24 +333,26 @@ td
       var myWindow = window.open(url,"userPopup",popupOption);  
   });
 
-  $('#delete_layer').on('click', function(e){
+  /*
+  $('#history_layer').on('click', function(e){
 
      var y = e.clientY;
      var x = e.clientX;
   })
+  */
 
   /*
   $(document).on('click' , 'span' , function(e){
 
-    if($('#delete_layer').is(':visible')){
-      $('#delete_layer').hide();
+    if($('#history_layer').is(':visible')){
+      $('#history_layer').hide();
     }
     else{
 
       var top = e.clientY - 20;
       var left = e.clientX - 40;
 
-      $('#delete_layer').css({ 
+      $('#history_layer').css({ 
           "top"  : top ,
           "left" : left,
           "position" : "absolute"
@@ -354,7 +362,28 @@ td
   })
   */
 
-  $(document).on('click','#deleteRow',function(){
+  $('.viewHistory').on('click', function (e) {
+      
+    if($('#history_layer').is(':visible')){
+      $('#history_layer').hide();
+    }
+    else{
+      var top = e.clientY - 20;
+      var left = e.clientX - 40;
+
+      $('#history_layer').css({ 
+          "top"  : top ,
+          "left" : left,
+          "position" : "absolute"
+      }).show();
+    }
+  });
+
+  $('#history_layer').on('click', function(e){
+    var s = '';
+  });
+
+  $(document).on('click', '#deleteRow', function () {
     this.parentNode.remove()
   });
 

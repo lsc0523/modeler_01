@@ -11,7 +11,7 @@ import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
 
 var common = require('./common');
-var colorPick = require('./colorPick')
+//var colorPick = require('./colorPick')
 
 /*
 import {
@@ -425,11 +425,15 @@ $(function () {
       urlLink = '/update'
     }
 
-    //var historyResult = confirm("이력 저장 하시겠습니까? 취소 시 모델정보만 저장됩니다.");
+    var historyResult = confirm("이력 저장 하시겠습니까? 취소 시 모델정보만 저장됩니다.");
+    var version;
+    //var versionText;
     var historyYN = false;
-    //if(historyResult){
-    //  historyYN = true;
-    //}
+    
+    if(historyResult){
+      historyYN = true;
+      version = prompt("Version & Commnet" , "input");
+    }
 
     var JSmodeName = $('#modelName').val();
     var modelDetailName = $('#modelDetailName').val();

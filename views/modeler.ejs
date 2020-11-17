@@ -29,6 +29,7 @@
 
   .active {
      text-decoration: underline;
+     cursor: pointer;
   }
 
   .panel {
@@ -302,37 +303,6 @@ ul, #myUL {
   </li>
   <% } %>
 </ul>
-
-  <!--
-  <a href="#" class="sideListMenu">전극</a>
-  <div class="panel">
-    <% for(var i=0; i < data.length; i++){ %>
-    <% if(data[i].MODELCATID == "A"){ %>
-      <button class="btn_model_plus">+</button>
-      <a href="/modeler?id=<%=data[i].MODELID%>" 
-           style="font-size: 15px;"
-           class="panel_row"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a>
-       </br>
-    <% } %>
-    <% } %>
-  </div>
-  <a href="#" class="sideListMenu">조립</a>
-    <div class="panel">
-      <% for(var i=0; i < data.length; i++){ %>
-      <% if(data[i].MODELCATID == "B"){ %>
-        <a href="/modeler?id=<%=data[i].MODELID%>" style="font-size: 15px;"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a><br>
-      <% } %>
-      <% } %>
-    </div>
-  <a href="#" class="sideListMenu">활성</a>
-    <div class="panel">
-      <% for(var i=0; i < data.length; i++){ %>
-      <% if(data[i].MODELCATID == "C"){ %>
-        <a href="/modeler?id=<%=data[i].MODELID%>" style="font-size: 15px;"><%=data[i].MODELID%> [ <%=data[i].MODELNAME%> ]</a><br>
-      <% } %>
-      <% } %>
-    </div>
-  -->
 </div>
 
 <div class="content with-diagram" id="js-drop-zone">
@@ -397,5 +367,5 @@ for (i = 0; i < toggler.length; i++) {
 }
 
 </script>
-
+</body>
 </html>

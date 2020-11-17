@@ -22,3 +22,23 @@ export function NVC(_str){
 		return obj;
 	}
 }
+
+export function getQueryData(sqlQuery, params){
+
+	params.sqlQuery = sqlQuery;
+
+	$.ajax({
+		url: '/select',
+		type: 'GET',
+		data: params,
+		dataType: 'text',
+		success: function (data) {
+			alert("조회에 성공하였습니다.");
+			return data;
+		},
+		error: function (error) {
+		  alert("조회에 실패하였습니다.");
+		  return null;
+		}
+	  })
+}

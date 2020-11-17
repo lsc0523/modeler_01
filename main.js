@@ -249,8 +249,8 @@ function InsertModelData(req, callback) {
 		MODELNAME: req.body.modelName,
 		MODELDESC: req.body.modelDetailName,
 		MODELID_REVISION : '',
-		INSUSER: 'LGCNS',
-		UPDUSER: 'LGCNS'
+		INSUSER: req.session.user.id,
+		UPDUSER: req.session.user.id
 	}
 
 
@@ -315,46 +315,44 @@ server.post('/insert', upload.any(), function (req, res) {
 
 server.post('/update', upload.any(), function (req, res) {
 	console.log("update...");
-	//console.log(req.body);
-	//console.log(req.body.id);
-	console.log(req.body.modelID);
+	//console.log(req.body.modelID);
 	/*
 	console.log(req.body.historyYN);
 	var historyYN = req.body.historyYN;
+	*/
+	var historyYN = req.body.historyYN;
+	var params = {
+		MODELID: req.body.modelID,
+		MODEL_XML: req.body.id,
+		MODELNAME: req.body.modelName,
+		MODELDESC: req.body.modelDetailName,
+		UPDUSER: req.session.user.id
+	};
 
 	if (historyYN) {
-		InsertModelData(req, function (file_result) {
-			console.log(file_result);
-			console.log("history updates..");
-			
-			res.send("OK");
-		});
+		Mssql.UpdateModelandInsertHistory(params , function(result){
+			console.log("Add History..");
+			res.json({ id: params.MODELID });
+		})
 	} else {
-	*/
-		var params = {
-			MODELID: req.body.modelID,
-			MODEL_XML: req.body.id,
-			MODELNAME: req.body.modelName,
-			MODELDESC: req.body.modelDetailName
-		};
 
-		Mssql.UdataModelParams(params, function (result) {
+		Mssql.UpdateModelParams(params, function (result) {
 			console.log(result);
 
 			if (isNotEmpty(req.files)) {
-				
+
 				Mssql.getNewReposID(params.MODELID, function (repoID) {
-	
+
 					var newRepoID;
 					var pramsArray = [];
-	
+
 					if (isNotEmpty(repoID)) {
 						newRepoID = repoID;
 					}
 					else {
 						newRepoID = 1;
 					}
-	
+
 					for (var i = 0; i < req.files.length; i++) {
 						var pramsFile = {
 							REPOSID: Number(newRepoID) + 1,
@@ -362,25 +360,24 @@ server.post('/update', upload.any(), function (req, res) {
 							REPOSNAME: req.files[i].originalFilename,
 							MODELID: params.MODELID
 						};
-	
+
 						newRepoID = Number(newRepoID) + 1;
 						pramsArray.push(pramsFile);
 					}
-	
+
 					Mssql.InsertModelRepos(pramsArray, function (file_result) {
 						console.log(22);
 						console.log(file_result);
-						res.json({id : params.MODELID});
+						res.json({ id: params.MODELID });
 					});
-	
+
 				});
 
 			} else {
-				//res.send("OK");
-				res.json({id : params.MODELID});
+				res.json({ id: params.MODELID });
 			}
 		});
-	//}
+	}
 });
 
 
@@ -401,8 +398,7 @@ server.get('/delete', function (req, res) {
 				page_num: 10,
 				pass: true,
 				length: result.recordset.length - 1,
-				sess: req.session.user.id,
-				'result' : 'ok'
+				sess: req.session.user.id
 			});
 		});
 	});
@@ -524,7 +520,7 @@ server.get('/history/:page' , function(req ,res){
 	
 	if (isNotEmpty(req.session.user)) {
 		var modelID = req.query.id;
-		var params = { MODELID_REVISION : modelID};
+		var params = { MODELID : modelID};
 		Mssql.SelectModelHistory(params , function(result){
 			
 			var page = req.params.page;
@@ -561,6 +557,15 @@ server.get('/history/:page' , function(req ,res){
 		res.redirect('login');
 	}
 });
+
+server.get('/select', function (req, res) {
+	var sqlQurey = req.query.params.sqlQurey;
+	var params = req.query.params;
+
+	Mssql.SelectQueryParams(sqlQurey, params, function (result) {
+		res.json({ data: result });
+	});
+})
 
 server.listen(3000, () => {
 	console.log("Server is Listening")
