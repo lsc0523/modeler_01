@@ -483,16 +483,19 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 // Save Model History 
 function ExcuteSQLInsertModelHistory(params, callback) {
 
-	strSql = 'INSERT INTO ' + ModelHistory + ' (MODELCATID, MODELTYPE, MODELID, CRETDTTM, MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODE, PROCESSID, MODEL_XML, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
-	strSql = strSql + ' SELECT MODELCATID, MODELTYPE, MODELID, getdate(), MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODEID, PROCESSID, MODEL_XML, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM FROM PROCESSMODEL'
+	strSql = 'INSERT INTO ' + ModelHistory + ' (MODELCATID, MODELTYPE, MODELID, CRETDTTM, MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODE, PROCESSID, MODEL_XML, MODELHISTDESC, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+	strSql = strSql + ' SELECT MODELCATID, MODELTYPE, MODELID, getdate(), MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODEID, PROCESSID, MODEL_XML, @MODELHISTDESC, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM FROM PROCESSMODEL'
 	strSql = strSql + ' WHERE MODELID=@MODELID';
 
 	console.dir(strSql);
 
-	sql.connect(dbConnectionConfig).then(pool => {
 
+
+	sql.connect(dbConnectionConfig).then(pool => {
+		
 		return pool.request()
 			.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('MODELHISTDESC', sql.NVarChar, params.MODELHISTDESC)
 			.query(strSql)
 
 	}).then(result => {
