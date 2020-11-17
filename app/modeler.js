@@ -424,15 +424,17 @@ $(function () {
     else {
       urlLink = '/update'
     }
-
-    var historyResult = confirm("이력 저장 하시겠습니까? 취소 시 모델정보만 저장됩니다.");
-    var version;
-    //var versionText;
-    var historyYN = false;
     
-    if(historyResult && urlLink == '/update'){
-      historyYN = true;
-      version = prompt("Version & Commnet" , "input");
+    var historyResult;
+    var version;
+    var historyYN = false;
+
+    if (urlLink == '/update') {
+      historyResult = confirm("이력 저장 하시겠습니까? 취소 시 모델정보만 저장됩니다.");
+      if (historyResult) {
+        historyYN = true;
+        version = prompt("Version & Commnet", "input");
+      }
     }
 
     var JSmodeName = $('#modelName').val();
