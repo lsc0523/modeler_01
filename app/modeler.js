@@ -461,6 +461,7 @@ $(function () {
     formData.append("historyYN", historyYN);
     formData.append("modelName", common.NVC(ProcessName));
     formData.append("modelDetailName", common.NVC(docText));
+    formData.append("modelComment" , version);
 
     $.each($("input[type='file']")[0].files, function (i, file) {
       formData.append('files', file);

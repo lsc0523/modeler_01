@@ -326,6 +326,7 @@ server.post('/update', upload.any(), function (req, res) {
 		MODEL_XML: req.body.id,
 		MODELNAME: req.body.modelName,
 		MODELDESC: req.body.modelDetailName,
+		MODELHISTDESC : req.body.modelComment,
 		UPDUSER: req.session.user.id
 	};
 
