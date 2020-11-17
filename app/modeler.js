@@ -430,7 +430,7 @@ $(function () {
     //var versionText;
     var historyYN = false;
     
-    if(historyResult){
+    if(historyResult && urlLink == '/update'){
       historyYN = true;
       version = prompt("Version & Commnet" , "input");
     }
