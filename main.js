@@ -1,10 +1,10 @@
 ﻿var express = require("express")
 var path = require("path")
+//import common from './app/common.js';
 
 var server = express()
 var webpack = require('webpack')
 //var common = require('./app/common');
-
 // webpack의 output 장소인 dist를 express static으로 등록한다.
 const staticMiddleWare = express.static("public");
 // webpack 설정
@@ -73,18 +73,17 @@ var upload = multer({
 	storage: storage
 });
 
+//var common = require('./app/common.js');
 //Util...
 function isNotEmpty(_str) {
 	var obj = String(_str);
 	if (obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '') return false;
 	else return true;
-
 }
 
 server.get('/home2', function (req, res) {
 	console.log("home2...");
 	console.log(req.cookies);
-
 
 	if (isNotEmpty(req.session.user)) {
 		var reasonTypeQurey = "SELECT A.* FROM REASONCODE A WHERE A.CODE_TYPE = 'LG_C_TYPE'";

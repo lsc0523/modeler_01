@@ -147,7 +147,7 @@ td
   Welcome, <%=sess%> 님
 </div>
 
-  <div class="section"style="padding-left: 100px; 
+  <div class="section"style="padding-left: 50px; 
                              background-color: hsl(0,0%,97%); 
                              height: 100%">
     <br>
@@ -198,7 +198,7 @@ td
      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px 0px;-->
       <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);"
           class="viewHistory">
-        <td><input type="checkbox"</td>
+        <td><input type="checkbox"></td>
         <td><img src="/folder_icon.svg" style="padding-right: 10px;"><%= rows.MODELID  %></td>
         <td><%= rows.PROCESSID  %></td>
         <td><%= rows.MODELNAME %></td>
@@ -270,12 +270,6 @@ td
       </ul>
   </div>
 </aside>
-
-
-<br>
-<br>
-<br>
-<br>
 </body>
 
 <script type="text/javascript">
@@ -363,14 +357,20 @@ td
   */
 
   $('.viewHistory').on('click', function (e) {
-      
+    
+    //checkbox click event 방지
+    if($(this)[0].children[0].children[0] == e.target){
+      return;
+    }
+
     if($('#history_layer').is(':visible')){
       $('#history_layer').hide();
+      $('#history_layer').removeAttr( 'name' );
     }
     else{
       var top = e.clientY - 20;
       var left = e.clientX - 40;
-
+      $('#history_layer').attr('name' , $(this)[0].children[1].textContent);
       $('#history_layer').css({ 
           "top"  : top ,
           "left" : left,
@@ -378,9 +378,15 @@ td
       }).show();
     }
   });
-
+  
   $('#history_layer').on('click', function(e){
     var s = '';
+    console.log($(this).attr('name'));
+    window.location = '/history/1?id=' + $(this).attr('name');
+  });
+
+  $(document).on('click', '[name="historyclick"]', function () {
+    var s = "";
   });
 
   $(document).on('click', '#deleteRow', function () {
