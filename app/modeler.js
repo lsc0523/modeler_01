@@ -300,7 +300,7 @@ $(function () {
   var minutes = today.getMinutes();  // 분
   var seconds = today.getSeconds();  // 초
 
-  $('#save-time').val(" Autosaved at " + hours + ":" + minutes + ":" + seconds);
+  //$('#save-time').val(" Autosaved at " + hours + ":" + minutes + ":" + seconds);
 
 
   bpmnModeler.on('element.click', function (e) {
@@ -530,7 +530,7 @@ $(function () {
 
       setTimeout(function () {
         //$('#Progress_Loading').hide();
-        $('#save-time').show();
+        //$('#save-time').show();
         var hours = today.getHours();
         var minutes = today.getMinutes();
         var seconds = today.getSeconds();
@@ -616,7 +616,10 @@ $(function () {
     'allowRecent': true,
     'recentMax': 5,
     'allowCustomColor': false,
-    'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b", "#ecf0f1", "#bdc3c7", "#95a5a6", "#7f8c8d"],
+    'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", 
+                "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", 
+                "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", 
+                "#c0392b", "#ecf0f1", "#bdc3c7", "#95a5a6", "#7f8c8d"],
     'onColorSelected': function () {
       this.element.css({ 'backgroundColor': this.color, 'color': this.color });
     }
@@ -732,7 +735,10 @@ $(function () {
 
   $("#picker1").colorPick({
     'initialColor': 'hsl(0,0%,97%)',
-    'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b", "#ecf0f1"],
+    'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", 
+                "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", 
+                "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", 
+                "#c0392b", "#ecf0f1", "#00ff0000"],
     'onColorSelected': function () {
       console.log("The user has selected the color: " + this.color)
       this.element.css({ 'backgroundColor': this.color, 'color': this.color });
