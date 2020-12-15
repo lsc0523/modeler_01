@@ -51,7 +51,7 @@ var sqlInsertModelReposQuery = 'insert into '
 	+ ModelRepostable +
 	'(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
 	+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
-	
+
 //Select Model
 function ExcuteSQLSelectModel(params, callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
@@ -287,8 +287,6 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 		// ... error checks
 	});
 }
-
-
 
 function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();
