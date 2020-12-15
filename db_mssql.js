@@ -38,8 +38,10 @@ var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + Modeltable + ' where
 
 var sqlSelectModelReposIDQurey = 'select top(1) * from ' + ModelRepostable + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
+//All file List from db
+var allFileList = 'select * from ' + ModelRepostable + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
-
+var sqlUpdateModelQuery_Dev = 'update ' + Modeltable + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
 
 var sqlInsertModelQuery_Dev = 'insert into ' + Modeltable +
 	'(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
@@ -49,6 +51,7 @@ var sqlInsertModelReposQuery = 'insert into '
 	+ ModelRepostable +
 	'(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
 	+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
+
 //Select Model
 function ExcuteSQLSelectModel(params, callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
@@ -132,8 +135,7 @@ function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 }
 
 
-//All file List from db
-var allFileList = 'select * from ' + ModelRepostable + ' where MODELID=@MODELID order by (REPOSID) DESC'
+
 
 function ExcuteSQLSelectAllFileList(params, callback) {
 
@@ -240,32 +242,32 @@ function Padder(len, pad) {
 	};
 }
 // Model  
-function ExcuteSQLUpdateModel(params, callback) {
-	var connection = sql.connect(dbConnectionConfig, function (err) {
-		if (err) {
-			return console.error('error is', err);
-		}
+// function ExcuteSQLUpdateModel(params, callback) {
+// 	var connection = sql.connect(dbConnectionConfig, function (err) {
+// 		if (err) {
+// 			return console.error('error is', err);
+// 		}
 
-		var ps = new sql.PreparedStatement(connection);
-		ps.input('MODEL_XML', sql.Xml);
-		ps.input('MODELID', sql.NVarChar);
+// 		var ps = new sql.PreparedStatement(connection);
+// 		ps.input('MODEL_XML', sql.Xml);
+// 		ps.input('MODELID', sql.NVarChar);
 
-		// Xml TO Json
-		//		 var xmlToJson = convert.xml2json(XML, {compact: true, spaces: 4});
-		//		 console.log(xmlToJson);
+// 		// Xml TO Json
+// 		//		 var xmlToJson = convert.xml2json(XML, {compact: true, spaces: 4});
+// 		//		 console.log(xmlToJson);
 
-		ps.prepare(sqlUpdateModelQuery, function (err) {
-			ps.execute({ MODEL_XML: params.MODEL_XML, MODELID: params.MODELID }, function (err, result) {
-				ps.unprepare(function (err) {
-					if (err !== null) {
-						console.log(err);
-					}
-				});
-				return callback(result);
-			});
-		});
-	});
-}
+// 		ps.prepare(sqlUpdateModelQuery, function (err) {
+// 			ps.execute({ MODEL_XML: params.MODEL_XML, MODELID: params.MODELID }, function (err, result) {
+// 				ps.unprepare(function (err) {
+// 					if (err !== null) {
+// 						console.log(err);
+// 					}
+// 				});
+// 				return callback(result);
+// 			});
+// 		});
+// 	});
+// }
 
 function ExcuteSQLUpdateModelbyPromises(params, callback) {
 
@@ -285,8 +287,6 @@ function ExcuteSQLUpdateModelbyPromises(params, callback) {
 		// ... error checks
 	});
 }
-
-sqlUpdateModelQuery_Dev = 'update ' + Modeltable + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
 
 function ExcuteSQLUpdateModelParams(params, callback) {
 	var now = new Date();
@@ -338,53 +338,53 @@ function ExcuteSQLUpdateModelHistory(params, callback) {
 }
 
 
-function ExcuteSQLInsertModel(params, callback) {
-	// console.log(params);
-	var connection = sql.connect(dbConnectionConfig, function (err) {
-		if (err) {
-			return console.error('error is', err);
-		}
+// function ExcuteSQLInsertModel(params, callback) {
+// 	// console.log(params);
+// 	var connection = sql.connect(dbConnectionConfig, function (err) {
+// 		if (err) {
+// 			return console.error('error is', err);
+// 		}
 
-		var ps = new sql.PreparedStatement(connection);
-		ps.input('MODELCATID', sql.NVarChar);
-		ps.input('MODELID', sql.NVarChar);
-		ps.input('PROCESSID', sql.NVarChar);
-		ps.input('MODEL_XML', sql.Xml);
-		ps.input('INSUSER', sql.NVarChar);
-		ps.input('INSDTTM', sql.DateTimeOffset);
-		ps.input('UPDUSER', sql.NVarChar);
-		ps.input('UPDDTTM', sql.DateTimeOffset);
-		ps.input('REPOSIGRUPID', sql.NVarChar);
+// 		var ps = new sql.PreparedStatement(connection);
+// 		ps.input('MODELCATID', sql.NVarChar);
+// 		ps.input('MODELID', sql.NVarChar);
+// 		ps.input('PROCESSID', sql.NVarChar);
+// 		ps.input('MODEL_XML', sql.Xml);
+// 		ps.input('INSUSER', sql.NVarChar);
+// 		ps.input('INSDTTM', sql.DateTimeOffset);
+// 		ps.input('UPDUSER', sql.NVarChar);
+// 		ps.input('UPDDTTM', sql.DateTimeOffset);
+// 		ps.input('REPOSIGRUPID', sql.NVarChar);
 
-		getNewModelID(function (result) {
-			console.log(result);
-		});
+// 		getNewModelID(function (result) {
+// 			console.log(result);
+// 		});
 
-		ps.prepare(sqlUpdateModelQuery, function (err) {
+// 		ps.prepare(sqlUpdateModelQuery, function (err) {
 
-			var now = new Date();
-			ps.execute({
-				MODELCATID: params.MODELCATID, MODELID: result, PROCESSID: params.PROCESSID, MODEL_XML: params.MODEL_XML,
-				INSUSER: params.INSUSER, INSDTTM: now, UPDUSER: params.UPDUSER, UPDDTTM: now, REPOSIGRUPID: ''
-			}, function (err, result) {
-				ps.unprepare(function (err) {
-					if (err !== null) {
-						console.log(err);
-					}
-				});
-				return callback(result);
-			});
-		});
-
-
-
-		// params.MODELID = getNewModelID();
-
-		// console.log(params.MODELID);
+// 			var now = new Date();
+// 			ps.execute({
+// 				MODELCATID: params.MODELCATID, MODELID: result, PROCESSID: params.PROCESSID, MODEL_XML: params.MODEL_XML,
+// 				INSUSER: params.INSUSER, INSDTTM: now, UPDUSER: params.UPDUSER, UPDDTTM: now, REPOSIGRUPID: ''
+// 			}, function (err, result) {
+// 				ps.unprepare(function (err) {
+// 					if (err !== null) {
+// 						console.log(err);
+// 					}
+// 				});
+// 				return callback(result);
+// 			});
+// 		});
 
 
-	});
-}
+
+// 		// params.MODELID = getNewModelID();
+
+// 		// console.log(params.MODELID);
+
+
+// 	});
+// }
 
 function ExcuteSQLInsertModelRepository(params, callback) {
 
@@ -447,8 +447,8 @@ function ExcuteSQLInsertModelRepository(params, callback) {
 	//});
 
 }
-
 function ExcuteSQLInsertModelbyPromises(params, callback) {
+
 	getNewModelID(function (newModelID) {
 		//	 console.log(result);    
 		var now = new Date();
@@ -484,7 +484,7 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 function ExcuteSQLInsertModelHistory(params, callback) {
 
 	strSql = 'INSERT INTO ' + ModelHistory + ' (MODELCATID, MODELTYPE, MODELID, CRETDTTM, MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODE, PROCESSID, MODEL_XML, MODELHISTDESC, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
-	strSql = strSql + ' SELECT MODELCATID, MODELTYPE, MODELID, getdate(), MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODEID, PROCESSID, MODEL_XML, @MODELHISTDESC, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM FROM PROCESSMODEL'
+	strSql = strSql + ' SELECT MODELCATID, MODELTYPE, MODELID, getdate(), MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODEID, PROCESSID, MODEL_XML, @MODELHISTDESC, USERID, INSUSER, getdate(), UPDUSER, getdate() FROM PROCESSMODEL'
 	strSql = strSql + ' WHERE MODELID=@MODELID';
 
 	console.dir(strSql);
