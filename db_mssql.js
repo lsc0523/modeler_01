@@ -76,7 +76,7 @@ function ExcuteSQLSelectModel(params, callback) {
 }
 
 //Select Model Promises
-function ExcuteSQLSelectModelbyPromises(params, callback) {
+function ExcuteSQLSelectModel(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
@@ -115,7 +115,7 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 }
 
 //Select Model Repository
-function ExcuteSQLSelectModelReposbyPromises(params, callback) {
+function ExcuteSQLSelectModelRepository(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
@@ -133,9 +133,6 @@ function ExcuteSQLSelectModelReposbyPromises(params, callback) {
 		// ... error checks
 	})
 }
-
-
-
 
 function ExcuteSQLSelectAllFileList(params, callback) {
 
@@ -155,7 +152,7 @@ function ExcuteSQLSelectAllFileList(params, callback) {
 	})
 }
 
-function getNewReposID(id, callback) {
+function getNewRepositoryID(id, callback) {
 
 	var params = { MODELID: id };
 
@@ -269,26 +266,26 @@ function Padder(len, pad) {
 // 	});
 // }
 
-function ExcuteSQLUpdateModelbyPromises(params, callback) {
+// function ExcuteSQLUpdateModelbyPromises(params, callback) {
 
-	sql.connect(dbConnectionConfig).then(pool => {
-		// Query		    
-		return pool.request()
-			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
-			.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
-			.input('MODELDESC', sql.NVarChar, params.MODELDESC)
-			.query('update PROCESSMODEL set MODEL_XML=@MODEL_XML , MODELNAME=@MODELNAME , MODELDESC=@MODELDESC where MODELID=@MODELID')
-	}).then(result => {
-		console.dir(result);
-		return callback(result.rowsAffected);
-	}).catch(err => {
-		console.dir(err);
-		// ... error checks
-	});
-}
+// 	sql.connect(dbConnectionConfig).then(pool => {
+// 		// Query		    
+// 		return pool.request()
+// 			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+// 			.input('MODELID', sql.NVarChar, params.MODELID)
+// 			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
+// 			.input('MODELDESC', sql.NVarChar, params.MODELDESC)
+// 			.query('update PROCESSMODEL set MODEL_XML=@MODEL_XML , MODELNAME=@MODELNAME , MODELDESC=@MODELDESC where MODELID=@MODELID')
+// 	}).then(result => {
+// 		console.dir(result);
+// 		return callback(result.rowsAffected);
+// 	}).catch(err => {
+// 		console.dir(err);
+// 		// ... error checks
+// 	});
+// }
 
-function ExcuteSQLUpdateModelParams(params, callback) {
+function ExcuteSQLUpdateModel(params, callback) {
 	var now = new Date();
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
@@ -447,7 +444,7 @@ function ExcuteSQLInsertModelRepository(params, callback) {
 	//});
 
 }
-function ExcuteSQLInsertModelbyPromises(params, callback) {
+function ExcuteSQLInsertModel(params, callback) {
 
 	getNewModelID(function (newModelID) {
 		//	 console.log(result);    
@@ -463,8 +460,8 @@ function ExcuteSQLInsertModelbyPromises(params, callback) {
 				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
 				.input('PROCESSID', sql.NVarChar, params.PROCESSID)
 				.input('MODEL_XML', sql.Xml, params.MODEL_XML)
-				.input('MODELID_PR', sql.Xml, params.MODELID_PR)
-				.input('MODELID_PR_NODEID', sql.Xml, params.MODELID_PR_NODEID)
+				.input('MODELID_PR', sql.NVarChar, params.MODELID_PR)
+				.input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
 				.input('INSUSER', sql.NVarChar, params.INSUSER)
 				.input('INSDTTM', sql.DateTimeOffset, now)
 				.input('UPDUSER', sql.NVarChar, params.UPDUSER)
@@ -507,7 +504,7 @@ function ExcuteSQLInsertModelHistory(params, callback) {
 	});
 }
 
-function ExcuteSQLDeleteModelbyPromises(params, callback) {
+function ExcuteSQLDeleteModel(params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
@@ -539,7 +536,7 @@ function ExecuteNonQuery(sqlQurey, callback) {
 
 
 //Select Params Data..
-function ExcuteSQLSelectQueryParams(sqlQurey, params, callback) {
+function ExcuteSQLSelectQuery(sqlQurey, params, callback) {
 
 	sql.connect(dbConnectionConfig).then(pool => {
 		// Query		    
@@ -560,20 +557,20 @@ function ExcuteSQLSelectQueryParams(sqlQurey, params, callback) {
 
 module.exports = {
 	NonQuery: ExecuteNonQuery,
-	SelectModel: ExcuteSQLSelectModelbyPromises,
+	SelectModel: ExcuteSQLSelectModel,
 	//모델 변경 이력 조회
 	SelectModelHistory: ExcuteSQLSelectModelHistory,
-	SelectModelRepos: ExcuteSQLSelectModelReposbyPromises,
-	UpdateModel: ExcuteSQLUpdateModelbyPromises,
-	InsertModel: ExcuteSQLInsertModelbyPromises,
+	SelectModelRepos: ExcuteSQLSelectModelRepository,
+	//UpdateModel: ExcuteSQLUpdateModelbyPromises,
+	InsertModel: ExcuteSQLInsertModel,
 	//	InsertModelHistory: ExcuteSQLInsertModelHistorybyPromises,
-	DeleteModel: ExcuteSQLDeleteModelbyPromises,
-	UpdateModelParams: ExcuteSQLUpdateModelParams,
+	DeleteModel: ExcuteSQLDeleteModel,
+	UpdateModelParams: ExcuteSQLUpdateModel,
 	UpdateModelandInsertHistory: ExcuteSQLUpdateModelHistory,
 	InsertModelRepos: ExcuteSQLInsertModelRepository,
 
 	//FileList...
 	SelectAllFileList: ExcuteSQLSelectAllFileList,
-	getNewReposID: getNewReposID,
-	SelectQueryParams : ExcuteSQLSelectQueryParams
+	getNewReposID: getNewRepositoryID,
+	SelectQueryParams : ExcuteSQLSelectQuery
 };
