@@ -298,6 +298,7 @@ function ExcuteSQLUpdateModel(params, callback) {
 			.input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
 			.input('UPDUSER', sql.NVarChar, params.UPDUSER)
 			.input('UPDDTTM', sql.DateTimeOffset, now)
+			.input('MODELDIAGRAM_CNT',sql.NVarChar, params.MODELDIAGRAM_CNT)
 			.query(sqlUpdateModelQuery_Dev)
 	}).then(result => {
 		console.dir(result);
@@ -466,6 +467,7 @@ function ExcuteSQLInsertModel(params, callback) {
 				.input('INSDTTM', sql.DateTimeOffset, now)
 				.input('UPDUSER', sql.NVarChar, params.UPDUSER)
 				.input('UPDDTTM', sql.DateTimeOffset, now)
+				.input('MODELDIAGRAM_CNT',sql.NVarChar, params.MODELDIAGRAM_CNT)
 				.query(sqlInsertModelQuery_Dev)
 
 		}).then(result => {
