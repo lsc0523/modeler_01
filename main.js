@@ -25,10 +25,10 @@ server.use(staticMiddleWare);
 var Mssql = require('./db_mssql.js');
 // var sqlQurey = 'SELECT * FROM PROCESSMODEL ORDER BY UPDDTTM';
 
-var sqlQurey = 'SELECT MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM,'
-+ 'DIAGRAM_CNT = (SELECT COUNT(MODELID_PR) AS DIAGRAM_CNT FROM PROCESSMODEL p1'
-+ ' WHERE MODELID_PR = p.MODELID )' 	
-+ ' FROM PROCESSMODEL p  ORDER BY UPDDTTM'
+var sqlQurey = 'SELECT MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  ' + 
+					  'MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR,' + 
+					  'MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM, ISNULL( MODELDIAGRAM_CNT , 0 ) MODELDIAGRAM_CNT' 	
+			+ ' FROM PROCESSMODEL p  ORDER BY UPDDTTM'
 
 //html render
 server.engine('html', require('ejs').renderFile);
@@ -253,6 +253,7 @@ function InsertModelData(req, callback) {
 		MODELNAME: req.body.modelName,
 		MODELDESC: req.body.modelDetailName,
 		MODELID_REVISION : '',
+		MODELDIAGRAM_CNT : req.body.diagramCnt,
 		INSUSER: req.session.user.id,
 		UPDUSER: req.session.user.id
 	}

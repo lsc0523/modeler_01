@@ -462,6 +462,7 @@ $(function () {
     formData.append("modelName", common.NVC(ProcessName));
     formData.append("modelDetailName", common.NVC(docText));
     formData.append("modelComment" , version);
+    formData.append("diagramCnt" , (xmlData.match(/bpmndi:BPMNDiagram/g) || []).length /2);
 
     $.each($("input[type='file']")[0].files, function (i, file) {
       formData.append('files', file);
