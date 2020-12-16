@@ -123,7 +123,7 @@ server.get('/home/:page', function (req, res) {
 			});
 		});
 	} else {
-		res.redirect('login');
+		res.redirect('/login');
 	}
 });
 
@@ -390,8 +390,8 @@ server.get('/delete', function (req, res) {
 	console.log("delete...");
 	//console.log(req.query.id);
 	var params = { MODELID: req.query.id };
-	var pagenum = req.query.page;
-	console.log(pagenum);
+	//var pagenum = req.query.page;
+	//console.log(pagenum);
 
 	Mssql.DeleteModel(params, function (result) {
 
@@ -399,7 +399,7 @@ server.get('/delete', function (req, res) {
 
 			res.render('home', {
 				data: result.recordset,
-				page: pagenum,
+				page: 1,
 				page_num: 10,
 				pass: true,
 				length: result.recordset.length - 1,
