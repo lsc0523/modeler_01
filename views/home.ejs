@@ -123,29 +123,6 @@ td
   <img src="/Progress_Loading.gif"/>
 </div>
 
-<!-- Popup Layer -->
-
-<!--
-<div id="history_layer" class="popupLayer">
-  <div style="height: 50px; 
-              padding-top: 10px;
-              padding-bottom: 20px;
-              
-  ">
-
-
-    <span style="border: 1px solid hsl(0 0% 87% / 1); 
-                               padding-right: 20px; 
-                               padding-left: 20px; ">
-      이력보기
-    </span>
-    <span >
-      열기
-    </span>
-  </div>
-</div>
--->
-
    <div style="height: 50px; 
             padding-top: 10px;
             padding-bottom: 20px;
@@ -182,42 +159,38 @@ td
   <div class="section"style="padding-left: 50px; 
                              background-color: hsl(0,0%,97%); 
                              height: 100%">
-    <br>
-    <br>
-    <br>
-    <br>
+    <div style="padding-top: 10px; padding-bottom: 10px;">
+      <label style="padding-top: 10px;">검색</label>
+      <span style="padding-left: 20px;">
+          <input type="text" id="keyword" style="height: 36px; 
+                               width: 30%; 
+                               border: 1px solid hsl(0 0% 80% / 1);
+                               padding-left: 15px;
+                               font-size : 13px; ">
+      </span>
+    </div>
     <!-- table-striped-->
     <table class="table table-hover" 
-            style="width: 100%;">
+           style="width: 100%;"
+           id="user-table" >
      <thead>
       <tr>
-        <th></th>
-        <th style="width: 20%">모델 ID</th>
-<<<<<<< HEAD
+        <th style="width: 5%;"></th>
+        <th style="width: 0%; display: none;">모델 ID</th>
         <th style="width: 10%">프로세스 ID</th>
         <th style="width: 10%">프로세스 명</th>
         <th style="width: 30%">프로세스 세부사항</th>
-        <th style="width: 5%">개수</th>
-=======
-        <th style="width: 20%">모델명</th>
-        <th style="width: 35%">모델 세부사항</th>
         <th style="width: 10%">모델 수</th>
-        <th style="width: 20%">최종 수정 일시</th>
->>>>>>> 08f89a04e01118f104eb5532aeed49a11110bb22
-        <!--
-        <th style="width: 5%">열기</th>
-        <th style="width: 5%">수정</th>
-        <th style="width: 5%">삭제</th>
-        -->      
+        <th style="width: 10%">최종 수정 일시</th> 
         <th style="width: 10%">등록자</th>
         <th style="width: 10%">수정자</th>
-        <!--th style="width: 5%">옵션</th-->
+        <th style="width: 5%;">더보기</th>
       </tr>
     </thead>
 
     <tbody>
      
-      <% for(var i = (page * page_num) - page_num; i < (page * page_num); i++) {  %>
+      <% for(var i = (page * 300) - 300; i < (page * 300); i++) {  %>
       <%      if(i > length){
                 i++;
               }
@@ -242,28 +215,14 @@ td
       <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);"
           class="viewHistory">
         <td><input type="checkbox"></td>
-<<<<<<< HEAD
-        <td><img src="/model.svg" style="padding-right: 10px;"><%= rows.MODELID  %></td>
+        <td style="display : none;"><%= rows.MODELID  %></td>
         <td class="clicktd"><%= rows.PROCESSID  %></td>
         <td class="clicktd"><%= rows.MODELNAME %></td>
         <td class="clicktd"><%= rows.MODELDESC %></td>
-        <td class="clicktd"><%= rows.MODELDESC %></td>
-=======
-        <td><img src="/model.svg" style="padding-right: 10px;"><%= rows.MODELID %></td>
-        <td class="clicktd"><%= rows.MODELNAME  %></td>
-        <td class="clicktd"><%= rows.MODELDESC  %></td>
-        <td class="clicktd"><%= rows.DIAGRAM_CNT %></td>
+        <td style="padding-left: 20px;" class="clicktd"><%= rows.DIAGRAM_CNT %></td>
         <td class="clicktd"><%= rows.UPDDTTM %></td>
->>>>>>> 08f89a04e01118f104eb5532aeed49a11110bb22
-        <!--
-        <td><a href="/viewer?id=<%= rows.MODELID %>"><img src="/folder_icon.svg"></a></td>
-        <td><a href="/modeler?id=<%= rows.MODELID %>"><img src="/edit2.svg"  ></a></td>
-        <td><a class="delete" href="/delete?id=<%= rows.MODELID %>"><img src="/trash.svg" ></a></td>     
-        -->
         <td><%= rows.INSUSER %></td>   
         <td><%= rows.UPDUSER %></td>
-        <!-- <td><img src="/menu.svg" style="padding-right: 5px;"></td> -->
-        <!-- <td><button class="context-menu-one btn btn-primary">옵션</button></td>    -->
         <td>
         <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" id=<%= rows.MODELID %>> 
           <img src="/menu.svg" style="padding-right: 5px;" with="13", height="13">            
@@ -275,7 +234,7 @@ td
 
     <tr>
         <td colspan="10" align="center">
-            <% for(var j = 0; j < (length + 1) / page_num; j++){ %>
+            <% for(var j = 0; j < (length + 1) / 300; j++){ %>
             [<a href="/home/<%= j + 1 %>"><%= j + 1 %></a>]
             <%}%>
         </td>
@@ -336,6 +295,15 @@ td
 <script type="text/javascript">
 
   $(document).ready(function(){
+
+
+    $("#keyword").keyup(function () {
+      var k = $(this).val();
+      $("#user-table > tbody > tr").hide();
+      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + k + "')");
+
+      $(temp).parent().show();
+    })
 
      $('#Progress_Loading').hide();
   
@@ -409,11 +377,6 @@ td
       }
   });
 
-  //$('#selector').on('click',function(){
-  //  $(this).triggerHandler('contextmenu')   
-  //});
-
-
   $.contextMenu({
         selector: '.context-menu-one', 
         trigger: 'left',
@@ -426,7 +389,11 @@ td
               window.location = "/modeler?id=" + modelId;
             }
             else if(key == 'delete'){
-              //window.location = "/delete?id=" + modelId;
+              var checkDelete = confirm("삭제하시겠습니까?");
+
+              if (checkDelete) {
+                window.location = "/delete?id=" + modelId;
+              }
             }
             else if(key == 'open'){
               window.location = "/viewer?id=" + modelId;
@@ -438,14 +405,8 @@ td
         items: {
             "edit": {name: "수정", icon: "edit"},
             "open": {name: "열기", icon: "copy"},
-            //"copy": {name: "Copy", icon: "copy"},
-            //"paste": {name: "Paste", icon: "paste"},
             "delete": {name: "삭제", icon: "delete"},
-<<<<<<< HEAD
             "history" : {name : "이력보기" , icon : "paste"},
-=======
-            "history": {name: "이력", icon: "history"},
->>>>>>> 08f89a04e01118f104eb5532aeed49a11110bb22
             "sep1": "---------",
             "quit": {name: "나가기", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
         }
