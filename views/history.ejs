@@ -117,7 +117,7 @@
           <th style="width: 25%">모델 세부사항</th>
           <th style="width: 20%">Version & Comment</th>
           <th style="width: 5%">열기</th>
-          <th style="width: 5%">수정</th>
+       <!--   <th style="width: 5%">수정</th> -->
           <th style="width: 5%">삭제</th>
         </tr>
       </thead>
@@ -136,7 +136,7 @@
           <td><%= rows.MODELDESC %></td>
           <td><%= rows.MODELHISTDESC %></td>
           <td><a href="/viewer?id=<%= rows.MODELID %>">열기</a></td>
-          <td><a href="/modeler?id=<%= rows.MODELID %>">수정</a></td>
+        <!--  <td><a href="/modeler?id=<%= rows.MODELID %>">수정</a></td> -->
           <td><a href="/delete?id=<%= rows.MODELID %>">삭제</a></td>
         </tr>
         <% } %>
