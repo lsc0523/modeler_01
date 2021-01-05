@@ -11,6 +11,12 @@ const staticMiddleWare = express.static("public");
 const config = require("./webpack.config.js");
 const compiler = webpack(config);
 
+
+//var mod = require("korean-text-analytics");
+//var task = new mod.TaskQueue();
+
+//var { parse } = require('./charParse.js')
+
 // 웹팩을 미들웨어로 등록해서 사용하기 위한 모듈
 const webpackDevMiddleware = require("webpack-dev-middleware")(
 	compiler,
@@ -105,7 +111,7 @@ server.get('/home2', function (req, res) {
 });
 
 
-server.get('/home/:page', function (req, res) {
+server.get('/home', function (req, res) {
 	console.log("home...");
 	if (isNotEmpty(req.session.user)) {
 		Mssql.NonQuery(sqlQurey, function (result) {
@@ -158,6 +164,24 @@ server.get('/downloadPopup', function (req, res) {
 	res.render('downloadPopup');
 })
 
+
+var viewModelerQuery = "WITH CATCTE (MODELCATID_PR, MODELCATID, MODELCATNAME, LEVEL, SEQ_PATH) AS (\n" + 
+						"--ANCHOR MEMBER DEFINITION\n" + 
+						"SELECT MODELCATID_PR, MODELCATID, MODELCATNAME, 1 LEVEL,\n" + 
+						"CONVERT(NVARCHAR (MAX), MODELCATID) SEQ_PATH\n" + 
+						"FROM MODELCATEGORY A\n" + 
+						"WHERE MODELCATID_PR IS NULL\n" + 
+						"UNION ALL\n" + 
+						"--RECURSIVE MEMBER DEFINITION\n" + 
+						"SELECT A.MODELCATID_PR, A.MODELCATID, A.MODELCATNAME, B.LEVEL+1, B.SEQ_PATH + '/' + CONVERT(NVARCHAR (MAX), A.MODELCATID) SEQ_PATH\n" + 
+						"FROM MODELCATEGORY A\n" + 
+						"INNER JOIN CATCTE B ON A.MODELCATID_PR = B.MODELCATID\n" + 
+						")\n" + 
+						"SELECT *\n" + 
+						"FROM CATCTE\n" + 
+						"ORDER BY LEVEL ASC\n" + 
+						"OPTION (MAXRECURSION 100)\n";
+
 server.get('/modeler', function (req, res) {
 	console.log('modeler...Start...');
 	console.log(req.query.id);
@@ -167,7 +191,7 @@ server.get('/modeler', function (req, res) {
 	var modelDetailName = "";
 	var JsFileList = "";
 
-	Mssql.NonQuery(sqlQurey, function (result_data) {
+	Mssql.NonQuery(viewModelerQuery, function (result_data) {
 
 		if (req.query.id == "" || 
 			req.query.id == undefined || 

@@ -311,27 +311,27 @@ function ExcuteSQLUpdateModel(params, callback) {
 
 function ExcuteSQLUpdateModelHistory(params, callback) {
 
-	ExcuteSQLInsertModelHistory(params);
-
-	var now = new Date();
-	sql.connect(dbConnectionConfig).then(pool => {
-		// Query		    
-		return pool.request()
-			.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
-			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
-			.input('MODELDESC', sql.NVarChar, params.MODELDESC)
-			.input('MODELID_PR', sql.NVarChar, params.MODELID_PR)
-			.input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
-			.input('UPDUSER', sql.NVarChar, params.UPDUSER)
-			.input('UPDDTTM', sql.DateTimeOffset, now)
-			.query(sqlUpdateModelQuery_Dev)
-	}).then(result => {
-		console.dir(result);
-		return callback(result.rowsAffected);
-	}).catch(err => {
-		console.dir(err);
-		// ... error checks
+	ExcuteSQLInsertModelHistory(params, function(result){
+		var now = new Date();
+		sql.connect(dbConnectionConfig).then(pool => {
+			// Query		    
+			return pool.request()
+				.input('MODELID', sql.NVarChar, params.MODELID)
+				.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+				.input('MODELNAME', sql.NVarChar, params.MODELNAME)
+				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
+				.input('MODELID_PR', sql.NVarChar, params.MODELID_PR)
+				.input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
+				.input('UPDUSER', sql.NVarChar, params.UPDUSER)
+				.input('UPDDTTM', sql.DateTimeOffset, now)
+				.query(sqlUpdateModelQuery_Dev)
+		}).then(result => {
+			console.dir(result);
+			return callback(result.rowsAffected);
+		}).catch(err => {
+			console.dir(err);
+			// ... error checks
+		});
 	});
 }
 
@@ -487,9 +487,7 @@ function ExcuteSQLInsertModelHistory(params, callback) {
 	strSql = strSql + ' WHERE MODELID=@MODELID';
 
 	console.dir(strSql);
-
-
-
+	
 	sql.connect(dbConnectionConfig).then(pool => {
 		
 		return pool.request()
@@ -499,7 +497,7 @@ function ExcuteSQLInsertModelHistory(params, callback) {
 
 	}).then(result => {
 		console.dir(result);
-		return result;
+		return callback(result);
 	}).catch(err => {
 		console.dir(err);
 		// ... error checks

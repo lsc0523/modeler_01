@@ -11,6 +11,7 @@ import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
 
 var common = require('./common.js');
+//var mod = require('korean-text-analytics');
 //var colorPick = require('./colorPick');
 
 /*
@@ -283,16 +284,6 @@ $(function () {
     }
   });
 
-
-  /*
-  var test = document.getElementById('js-drop-zone');
-  // test 변수에 복제 할 노드를 지정
-
-  var test1 = test.cloneNode(true);
-
-  var divtest = document.getElementById('1234');
-  divtest.appendChild(test1);
-  */
   //setTimes..
   var today = new Date();
 
@@ -463,6 +454,9 @@ $(function () {
     formData.append("modelDetailName", common.NVC(docText));
     formData.append("modelComment" , version);
     formData.append("diagramCnt" , (xmlData.match(/bpmndi:BPMNDiagram/g) || []).length /2);
+
+    //var searchData = common.parsing("아버지 가방에 들어가신다.");
+
 
     $.each($("input[type='file']")[0].files, function (i, file) {
       formData.append('files', file);

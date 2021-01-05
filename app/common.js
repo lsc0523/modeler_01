@@ -23,6 +23,17 @@ export function NVC(_str){
 	}
 }
 
+//import customContextPad from 'korean-text-analytics';
+//var mod = import('korean-text-analytics');
+//var task = new mod.TaskQueue();
+
+//export function parsing(str){
+//	mod.ExecuteMorphModule(str , function(err , rep){
+//		return rep;
+//	})
+//}
+
+
 export function getQueryData(sqlQuery, params){
 
 	params.sqlQuery = sqlQuery;

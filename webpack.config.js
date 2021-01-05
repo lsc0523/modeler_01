@@ -4,7 +4,9 @@ const path = require("path");
 module.exports = {
   entry: {
     modeler: './app/modeler.js',
-    viewer : './app/viewer.js' 
+    viewer : './app/viewer.js' ,
+    home : './app/home.js',
+    modelList : './app/modelList.js'
   },
 
   output: {

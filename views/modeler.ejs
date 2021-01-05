@@ -161,7 +161,7 @@ ul, #myUL {
   ">
 
   <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HOME</a>
-  <a href="/home/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODEL LIST</a>
+  <a href="/home" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODEL LIST</a>
   <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">MODELER</a>
   <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">HISTORY</a>
   <% if(sess) { %>
@@ -252,14 +252,18 @@ ul, #myUL {
 
 <ul id="myUL">
 
-  <% for(var j=0; j < 3; j++){ %> 
+  <% for(var j=0; j < data.length; j++){ %> 
   <% var text = "";  %>
+
+  <% if(data[j].LEVEL == '1') { %>
+  <%    text = data[j].MODELCATNAME; %>
+  <!--
   <% if(j == 0 ){ text = '전극'} %>
   <% if(j == 1 ){ text = '조립'} %>
   <% if(j == 2 ){ text = '활성'} %>
+  -->
   <li><span class="caret"><%=text%></span>
     <ul class="nested">
-      
       <li><span class="caret">A동</span>
           <ul class="nested">
             <% for(var i=0; i < data.length; i++){ %>
@@ -303,6 +307,7 @@ ul, #myUL {
       </li>
     </ul>
   </li>
+  <% } %>
   <% } %>
 </ul>
 </div>
