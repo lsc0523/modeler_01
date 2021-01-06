@@ -363,7 +363,7 @@ server.post('/update', upload.any(), function (req, res) {
 		UPDUSER: req.session.user.id
 	};
 
-	if (historyYN) {
+	if (historyYN != "false") {
 		Mssql.UpdateModelandInsertHistory(params , function(result){
 			console.log("Add History..");
 			res.json({ id: params.MODELID });

@@ -6,14 +6,16 @@ var container = $('#js-drop-zone');
 
 var canvas = $('#js-canvas');
 
-var tokenSimulation = require('bpmn-js-token-simulation/lib/viewer');
+//var tokenSimulation = require('bpmn-js-token-simulation/lib/viewer');
 
 var viewer = new BpmnViewer({
   container: canvas,
-  keyboard: { bindTo: document },
+  keyboard: { bindTo: document }
+  /*
   additionalModules: [
     tokenSimulation
   ]
+  */
  // additionalModules: [ minimapModule ]
 });
 

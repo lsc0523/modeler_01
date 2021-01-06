@@ -21,7 +21,7 @@ import {
 */
 
 import tooliplugin from './TooltipInfoService';
-import tokenSimulation from 'bpmn-js-token-simulation';
+//import tokenSimulation from 'bpmn-js-token-simulation';
 
 var container = $('#js-drop-zone');
 var canvas = $('#js-canvas');
@@ -41,8 +41,8 @@ var bpmnModeler = new BpmnModeler({
     propertiesProviderModule,
     customTranslateModule,
     tooliplugin,
-    customContextPad,
-    tokenSimulation
+    customContextPad
+    //tokenSimulation
   ],
   /*
   cli: {
