@@ -21,6 +21,7 @@ import {
 */
 
 import tooliplugin from './TooltipInfoService';
+import tokenSimulation from 'bpmn-js-token-simulation';
 
 var container = $('#js-drop-zone');
 var canvas = $('#js-canvas');
@@ -38,16 +39,16 @@ var bpmnModeler = new BpmnModeler({
     minimapModule,
     propertiesPanelModule,
     propertiesProviderModule,
-    //CliModule,
     customTranslateModule,
     tooliplugin,
-    customContextPad
-    //BpmnColor
-    //require('bpmn-js-in-color')
+    customContextPad,
+    tokenSimulation
   ],
+  /*
   cli: {
     bindTo: 'cli'
   },
+  */
   moddleExtensions: {
     camunda: camundaModdleDescriptor
   }
@@ -383,8 +384,7 @@ $(function () {
     var url = "/modelPopup";
     var winWidth = 500;
     var winHeight = 500;
-    var popupOption = "width=" + winWidth + ", height=" + winHeight;
-    //popupOption += " ,modal=yes";    
+    var popupOption = "width=" + winWidth + ", height=" + winHeight; 
     var myWindow = window.open(url, "modelPopup", popupOption);
   }
 
@@ -397,7 +397,7 @@ $(function () {
   });
 
   downloadLink.on('click', async function (e) {
-    //console.log("download xml...");
+    
     var modelID = $("#modelID");
     var saveResult = confirm("저장 하시겠습니까?");
 
@@ -446,8 +446,6 @@ $(function () {
     formData.append("id", xmlData.replace(/(\r\n|\n|\r)/gm, ""));
     formData.append("modelID", modelID[0].innerText);
     formData.append("type", modelType);
-    //formData.append("modelName", JSmodeName);
-    //formData.append("modelDetailName", modelDetailName);
     formData.append("processID", ProcessID);
     formData.append("historyYN", historyYN);
     formData.append("modelName", common.NVC(ProcessName));
@@ -456,7 +454,6 @@ $(function () {
     formData.append("diagramCnt" , (xmlData.match(/bpmndi:BPMNDiagram/g) || []).length /2);
 
     //var searchData = common.parsing("아버지 가방에 들어가신다.");
-
 
     $.each($("input[type='file']")[0].files, function (i, file) {
       formData.append('files', file);

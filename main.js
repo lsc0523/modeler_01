@@ -141,7 +141,11 @@ server.get('/viewer', function (req, res) {
 		res.render('viewer', { name: "" });
 	}
 	else {
-		var params = { MODELID: req.query.id };
+		var params = { MODELID : req.query.id ,
+					   HISTORY : req.query.his,
+					   CRETDTTM : req.query.creDate
+		};
+
 		Mssql.SelectModel(params, function (result) {
 			xmlData = result.recordset[0].MODEL_XML;
 			//console.log(xmlData);

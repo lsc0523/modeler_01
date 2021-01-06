@@ -7,6 +7,11 @@ var treeList = require('./treeView.js');
 $(document).ready(function(){
 
     treeList.listree();
+    //Page loading 
+    $("#user-table > tbody > tr").hide();
+    var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + $('#keyword').val() + "')");
+    $(temp).parent().show();
+
 
     $("#keyword").keyup(function () {
       var k = $(this).val();

@@ -28,7 +28,31 @@ var ModelHistory = "PROCESSMODELHISTORY";
 
 //sql Qurey
 var sqlSelectModelQurey = 'select * from ' + Modeltable + ' where MODELID=@MODELID order by upddttm';
-var sqlSelectModelHistory = 'select * from ' + ModelHistory + ' where MODELID=@MODELID order by upddttm';
+
+var sqlSelectModelHistory = "SELECT A.MODELID ,\n" + 
+							"CONVERT(CHAR(19), A.CRETDTTM , 20) CRETDTTM ,\n" + 
+							"A.PROCESSID ,\n" + 
+							"A.MODEL_XML ,\n" + 
+							"A.MODELNAME ,\n" + 
+							"A.MODELDESC ,\n" + 
+							"A.MODELHISTDESC\n" + 
+							"FROM PROCESSMODELHISTORY A\n" + 
+							"WHERE A.MODELID   = @MODELID " + 
+							"ORDER BY UPDDTTM";
+
+var sqlSelectModelEachHistory = "SELECT A.MODELID ,\n" + 
+								"CONVERT(CHAR(19), A.CRETDTTM , 20) CRETDTTM ,\n" + 
+								"A.PROCESSID ,\n" + 
+								"A.MODEL_XML ,\n" + 
+								"A.MODELNAME ,\n" + 
+								"A.MODELDESC ,\n" + 
+								"A.MODELHISTDESC\n" + 
+								"FROM PROCESSMODELHISTORY A\n" + 
+								"WHERE A.MODELID   = @MODELID " + 
+								"AND   CONVERT(CHAR(19), A.CRETDTTM , 20)  = @CRETDTTM  \n" +
+								"ORDER BY UPDDTTM";
+
+
 var sqlUpdateModelQuery = 'update ' + Modeltable + ' set MODEL_XML=@XML where MODELID=@MODELID';
 
 var sqlDeleteModelQuery = 'delete from ' + Modeltable + ' where MODELID=@id';
@@ -59,10 +83,12 @@ function ExcuteSQLSelectModel(params, callback) {
 			return console.error('error is', err);
 		}
 
+		var strsql = sqlSelectModelQurey;
+
 		var ps = new sql.PreparedStatement(connection);
 		ps.input('MODELID', sql.NVarChar);
 
-		ps.prepare(sqlSelectModelQurey, function (err, recordsets) {
+		ps.prepare(strsql, function (err, recordsets) {
 			ps.execute({ MODELID: params.MODELID }, function (err, recordset) {
 				ps.unprepare(function (err) {
 					if (err !== null) {
@@ -78,16 +104,29 @@ function ExcuteSQLSelectModel(params, callback) {
 //Select Model Promises
 function ExcuteSQLSelectModel(params, callback) {
 
+	var strsql = sqlSelectModelQurey;
+
+	if (params.HISTORY == "Y") {
+		strsql = sqlSelectModelEachHistory;
+	}
+	console.log(strsql);
+
 	sql.connect(dbConnectionConfig).then(pool => {
-		// Query		    
-		return pool.request()
-			//.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('MODELID', sql.NVarChar, params.MODELID)
-			.query(sqlSelectModelQurey)
+		// Query
+		if (params.HISTORY == "Y") {
+			return pool.request()
+				.input('MODELID', sql.NVarChar, params.MODELID)
+				.input('CRETDTTM', sql.NVarChar , params.CRETDTTM)
+				.query(strsql)
+		}
+		else {
+			return pool.request()
+				.input('MODELID', sql.NVarChar, params.MODELID)
+				.query(strsql)
+		}
 
 	}).then(result => {
 		console.dir(result);
-
 		return callback(result);
 	}).catch(err => {
 		console.dir(err);
@@ -102,6 +141,7 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 		// Query		    
 		return pool.request()
 			.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('CRETDTTM' , sql.NVarChar ,  "")
 			.query(sqlSelectModelHistory)
 
 	}).then(result => {
@@ -487,7 +527,7 @@ function ExcuteSQLInsertModelHistory(params, callback) {
 	strSql = strSql + ' WHERE MODELID=@MODELID';
 
 	console.dir(strSql);
-	
+
 	sql.connect(dbConnectionConfig).then(pool => {
 		
 		return pool.request()
