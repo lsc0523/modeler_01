@@ -72,6 +72,7 @@ $(document).ready(function(){
       var myWindow = window.open(url,"userPopup",popupOption);  
   });
 
+  /*
   $('.viewHistory').on('click', function (e) {
 
       if ($(e.target).hasClass("clicktd")) {
@@ -92,6 +93,7 @@ $(document).ready(function(){
         }
       }
   });
+  */
 
   $.contextMenu({
         selector: '.context-menu-one', 
@@ -141,6 +143,60 @@ $(document).ready(function(){
   $(document).on('click', '#deleteRow', function () {
     this.parentNode.remove()
   });
+
+
+  //Javascript
+  var count = 0;
+  //스크롤 바닥 감지
+  window.onscroll = function(e) {
+      //추가되는 임시 콘텐츠
+      //window height + window scrollY 값이 document height보다 클 경우,
+
+      var maxHeight = $(document).height();
+      var currentScroll = $(window).scrollTop() + $(window).height();
+  
+      if (maxHeight <= currentScroll) {
+      //if((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        //실행할 로직 (콘텐츠 추가)
+          count++;
+          //var addContent = '<div class="block"><p>'+ count +'번째로 추가된 콘텐츠</p></div>';
+          //article에 추가되는 콘텐츠를 append
+          //$('article').append(addContent);
+          $.ajax({
+            url: '/modelListData',
+            type: 'GET',
+            data: {
+              startpage: count * 15 , 
+              endpage : (count +1) * 15
+            },
+            dataType: 'json',
+            success: function (data) {
+                //alert(data);
+              for(var i=0; i < data.data.length; i++){
+                $('.tableBody').append('<tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);">' +        
+                                  '<td><input type="checkbox"></td>'+
+                                  '<td style="display : none;">' + data.data[i].MODELID +'</td>' +
+                                  '<td>' + data.data[i].PROCESSID +'</td>' +
+                                  '<td>' + data.data[i].MODELNAME +'</td>' +
+                                  '<td>' + data.data[i].MODELDESC +'</td>' +
+                                  '<td>' + data.data[i].MODELDIAGRAM_CNT +'</td>' +
+                                  '<td>' + data.data[i].UPDDTTM +'</td>' +
+                                  '<td>' + data.data[i].INSUSER +'</td>' +
+                                  '<td>' + data.data[i].UPDUSER +'</td>' +
+                                  '<td> <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" id=' + data.data[i].MODELID + '>' +
+                                  '<img src="/menu.svg" style="padding-right: 5px;" with="13", height="13">' +            
+                                  '</button> </td>' 
+                                + '</tr>');
+                
+               }
+            }
+            ,
+            error: function (error) {
+              alert("예상치 못한 에러가 발생하였습니다 [ERROR-01]");
+            }
+          })
+      }
+  };
 
 
   $(document).on('click','#SendMail',function(){

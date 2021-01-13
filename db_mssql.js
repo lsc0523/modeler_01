@@ -53,6 +53,19 @@ var sqlSelectModelEachHistory = "SELECT A.MODELID ,\n" +
 								"ORDER BY UPDDTTM";
 
 
+var sqlModelPagingList = 	"SELECT T.*\n" + 
+							"FROM\n" + 
+							"(\n" + 
+							"SELECT\n" + 
+							"MODELCATID, MODELTYPE, MODELID, MODELID_REVISION, MODELNAME, MODELDESC, PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER,\n" + 
+							"CONVERT(CHAR(19), P.UPDDTTM ,20) UPDDTTM, ISNULL( MODELDIAGRAM_CNT ,0 ) MODELDIAGRAM_CNT , ROW_NUMBER() OVER (ORDER BY P.UPDDTTM) RNUM\n" + 
+							"FROM\n" + 
+							"PROCESSMODEL P )T\n" + 
+							"WHERE T.RNUM BETWEEN @START AND @END\n" + 
+							"ORDER BY\n" + 
+							"T.UPDDTTM\n";
+
+
 var sqlUpdateModelQuery = 'update ' + Modeltable + ' set MODEL_XML=@XML where MODELID=@MODELID';
 
 var sqlDeleteModelQuery = 'delete from ' + Modeltable + ' where MODELID=@id';
@@ -100,6 +113,22 @@ function ExcuteSQLSelectModel(params, callback) {
 		});
 	});
 }
+//Select Model Paging Query
+function ExcuteSQLSelectModelPaging(params, callback) {
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			.input('START', sql.NVarChar, params.START)
+			.input('END' , sql.NVarChar ,  params.END)
+			.query(sqlModelPagingList)
+	}).then(result => {
+		//console.dir(result);
+		return callback(result);
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	})
+}
 
 //Select Model Promises
 function ExcuteSQLSelectModel(params, callback) {
@@ -146,7 +175,6 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 
 	}).then(result => {
 		//console.dir(result);
-
 		return callback(result);
 	}).catch(err => {
 		console.dir(err);
@@ -612,5 +640,8 @@ module.exports = {
 	//FileList...
 	SelectAllFileList: ExcuteSQLSelectAllFileList,
 	getNewReposID: getNewRepositoryID,
-	SelectQueryParams : ExcuteSQLSelectQuery
+	SelectQueryParams : ExcuteSQLSelectQuery,
+
+	//paging
+	SelectPagingModel : ExcuteSQLSelectModelPaging
 };

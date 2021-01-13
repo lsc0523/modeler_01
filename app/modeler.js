@@ -197,15 +197,11 @@ function populateDiagramCombo() {
   diagrams.forEach((diagram) => {
     const diagramName = diagram.name || diagram.id;
     select.append(`
-        <option
-          value="${diagram.id}"
-          ${currentDiagram.id == diagram.id ? 'selected' : ''}>
-            ${diagramName}
-        </option>
+        <option value="${diagram.id}"> ${diagramName} </option>
       `);
   });
 }
-
+  //${currentDiagram.id == diagram.id ? 'selected' : ''}>
 function handleEndRenameEvent(e) {
   if (e.keyCode && e.keyCode !== 13) {
     return;

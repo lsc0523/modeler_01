@@ -111,6 +111,27 @@ server.get('/home2', function (req, res) {
 });
 
 
+server.get('/modelListData', function(req , res){
+	console.log("modelListData...");
+
+	var params = { 
+					START : req.query.startpage,
+					END : req.query.endpage
+				}
+
+	Mssql.SelectPagingModel(params, function (result) {
+		//console.log(result);
+		//var page = req.params.page;
+		console.log(req.session.user);
+
+		res.json( {
+			data: result.recordset,
+			sess: req.session.user.id
+		});
+	});
+
+})
+
 server.get('/home', function (req, res) {
 	console.log("home...");
 	if (isNotEmpty(req.session.user)) {
@@ -348,11 +369,7 @@ server.post('/insert', upload.any(), function (req, res) {
 
 server.post('/update', upload.any(), function (req, res) {
 	console.log("update...");
-	//console.log(req.body.modelID);
-	/*
-	console.log(req.body.historyYN);
-	var historyYN = req.body.historyYN;
-	*/
+
 	var historyYN = req.body.historyYN;
 	var params = {
 		MODELID: req.body.modelID,

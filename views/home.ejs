@@ -154,6 +154,7 @@ td
             ">
   Welcome, <%=sess%> 님
 </div>
+
   <div class="section"style="padding-left: 50px; 
                              background-color: hsl(0,0%,97%); 
                              height: 100%">
@@ -168,7 +169,7 @@ td
       </span>
     </div>
 
-
+    <!--
     <ul class="listree">
       <li>
         <div class="listree-submenu-heading">전극</div>
@@ -213,6 +214,7 @@ td
       </li>
       
     </ul>
+  -->
     <!-- table-striped-->
     <table class="table table-hover" 
            style="width: 100%;"
@@ -232,19 +234,18 @@ td
       </tr>
     </thead>
 
-    <tbody>
-      <% for (var i=0; i < data.length; i++) { %>
+    <tbody class="tableBody">
+      <% for (var i=0; i < 15; i++) { %>
       <%  var rows = data[i]; %>  
 
-      <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);"
-          class="viewHistory">
+      <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);">
         <td><input type="checkbox"></td>
         <td style="display : none;"><%= rows.MODELID  %></td>
-        <td class="clicktd"><%= rows.PROCESSID  %></td>
-        <td class="clicktd"><%= rows.MODELNAME %></td>
-        <td class="clicktd"><%= rows.MODELDESC %></td>
-        <td style="padding-left: 20px;" class="clicktd"><%= rows.MODELDIAGRAM_CNT %></td>
-        <td class="clicktd"><%= rows.UPDDTTM %></td>
+        <td ><%= rows.PROCESSID  %></td>
+        <td ><%= rows.MODELNAME %></td>
+        <td ><%= rows.MODELDESC %></td>
+        <td style="padding-left: 20px;" ><%= rows.MODELDIAGRAM_CNT %></td>
+        <td ><%= rows.UPDDTTM %></td>
         <td><%= rows.INSUSER %></td>   
         <td><%= rows.UPDUSER %></td>
         <td>
@@ -254,6 +255,7 @@ td
         </td>
       </tr>
       <% } %>
+    <!--  
     <tr>
         <td colspan="10" align="center">
             <% for(var j = 0; j < (length + 1) / 300; j++){ %>
@@ -261,8 +263,12 @@ td
             <%}%>
         </td>
     </tr>
+    -->
   </tbody>
 </table>
+
+<article>
+</article>
 </div>
 
 <!-- Colaboratin -->
@@ -312,6 +318,7 @@ td
       </ul>
   </div>
 </aside>
+
 </body>
 
 <!--
