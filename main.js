@@ -229,6 +229,7 @@ server.get('/modeler', function (req, res) {
 				JsmodelDetailName: "",
 				JsFileList: JsFileList,
 				type: req.query.type,
+				enable : "Y",
 				data: result_data.recordset,
 				sess: req.session.user.id
 			});
@@ -237,6 +238,7 @@ server.get('/modeler', function (req, res) {
 		else {
 
 			var params = { MODELID: req.query.id };
+			var enable = req.query.enable;
 
 			Mssql.SelectModel(params, function (result) {
 				//console.log(result);
@@ -263,6 +265,7 @@ server.get('/modeler', function (req, res) {
 						JsmodelDetailName: modelDetailName,
 						JsFileList: JsFileList,
 						type: modelType,
+						enable : enable,
 						data: result_data.recordset,
 						sess: req.session.user.id
 					});
@@ -616,6 +619,18 @@ server.get('/select', function (req, res) {
 	Mssql.SelectQueryParams(sqlQurey, params, function (result) {
 		res.json({ data: result });
 	});
+})
+
+
+let users = [ 
+				{
+					id : 1  , name : 'yeo'
+				},
+				{ id :2 , name: 'chun'}
+			]
+
+server.get('/users', (req , res) => {
+	return res.json(users);
 })
 
 server.listen(3000, () => {

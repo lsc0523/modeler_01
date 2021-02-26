@@ -101,7 +101,7 @@ $(document).ready(function(){
         callback: function(key, options) {
             var m = "clicked: " + key;
             //window.console && console.log(m) || alert(m); 
-            var modelId = options.$trigger[0].parentNode.parentNode.childNodes[3].innerText;
+            var modelId = options.$trigger[0].id;
 
             if(key == 'edit'){
               window.location = "/modeler?id=" + modelId;
@@ -172,14 +172,14 @@ $(document).ready(function(){
             dataType: 'json',
             success: function (data) {
                 //alert(data);
-              for(var i=0; i < data.data.length; i++){
+              for(var i=1; i < data.data.length; i++){
                 $('.tableBody').append('<tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);">' +        
                                   '<td><input type="checkbox"></td>'+
                                   '<td style="display : none;">' + data.data[i].MODELID +'</td>' +
                                   '<td>' + data.data[i].PROCESSID +'</td>' +
                                   '<td>' + data.data[i].MODELNAME +'</td>' +
                                   '<td>' + data.data[i].MODELDESC +'</td>' +
-                                  '<td>' + data.data[i].MODELDIAGRAM_CNT +'</td>' +
+                                  '<td style="padding-left: 20px;">' + data.data[i].MODELDIAGRAM_CNT +'</td>' +
                                   '<td>' + data.data[i].UPDDTTM +'</td>' +
                                   '<td>' + data.data[i].INSUSER +'</td>' +
                                   '<td>' + data.data[i].UPDUSER +'</td>' +

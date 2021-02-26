@@ -182,9 +182,11 @@ ul, #myUL {
             border-top: 1px solid hsl(0 0% 87% / 1);
             margin-top: 10px;
             ">
+  
   <button class="picker" id="picker1" style="width: 3%; top: 15%; left: 65%; border:0; outline :1; position: absolute;">
      <img src="/paint_icon.svg" width="80%" height="100%">
   </button> 
+  
 
   <label class="btn btn-light btn-file" 
           data-toggle="tooltip" data-placement="bottom" title="업로드"
@@ -245,6 +247,7 @@ ul, #myUL {
 </div>
 <p id="xmlData" style="display:none;"><%=name%></p>
 <p id="modelID" style="display:none;"><%=modelID%></p>
+<input type="hidden" id="modelerEnable" value="<%=enable%>">
 <input type = "hidden" id = "modelType" value="<%=type%>">
 
 <div id="mySidenav" class="sidenav" 
@@ -355,6 +358,27 @@ ul, #myUL {
   <img src="/zoom-reset-icon.png" id="zoom-reset" width="40" height="40">
   <img src="/zoom-in-icon.png" id="zoom-in" width="40" height="40">
   <img src="/zoom-out-icon.png" id="zoom-out" width="40" height="40">
+</div>
+
+<div class="approvalTable">
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 10%;">결재차수</th>
+        <th style="width: 10%">결재자</th>
+        <th style="width: 5%">결재상태</th>
+
+      </tr>
+    </thead>
+
+    <tbody class="tableBody">
+      <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);">
+        <td>1</td>
+        <td>여형철</td>
+        <td>완료</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 

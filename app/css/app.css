@@ -117,6 +117,12 @@ a:hover{
   right: 40px;
 }
 
+.approvalTable{
+ position: fixed; 
+ bottom: 50px;
+ left: 150px;
+}
+
 
 /*
 .buttons > li {

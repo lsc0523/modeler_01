@@ -250,15 +250,13 @@ $(function () {
   $('.map').hide();
   $('.toggle').hide();
   $('.accordion').hide();
-  //colorPick.colorPicker();
 
   var downloadLink = $('#js-download-diagram');
-  var downloadSvgLink = $('#js-download-svg');
+  //var downloadSvgLink = $('#js-download-svg');
 
-  if ($('#file_length') > 0) {
-    $('#btn-download').css({ color: "green" });
-  }
-
+  //if ($('#file_length') > 0) {
+  //  $('#btn-download').css({ color: "green" });
+  //}
 
   $('.buttons a').click(function (e) {
     if (!$(this).is('.active')) {
@@ -563,6 +561,20 @@ $(function () {
    $('.djs-rename').on('keyup', handleEndRenameEvent);
    $('#end-rename-diagram').on('click', handleEndRenameEvent);
    
+
+  //disabled Modelers...
+  if ($('#modelerEnable').val() == "N") {
+    var priority = 10000;
+    eventBus.on('element.click', priority, function (event) {
+      return false; // will cancel event
+    });
+
+    eventBus.on('element.dblclick', priority ,function(evnet){
+      return false;
+    });
+    $('.djs-palette').css("border", "0px")
+    $('.djs-palette-entries').css("display", "none");
+  }
   //color picker..
   $.fn.colorPick = function (config) {
 
@@ -723,23 +735,23 @@ $(function () {
 
   $("#picker1").colorPick({
     'initialColor': 'hsl(0,0%,97%)',
-    'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", 
-                "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", 
-                "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", 
+    'palette': ["#1abc9c", "#16a085", "#2ecc71",
+                "#2980b9", "#9b59b6", "#8e44ad",
+                "#f1c40f", "#f39c12", "#e67e22",
                 "#c0392b", "#ecf0f1", "#00ff0000"],
     'onColorSelected': function () {
       console.log("The user has selected the color: " + this.color)
       this.element.css({ 'backgroundColor': this.color, 'color': this.color });
 
       var modeling = bpmnModeler.get('modeling');
-
+      
       for (var i = 0; i < bpmnModeler.get('selection').get().length; i++) {
 
-        modeling.setColor(bpmnModeler.get('selection').get()[i], {
-          stroke: 'black',
-          fill: this.color
-        });
-        //elementsToColor.push(bpmnModeler.get('selection').get()[i]);
+       modeling.setColor(bpmnModeler.get('selection').get()[i], {
+         stroke: 'black',
+         fill: this.color
+       });
+        elementsToColor.push(bpmnModeler.get('selection').get()[i]);
       }
     }
   });
