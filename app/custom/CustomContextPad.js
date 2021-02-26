@@ -21,7 +21,7 @@ export default class CustomContextPad {
 
     function appendServiceTask(event, element) {
       if (autoPlace) {
-        const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
+        const shape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });
   
         autoPlace.append(element, shape);
       } else {
@@ -29,11 +29,33 @@ export default class CustomContextPad {
       }
     }
 
-    function appendServiceTaskStart(event) {
-      const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
+    function appendTest(event, element) {
+      if (autoPlace) {
+
+        //컬러피커 이벤트 추가
+
+        const Testshape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });
   
-      create.start(event, shape, element);
+        autoPlace.append(element, Testshape);
+      } else {
+        appendTestTaskStart(event, element);
+      }
     }
+
+
+
+
+    function appendServiceTaskStart(event) {
+      const shape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });  
+      create.start(event, shape, element);
+       }
+
+
+    function appendTestTaskStart(event) {
+      const Testshape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });  
+      create.start(event, Testshape, element);
+    }
+
 
     return {
       'append.service-task': {
@@ -43,6 +65,16 @@ export default class CustomContextPad {
         action: {
           click: appendServiceTask,
           dragstart: appendServiceTaskStart
+        }
+      },
+
+      'append.test-task': {
+        group: 'model',
+        className: 'bpmn-icon-test-task',
+        title: translate('Color Piker'),
+        action: {
+          click: appendTest,
+          dragstart: appendTestTaskStart
         }
       }
     };

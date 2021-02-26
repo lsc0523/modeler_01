@@ -8,9 +8,9 @@ export default {
 //  customPalette: [ 'type', CustomPalette ],
 //  customRenderer: [ 'type', CustomRenderer ]
 
-  __init__: [ 'customPalette' , 'customRenderer' ],
+  __init__: [ 'customContextPad','customPalette' , 'customRenderer' ],
 customPalette: [ 'type', CustomPalette ],
-customRenderer: [ 'type', CustomRenderer ]
-
+customRenderer: [ 'type', CustomRenderer ],
+customContextPad: [ 'type', CustomContextPad ]
 };
 
