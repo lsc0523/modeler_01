@@ -184,6 +184,7 @@ function renameDiagram(e) {
   let diagramSwitch = bpmnModeler.get('diagramSwitch');
   diagramSwitch.renameDiagram(e.target.value);
   populateDiagramCombo();
+  
 }
 
 function populateDiagramCombo() {
@@ -199,6 +200,7 @@ function populateDiagramCombo() {
     select.append(`
         <option value="${diagram.id}"> ${diagramName} </option>
       `);
+      bpmnModeler.get('zoomScroll').reset();
   });
 }
   //${currentDiagram.id == diagram.id ? 'selected' : ''}>
