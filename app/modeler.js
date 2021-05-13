@@ -6,7 +6,8 @@ import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/bpmn
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda.json';
 import minimapModule from 'diagram-js-minimap';
 import diagramXML from '../resources/newDiagram.bpmn';
-//import CliModule from 'bpmn-js-cli';
+import CliModule from 'bpmn-js-cli';
+import bpmn from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
 
