@@ -185,44 +185,59 @@ td
                              background-color: hsl(0,0%,97%); 
                              height: 100%">
     <div style="padding-top: 10px; padding-bottom: 10px;">
-      <label style="padding-top: 10px;">회사</label>
-      <select name="공장">
+      <label style="padding-left: 15px; padding-top: 10px; padding-bottom:10px;">회사</label>
+      <select name="회사" id="company" style=" height:36px;
+                                              border: 1px solid hsl(0 0% 80% / 1);
+                                              margin-left : 5px;
+                                              padding-left : 10px;
+                                              font-size : 13px; ">
         <option value="items1">LG 에너지솔루션</option>
         <option value="items2">LG 화학</option>
         <option value="items3">LG 디스플레이</option>
         <option value="items4">LG 전자</option>
       </select>
-      <span style="padding-left: 20px;">
-      </span>
-      <label style="padding-top: 10px;">공장</label>
-      <select name="공장">
+      <label style="padding-left: 20px; padding-top: 10px; padding-bottom:10px;">공장</label>
+      <select name="공장" id="factory" style=" height:36px;
+                                              border: 1px solid hsl(0 0% 80% / 1);
+                                              margin-left : 5px;
+                                              padding-left : 10px;
+                                              font-size : 13px; ">
         <option value="items1">조립</option>
         <option value="items2">전극</option>
         <option value="items3">활성화</option>
         <option value="items4">팩</option>
       </select>
-      <span style="padding-left: 20px;">
-      </span>
-      <label style="padding-top: 10px;">공정</label>
-      <select name="공정">
+      <label style="padding-left: 20px; padding-top: 10px; padding-bottom:10px;">공정</label>
+      <select name="공정" id="process" style=" height:36px;
+                                              border: 1px solid hsl(0 0% 80% / 1);
+                                              margin-left : 5px;
+                                              padding-left : 10px;
+                                              font-size : 13px; ">
         <option value="items1">NULL</option>
         <option value="items2">BMA</option>
         <option value="items3">CMA</option>
         <option value="items4">검사</option>
       </select>
-      <span style="padding-left: 20px;">
-      </span>
-      <label style="padding-top: 10px;">검색</label>
-      <span style="padding-left: 20px;"></span>
+
+      <input type="text" id="keyword" style="height: 36px; width: 30%; border: 1px solid hsl(0 0% 80% / 1); font-size : 13px; ""></input>
+
+      <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;">모델생성</button>
+      <!-- <input  type="text" id="keyword" style="height: 36px; 
+                                width: 30%; 
+                                border: 1px solid hsl(0 0% 80% / 1);
+                                padding-left: 15px;
+                                font-size : 13px; "> -->
+      <!-- <label style="padding-top: 10px;">검색</label> -->
+      <!-- <span style="padding-left: 20px;"></span>
           <input  type="text" id="keyword" style="height: 36px; 
                                 width: 30%; 
                                 border: 1px solid hsl(0 0% 80% / 1);
                                 padding-left: 15px;
                                 font-size : 13px; ">
       <span style="padding-left: 20px;">
-      </span>
+      </span> -->
       
-      <label style="padding-left: 15px; padding-top: 10px; padding-bottom:10px;">Category</label>
+      <!-- <label style="padding-left: 15px; padding-top: 10px; padding-bottom:10px;">Category</label>
       <select name="CategorySelectBox" id="CategorySelectBox" style=" height:36px;
                                                                       border: 1px solid hsl(0 0% 80% / 1);
                                                                       margin-left : 10px;
@@ -233,8 +248,7 @@ td
         <option value="여형철">여형철</option>
         <option value="나운영">나운영</option>
       </select>
-  
-      <button type="button" class="btn btn-primary" id="sendContact" style="margin-left : 5px; margin-bottom: 5px;">검색</button>
+    -->
     </div>
 
     
@@ -303,9 +317,9 @@ td
       </tr>
     </thead>
 
-    <tbody class="tableBody">
-      <% for (var i=0; i < 15; i++) { %>
-      <%  var rows = data[i]; %>  
+    <tbody class="tableBody" style="visibility: hidden;">
+      <% for (var i=0; i < data.length; i++) { %>
+      <% var rows = data[i]; %>
 
       <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);">
         <td><input type="checkbox"></td>
