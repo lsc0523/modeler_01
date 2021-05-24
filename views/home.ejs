@@ -112,6 +112,25 @@ td
 		text-align: right;
 	}
 
+  .dropdown{
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
 </style>
 </head>
 
@@ -169,6 +188,20 @@ td
                                padding-left: 15px;
                                font-size : 13px; ">
       </span>
+      
+      <label style="padding-left: 15px; padding-top: 10px; padding-bottom:10px;">Category</label>
+      <select name="CategorySelectBox" id="CategorySelectBox" style=" height:36px;
+                                                                      border: 1px solid hsl(0 0% 80% / 1);
+                                                                      margin-left : 10px;
+                                                                      padding-left : 10px;
+                                                                      font-size : 13px; ">
+        <option value="선택" selected>선택</option>
+        <option value="gschun">gschun</option>
+        <option value="여형철">여형철</option>
+        <option value="나운영">나운영</option>
+      </select>
+  
+      <button type="button" class="btn btn-primary" id="sendContact" style="margin-left : 5px; margin-bottom: 5px;">검색</button>
     </div>
 
     <!--
@@ -232,6 +265,7 @@ td
         <th style="width: 15%">최종 수정 일시</th> 
         <th style="width: 10%">등록자</th>
         <th style="width: 10%">수정자</th>
+        <th style="width: 10%">모델타입</th>
         <th style="width: 5%;">더보기</th>
       </tr>
     </thead>
@@ -248,8 +282,9 @@ td
         <td ><%= rows.MODELDESC %></td>
         <td style="padding-left: 20px;" ><%= rows.MODELDIAGRAM_CNT %></td>
         <td ><%= rows.UPDDTTM %></td>
-        <td><%= rows.INSUSER %></td>   
-        <td><%= rows.UPDUSER %></td>
+        <td ><%= rows.INSUSER %></td>   
+        <td ><%= rows.UPDUSER %></td>
+        <td><%= rows.MODELCATID %></td>
         <td>
         <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" 
                    id=<%= rows.MODELID %> > 
