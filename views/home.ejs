@@ -39,6 +39,11 @@
         width: 80%;
   }
 
+  input
+  {
+    float: right;
+  }
+
   aside {
         width:20%;
         background:hsl(0 0% 97% / 1);
@@ -180,13 +185,41 @@ td
                              background-color: hsl(0,0%,97%); 
                              height: 100%">
     <div style="padding-top: 10px; padding-bottom: 10px;">
-      <label style="padding-top: 10px;">검색</label>
+      <label style="padding-top: 10px;">회사</label>
+      <select name="공장">
+        <option value="items1">LG 에너지솔루션</option>
+        <option value="items2">LG 화학</option>
+        <option value="items3">LG 디스플레이</option>
+        <option value="items4">LG 전자</option>
+      </select>
       <span style="padding-left: 20px;">
-          <input type="text" id="keyword" style="height: 36px; 
-                               width: 30%; 
-                               border: 1px solid hsl(0 0% 80% / 1);
-                               padding-left: 15px;
-                               font-size : 13px; ">
+      </span>
+      <label style="padding-top: 10px;">공장</label>
+      <select name="공장">
+        <option value="items1">조립</option>
+        <option value="items2">전극</option>
+        <option value="items3">활성화</option>
+        <option value="items4">팩</option>
+      </select>
+      <span style="padding-left: 20px;">
+      </span>
+      <label style="padding-top: 10px;">공정</label>
+      <select name="공정">
+        <option value="items1">NULL</option>
+        <option value="items2">BMA</option>
+        <option value="items3">CMA</option>
+        <option value="items4">검사</option>
+      </select>
+      <span style="padding-left: 20px;">
+      </span>
+      <label style="padding-top: 10px;">검색</label>
+      <span style="padding-left: 20px;"></span>
+          <input  type="text" id="keyword" style="height: 36px; 
+                                width: 30%; 
+                                border: 1px solid hsl(0 0% 80% / 1);
+                                padding-left: 15px;
+                                font-size : 13px; ">
+      <span style="padding-left: 20px;">
       </span>
       
       <label style="padding-left: 15px; padding-top: 10px; padding-bottom:10px;">Category</label>
@@ -204,8 +237,8 @@ td
       <button type="button" class="btn btn-primary" id="sendContact" style="margin-left : 5px; margin-bottom: 5px;">검색</button>
     </div>
 
-    <!--
-    <ul class="listree">
+    
+    <!-- <ul class="listree">
       <li>
         <div class="listree-submenu-heading">전극</div>
         <ul class="listree-submenu-items">
@@ -248,8 +281,8 @@ td
         </ul>
       </li>
       
-    </ul>
-  -->
+    </ul> -->
+ 
     <!-- table-striped-->
     <table class="table table-hover" 
            style="width: 100%;"
@@ -291,6 +324,9 @@ td
           <img src="/menu.svg" style="padding-right: 5px;" with="13", height="13">            
         </button> 
         </td>
+      </tr>
+      <tr>
+        <td  ></td>
       </tr>
       <% } %>
     <!--  
