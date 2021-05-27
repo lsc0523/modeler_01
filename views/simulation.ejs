@@ -1,0 +1,160 @@
+<!DOCTYPE html> 
+<html lang="ko">
+
+<head>
+  <title>SIMULATION</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- <script type="text/javascript" src="/js/history.js"></script>  -->
+  <style type="text/css">
+    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+    body,
+    html {
+      font-family: "Noto Sans KR", sans-serif !important;
+      font-weight: normal;
+      font-style: normal;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .active {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    #Progress_Loading {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      background: #ffffff;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!--
+  <div id="Progress_Loading">
+    <img src="/Progress_Loading.gif" />
+  </div>
+  -->
+
+  <!-- Popup Layer -->
+
+  <!-- <div id="delete_layer" style="display: none;">
+    <div style="height: 50px; 
+              padding-top: 10px;
+              padding-bottom: 20px;
+  ">
+      <button style="border: 1px solid hsl(0 0% 87% / 1); 
+                               padding-right: 20px; 
+                               padding-left: 20px; ">
+        삭제
+      </button>
+    </div>
+  </div> -->
+
+  <div style="height: 50px; 
+            padding-top: 10px;
+            padding-bottom: 20px;
+  ">
+  <a href="/home2">
+    <img src="/logo.png"
+      style="border-right: 1px solid hsl(0 0% 87% / 1); 
+      padding-right: 20px; 
+      padding-left: 20px; "></a>
+
+  <!-- <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Home</a> -->
+  <a href="/home" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Modeling</a>
+  <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">BBS</a>
+  <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">History</a>
+  <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">EATS-Online</a>
+  <a href="/Simulation" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Simulation</a>
+    <% if(sess) { %>
+    <a href="/logout" style="padding-left: 20px; 
+                           position: absolute; 
+                           right: 50px; 
+                           top : 17px; 
+                           color: hsl(0 0% 50% / 1);">
+      Logout</a>
+    <% } %>
+  </div>
+
+  <div style="background-color: hsl(0,0%,97%); 
+            padding: 25px 100px; 
+            position: relative; 
+            height: 10%;
+            border-bottom: 1px solid hsl(0 0% 87% / 1);
+            border-top: 1px solid hsl(0 0% 87% / 1);
+            margin-top: 10px;
+            font-size: 19px;
+            ">
+    Welcome, <%=sess%> 님
+  </div>
+</div> 
+
+<!-- <div class="item-box-blog-date bg-blue-ui white"> <span class="mon"></span> </div> -->
+<!--Image-->
+<!-- <figure> <img alt=""
+    src="image1.png"> </figure> -->
+  <figure>
+      <video height="800" autoplay="autoplay" muted="muted" controls loop>
+        <source src="활성화_Degas-설비가동(Degas).mp4">
+    </video>
+  </figure>
+<!-- </div> -->
+
+<!-- <div class="content with-diagram" id="js-drop-zone">
+  <div class="message intro">
+    <div class="note">
+      Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.
+    </div>
+  </div>
+
+  <div class="message error">
+    <div class="note">
+      <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+
+      <div class="details">
+        <span>Import Error Details</span>
+        <pre></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvas" id="js-canvas"></div> -->
+<div id="canvas"></div>
+
+<!-- <div class="drop-message"><strong>Hint:</strong> Drop your own BPMN file to simulate it.</div>
+
+<div class="links">
+  <a href="https://github.com/bpmn-io/bpmn-js-token-simulation" class="link" target="_blank" rel="noopener">View on GitHub</a> -->
+
+  <!-- <a href="./viewer.html" class="link">Viewer <i class="fa fa-sign-out"></i></a> -->
+</div>
+  <!-- <div class="properties-panel-parent" id="js-properties-panel"></div> -->
+<!-- </div> -->
+
+
+
+
+</body>
+
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="../app/simulation.js"></script> -->
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="simulation.app.js"></script>
+
+<!-- <script type="text/javascript">
+
+var toggler = document.getElementsByClassName("caret");
+var i;
+</script> -->
+</html>

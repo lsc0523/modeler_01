@@ -10,6 +10,8 @@ import CliModule from 'bpmn-js-cli';
 import bpmn from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
+// import TokenSimulationModule from 'bpmn-js-token-simulation';
+
 
 var common = require('./common.js');
 //var mod = require('korean-text-analytics');
@@ -43,7 +45,7 @@ var bpmnModeler = new BpmnModeler({
     customTranslateModule,
     tooliplugin,
     customContextPad
-    //tokenSimulation
+    // TokenSimulationModule
   ],
   /*
   cli: {

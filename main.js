@@ -569,6 +569,48 @@ server.get('/mailSend', function (req, res) {
 	}
 })
 
+server.get('/Simulation' , function(req ,res){
+	
+	if (isNotEmpty(req.session.user)) {
+		var modelID = req.query.id;
+		var params = { MODELID : modelID};
+		Mssql.SelectModelHistory(params , function(result){
+			
+			var page = req.params.page;
+			//console.log(req.session.user);
+
+			res.render('simulation', {
+				data: result.recordset,
+				page: page,
+				page_num: 10,
+				pass: true,
+				length: result.recordset.length - 1,
+				sess: req.session.user.id
+			
+			});
+		});
+
+		/*
+		Mssql.NonQuery(sqlQurey, function (result) {
+			//console.log(result);
+			var page = req.params.page;
+			console.log(req.session.user);
+
+			res.render('history', {
+				data: result.recordset,
+				page: page,
+				page_num: 10,
+				pass: true,
+				length: result.recordset.length - 1,
+				sess: req.session.user.id
+			});
+		});
+		*/
+	} else {
+		res.redirect('login');
+	}
+});
+
 
 server.get('/history/:page' , function(req ,res){
 	
