@@ -14,7 +14,6 @@ $(document).ready(function(){
     var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + "조립" + "')");
     $(temp).parent().show();
 
-
     $("#keyword").keyup(function () {
       var k = $(this).val();
       $("#user-table > tbody > tr").hide();
@@ -186,8 +185,8 @@ $(document).ready(function(){
 
 
   //Javascript
-  var count = 0;
-  //스크롤 바닥 감지
+  // var count = 0;
+  // //스크롤 바닥 감지
   // window.onscroll = function(e) {
   //     //추가되는 임시 콘텐츠
   //     //window height + window scrollY 값이 document height보다 클 경우,
@@ -223,12 +222,14 @@ $(document).ready(function(){
   //                                 '<td>' + data.data[i].UPDDTTM +'</td>' +
   //                                 '<td>' + data.data[i].INSUSER +'</td>' +
   //                                 '<td>' + data.data[i].UPDUSER +'</td>' +
-  //                                 '<td>' + data.data[i].MODELCATID + '</td>' +
   //                                 '<td> <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" id=' + data.data[i].MODELID + '>' +
   //                                 '<img src="/menu.svg" style="padding-right: 5px;" with="13", height="13">' +            
   //                                 '</button> </td>' 
-  //                               + '</tr>');
-                
+  //                               + '</tr>'+
+  //                               '<tr>'+
+  //                                '<td></td>'+
+  //                               '</tr>'                                
+  //                               );                
   //              }
   //           }
   //           ,

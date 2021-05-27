@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import BpmnViewer from 'bpmn-js/lib/NavigatedViewer';
 import diagramXML from '../resources/newDiagram.bpmn';
+import TokenSimulationModule from 'bpmn-js-token-simulation';
 
 var container = $('#js-drop-zone');
 
@@ -10,12 +11,12 @@ var canvas = $('#js-canvas');
 
 var viewer = new BpmnViewer({
   container: canvas,
-  keyboard: { bindTo: document }
-  /*
-  additionalModules: [
-    tokenSimulation
-  ]
-  */
+  keyboard: { bindTo: document },
+  
+  // additionalModules: [
+  //   TokenSimulationModule
+  // ]
+  
  // additionalModules: [ minimapModule ]
 });
 
