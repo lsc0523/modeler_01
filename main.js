@@ -99,10 +99,13 @@ server.get('/BBS' , function(req,res){
 		var getPostQuery = "SELECT * FROM POSTS";
 		Mssql.NonQuery(getPostQuery, function(result){
 			res.render('BBS',{
-				data: result.recodrset,
-				sess: req.seesion.user.id
+				data: result.recordset,
+				sess: req.session.user.id
 			})
 		})
+	}
+	else{
+		res.redirect('login');
 	}
 });
 

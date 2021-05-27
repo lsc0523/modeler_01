@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <title>BBS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.min.css">
+  <link rel="stylesheet" href="css/listree.min.css" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+
+<style type="text/css"> 
+    @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+    body , html
+    {
+      font-family: "Noto Sans KR", sans-serif !important;
+      font-weight: normal;
+      font-style: normal;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+  .active {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .section , aside{
+        float:left;
+       /* height:300px; */
+        margin-top: -1px;
+        width: 80%;
+  }
+
+  input
+  {
+    float: right;
+  }
+
+  aside {
+        width:20%;
+        background:hsl(0 0% 97% / 1);
+        float: right;
+  }
+
+  .collaborator{
+  
+    height: 100%;
+    background-color: white;
+    border-left: 1px solid hsl(0 0% 87% / 1); 
+    box-shadow: rgba(0, 0, 0, 0.1) -3px 0px 5px -4px;
+  }
+
+  .collaborator_header{
+    margin: 0px;
+    padding: 20px;
+    color: hsl(0 0% 33% / 1); 
+    background-color: hsl(0 0% 97% / 1); 
+    font-size: 16px;
+    border-bottom: 1px solid hsl(0 0% 87% / 1); ;
+    border-top: 1px solid hsl(0 0% 87% / 1); 
+  }
+
+  .btn-none{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+    outline: none;
+    padding: 0px 10px;
+    display: flex;
+    color: rgba(0, 0, 0, 0.4);
+    flex: 2 1 0%;
+  }
+
+
+#Progress_Loading
+{
+ position: absolute;
+ left: 50%;
+ top: 50%;
+ background: #ffffff;
+}
+
+td 
+{
+  box-shadow : 0px 2px  rgba(0, 0, 0, 0.1);
+}
+
+
+.popupLayer{
+		height:50px;
+		width : 100%;
+		border:  1px solid black;
+		border-radius:6px;
+		font-size: 18px;
+		text-align: right;
+		display: table;
+		padding-right: 10px;
+	}
+
+	.popupLayer span {
+		display: table-cell;
+		text-align: left;
+		vertical-align: middle;
+		text-align: right;
+	}
+
+  .dropdown{
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+</style>
+</head>
+
+<!-- <body>
+로딩바
+<div id = "Progress_Loading">
+  <img src="/Progress_Loading.gif"/>
+</div> -->
+
+   <div style="height: 50px; 
+            padding-top: 10px;
+            padding-bottom: 20px;
+  ">
+  <a href="/home2">
+    <img src="/logo.png"
+      style="border-right: 1px solid hsl(0 0% 87% / 1); 
+      padding-right: 20px; 
+      padding-left: 20px; "></a>
+
+  <!-- <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Home</a> -->
+  <a href="/home" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Modeling</a>
+  <a href="/BBS" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">BBS</a>
+  <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">History</a>
+  <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">EATS-Online</a>
+  <a href="/Simulation" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Simulation</a>
+  <% if(sess) { %>
+  <a href="/logout" style="padding-left: 20px; 
+                           position: absolute; 
+                           right: 50px; 
+                           top : 17px; 
+                           color: hsl(0 0% 50% / 1);">
+                           Logout</a>
+  <% } %>
+</div>
+
+<div  style="background-color: hsl(0,0%,97%); 
+            padding: 25px 100px; 
+            position: relative; 
+            height: 10%;
+            border-bottom: 1px solid hsl(0 0% 87% / 1);
+            border-top: 1px solid hsl(0 0% 87% / 1);
+            margin-top: 10px;
+            font-size: 19px;
+            ">
+  Welcome, <%=sess%> 님
+</div>
+
+<div class="container mb-3">
+    <h2 class="mb-3">Board</h2>
+
+    <table class="board-table table table-sm border-bottom">
+
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col" class="date">Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if(data == null || data.length == 0){ %>
+          <tr>
+            <td colspan=2> There is no data to show :( </td>
+          </tr>
+        <% } %>
+        <% data.forEach(function(post) { %>
+          <tr>
+            <td>
+                <!--<a href="/posts/<%= post._id %>">-->
+                <div class="ellipsis"><%= data.title %></div></a>
+            </td>
+            <td class="date">
+                <span data-date="<%= post.createdAt %>"></span> <!-- 1 -->
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+
+    </table>
+
+    <div>
+      <!--<a class="btn btn-primary" href="/posts/new">New</a>-->
+    </div>
+</div>
