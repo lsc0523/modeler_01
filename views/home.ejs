@@ -140,6 +140,8 @@ td
   <a href="/home" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Modeling</a>
   <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">BBS</a>
   <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">History</a>
+  <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">EATS-Online</a>
+  <a href="/Simulation" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Simulation</a>
   <% if(sess) { %>
   <a href="/logout" style="padding-left: 20px; 
                            position: absolute; 
@@ -256,7 +258,7 @@ td
            id="user-table" >
      <thead>
       <tr>
-        <th style="width: 5%;"></th>
+        <th style="width: 5%;"><input type="checkbox"></th>
         <th style="width: 0%; display: none;">모델 ID</th>
         <th style="width: 5%">ID</th>
         <th style="width: 10%">프로세스 명</th>
@@ -269,11 +271,11 @@ td
       </tr>
     </thead>
 
-    <tbody class="tableBody">
-      <% for (var i=0; i < 15; i++) { %>
+    <tbody class="tableBody" style="visibility: hidden;">
+      <% for (var i=0; i < data.length; i++) { %>
       <%  var rows = data[i]; %>  
 
-      <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1);">
+      <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1); ">
         <td><input type="checkbox"></td>
         <td style="display : none;"><%= rows.MODELID  %></td>
         <td ><%= rows.PROCESSID  %></td>
