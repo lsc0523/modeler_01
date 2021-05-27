@@ -91,6 +91,21 @@ function isNotEmpty(_str) {
 	else return true;
 }
 
+server.get('/BBS' , function(req,res){
+	console.log("BBS");
+	console.log(req.cookies);
+
+	if (isNotEmpty(req.session.user)){
+		var getPostQuery = "SELECT * FROM POSTS";
+		Mssql.NonQuery(getPostQuery, function(result){
+			res.render('BBS',{
+				data: result.recodrset,
+				sess: req.seesion.user.id
+			})
+		})
+	}
+});
+
 server.get('/home2', function (req, res) {
 	console.log("home2...");
 	console.log(req.cookies);
