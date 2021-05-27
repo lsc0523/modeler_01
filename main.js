@@ -11,7 +11,6 @@ const staticMiddleWare = express.static("public");
 const config = require("./webpack.config.js");
 const compiler = webpack(config);
 
-
 //var mod = require("korean-text-analytics");
 //var task = new mod.TaskQueue();
 

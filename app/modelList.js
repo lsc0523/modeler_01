@@ -10,7 +10,8 @@ $(document).ready(function(){
     //Page loading 
     $("#user-table > tbody > tr").hide();
     $("#user-table > tbody").attr('style', "display:'';");
-    var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + $('#keyword').val() + "')");
+    //var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + $('#keyword').val() + "')");
+    var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + "조립" + "')");
     $(temp).parent().show();
 
     $("#keyword").keyup(function () {
@@ -20,6 +21,44 @@ $(document).ready(function(){
 
       $(temp).parent().show();
     })
+
+    // $("#CategorySelectBox").keyup(function () {
+    //   var k = $(this).val();
+    //   $("#user-table > tbody > tr").hide();
+    //   var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + k + "')");
+
+    //   $(temp).parent().show();
+    // })
+
+    $('#createModel').on('click', function(){
+        location.href ="/modeler";
+    });
+
+    $('#factory').on('change',function(){
+      var fac = $("#factory option:selected").text()
+      $("#user-table > tbody > tr").hide();
+      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + fac + "')");
+
+      $(temp).parent().show();
+    });
+
+    $('#process').on('change', function(){
+      var pcs = $("#process option:selected").text()
+      $("#user-table > tbody > tr").hide();
+      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + pcs + "')");
+
+      $(temp).parent().show();
+    });
+
+    var alert_select_value = function(select_obj){
+      var selected_index = select_obj.selectedIndex;
+      var selected_value = select_obj.options[selected_index].value;
+  
+      $("#user-table > tbody > tr").hide();
+      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + selected_value + "')");
+  
+      $(temp).parent().show();
+    }
 
     $('#Progress_Loading').hide();
   
@@ -236,3 +275,4 @@ $(document).ready(function(){
     }
     
   });
+
