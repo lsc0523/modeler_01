@@ -6,6 +6,8 @@ var treeList = require('./treeView.js');
 
 $(document).ready(function(){
 
+
+
     treeList.listree();
     //Page loading 
     $("#user-table > tbody > tr").hide();
@@ -13,6 +15,14 @@ $(document).ready(function(){
     //var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + $('#keyword').val() + "')");
     var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + "조립" + "')");
     $(temp).parent().show();
+
+    // selectElem = document.getElementById("company");
+    // for(var i=0; i < cattype.length; i++){
+    //   var item = cattype[i].MODELCATTYPENAME;
+    //   var element = document.createElement("option");
+    //   element.innerText = item;
+    //   selectElem.append(element);
+    // }
 
     $("#keyword").keyup(function () {
       var k = $(this).val();
@@ -34,7 +44,17 @@ $(document).ready(function(){
         location.href ="/modeler";
     });
 
+    $('#company').on('change',function(){
+     
+      var com = $("#factory option:selected").text()
+      $("#user-table > tbody > tr").hide();
+      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + com + "')");
+
+      $(temp).parent().show();
+    });
+
     $('#factory').on('change',function(){
+     
       var fac = $("#factory option:selected").text()
       $("#user-table > tbody > tr").hide();
       var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + fac + "')");
