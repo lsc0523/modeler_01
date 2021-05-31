@@ -157,7 +157,7 @@ td
 
   <!-- <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Home</a> -->
   <a href="/home" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Modeling</a>
-  <a href="/modeler" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">BBS</a>
+  <a href="/BBS" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">BBS</a>
   <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">History</a>
   <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">EATS-Online</a>
   <a href="/Simulation" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Simulation</a>
@@ -193,10 +193,15 @@ td
                                               margin-left : 5px;
                                               padding-left : 10px;
                                               font-size : 13px; ">
-        <option value="items1">LG 에너지솔루션</option>
+        <% for(var i = 0; i < cattype.length; i++ ){ %>
+          <% if( !cattype[i].MODELCATTYPEID_PR ) { %>
+          <option><%= cattype[i].MODELCATTYPENAME %></option>
+          <% } %>
+        <% } %>
+        <!-- <option value="items1">LG 에너지솔루션</option>
         <option value="items2">LG 화학</option>
         <option value="items3">LG 디스플레이</option>
-        <option value="items4">LG 전자</option>
+        <option value="items4">LG 전자</option> -->
       </select>
       <label style="padding-left: 20px; padding-top: 10px; padding-bottom:10px;">공장</label>
       <select name="공장" id="factory" style=" height:36px;
@@ -204,22 +209,48 @@ td
                                               margin-left : 5px;
                                               padding-left : 10px;
                                               font-size : 13px; ">
-        <option value="items1">조립</option>
-        <option value="items2">전극</option>
-        <option value="items3">활성화</option>
-        <option value="items4">팩</option>
+        <% for(var i= 0; i < cattype.length; i++){ %>
+          <% if( cattype[i].MODELCATTYPEID_PR == "001") { %>
+              <option><%= cattype[i].MODELCATTYPENAME %></option>
+          <% } %>
+        <% } %>
+        <!-- <option value="items1">오창</option>
+        <option value="items2">빈강</option>
+        <option value="items3">오창2</option> -->
       </select>
-      <label style="padding-left: 20px; padding-top: 10px; padding-bottom:10px;">공정</label>
-      <select name="공정" id="process" style=" height:36px;
+      <label style="padding-left: 20px; padding-top: 10px; padding-bottom:10px;">공정1</label>
+      <select name="공정1" id="process1" style=" height:36px;
                                               border: 1px solid hsl(0 0% 80% / 1);
                                               margin-left : 5px;
                                               padding-left : 10px;
                                               font-size : 13px; ">
-        <option value="items1">NULL</option>
+        <option>NULL</option>
+        <% for(var i = 0; i < cat.length; i++ ){ %>
+          <% if( cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
+          <option><%= cat[i].MODELCATNAME %></option>
+          <% } %>
+        <% } %>
+        <!-- <option value="items1">NULL</option>
         <option value="items2">BMA</option>
         <option value="items3">CMA</option>
-        <option value="items4">검사</option>
+        <option value="items4">검사</option> -->
       </select>
+
+    </select>
+    <label style="padding-left: 20px; padding-top: 10px; padding-bottom:10px;">공정2</label>
+    <select name="공정2" id="process2" style=" height:36px;
+                                            border: 1px solid hsl(0 0% 80% / 1);
+                                            margin-left : 5px;
+                                            padding-left : 10px;
+                                            font-size : 13px; ">
+      <option>NULL</option>
+      <!-- <% for(var i = 0; i < cat.length; i++ ){ %>
+        <% if( !cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
+        <option><%= cat[i].MODELCATNAME %></option>
+        <% } %>
+      <% } %>
+      -->
+    </select>
 
       <input type="text" id="keyword" style="height: 36px; width: 30%; border: 1px solid hsl(0 0% 80% / 1); font-size : 13px; ""></input>
 

@@ -33,7 +33,7 @@ var Mssql = require('./db_mssql.js');
 var sqlQurey = 'SELECT MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  ' + 
 					  'MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR,' + 
 					  'MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER,  CONVERT(CHAR(19), p.upddttm , 20) UPDDTTM, ISNULL( MODELDIAGRAM_CNT , 0 ) MODELDIAGRAM_CNT' 	
-			+ ' FROM PROCESSMODEL p  ORDER BY UPDDTTM'
+			+ ' FROM PROCESSMODEL p ORDER BY UPDDTTM;'
 
 //html render
 server.engine('html', require('ejs').renderFile);
@@ -91,6 +91,24 @@ function isNotEmpty(_str) {
 	else return true;
 }
 
+server.get('/BBS' , function(req,res){
+	console.log("BBS");
+	console.log(req.cookies);
+
+	if (isNotEmpty(req.session.user)){
+		var getPostQuery = "SELECT * FROM POSTS";
+		Mssql.NonQuery(getPostQuery, function(result){
+			res.render('BBS',{
+				data: result.recordset,
+				sess: req.session.user.id
+			})
+		})
+	}
+	else{
+		res.redirect('login');
+	}
+});
+
 server.get('/home2', function (req, res) {
 	console.log("home2...");
 	console.log(req.cookies);
@@ -133,14 +151,20 @@ server.get('/modelListData', function(req , res){
 
 server.get('/home', function (req, res) {
 	console.log("home...");
+
+	var CategorytypesqlQuery = 'SELECT * FROM MODELCATEGORYTYPE;'
+	var CategorysqlQuery = 'SELECT * FROM MODELCATEGORY;'
+
 	if (isNotEmpty(req.session.user)) {
-		Mssql.NonQuery(sqlQurey, function (result) {
-			//console.log(result);
+		Mssql.NonQuery(sqlQurey + CategorytypesqlQuery + CategorysqlQuery, function (result) {
+			console.log(result);
 			var page = req.params.page;
 			console.log(req.session.user);
 
 			res.render('home', {
-				data: result.recordset,
+				data: result.recordsets[0],
+				cattype : result.recordsets[1],
+				cat : result.recordsets[2],
 				page: page,
 				page_num: 10,
 				pass: true,

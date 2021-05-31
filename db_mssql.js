@@ -14,6 +14,7 @@ var dbConnectionConfig = {
 	user: 'sa',
 	password: "1",
 	server: 'LCSC18V139\\SQLEXPRESS',
+	multipleStatements: true
 };
 
 sql.on('error', err => {
