@@ -89,6 +89,27 @@ var sqlInsertModelReposQuery = 'insert into '
 	'(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
 	+ ' values (@MODELID, @REPOSID, @MODEL_NODEID, @REPOSNAME, @REPOSINFO)';
 
+//Select Model Company
+function ExcuteSQLSelectModelCompany(params, callback) {
+
+	var query = 'SELECT * from + MODELCATEGORYTYPE';
+
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			.query(query)
+
+		}).then(result => {
+			// console.dir(result);
+			return callback(result);
+
+		}).catch(err => {
+			console.dir(err);
+			// ... error checks
+	});
+}
+
+
 //Select Model
 function ExcuteSQLSelectModel(params, callback) {
 	var connection = sql.connect(dbConnectionConfig, function (err) {
@@ -626,12 +647,13 @@ function ExcuteSQLSelectQuery(sqlQurey, params, callback) {
 module.exports = {
 	NonQuery: ExecuteNonQuery,
 	SelectModel: ExcuteSQLSelectModel,
+
 	//모델 변경 이력 조회
 	SelectModelHistory: ExcuteSQLSelectModelHistory,
 	SelectModelRepos: ExcuteSQLSelectModelRepository,
 	//UpdateModel: ExcuteSQLUpdateModelbyPromises,
 	InsertModel: ExcuteSQLInsertModel,
-	//	InsertModelHistory: ExcuteSQLInsertModelHistorybyPromises,
+	//InsertModelHistory: ExcuteSQLInsertModelHistorybyPromises,
 	DeleteModel: ExcuteSQLDeleteModel,
 	UpdateModelParams: ExcuteSQLUpdateModel,
 	UpdateModelandInsertHistory: ExcuteSQLUpdateModelHistory,
@@ -643,5 +665,8 @@ module.exports = {
 	SelectQueryParams : ExcuteSQLSelectQuery,
 
 	//paging
-	SelectPagingModel : ExcuteSQLSelectModelPaging
+	SelectPagingModel : ExcuteSQLSelectModelPaging,
+
+	//Select Company
+	SelectModelCompany : ExcuteSQLSelectModelCompany
 };
