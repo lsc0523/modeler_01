@@ -396,8 +396,8 @@ $(document).ready(function(){
         items: {
             "edit": {name: "수정", icon: "edit"},
             "open": {name: "열기", icon: "copy"},
-            "delete": {name: "삭제", icon: "delete"},
-            "history" : {name : "이력보기" , icon : "paste"},
+            // "delete": {name: "삭제", icon: "delete"},
+            // "history" : {name : "이력보기" , icon : "paste"},
             "sep1": "---------",
             "quit": {name: "나가기", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
         }
