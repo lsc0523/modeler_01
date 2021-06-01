@@ -177,6 +177,21 @@ server.get('/modelList', function (req, res) {
 	}
 });
 
+server.get('/companycheck', function (req, res){
+	console.log("companycheck");
+	var CategorytypesqlQuery = 'SELECT * FROM MODELCATEGORYTYPE;'
+	var CategorysqlQuery = "SELECT * FROM MODELCATEGORY;"
+
+	if(isNotEmpty(req.session.user)){
+		Mssql.NonQuery(CategorytypesqlQuery+CategorysqlQuery, function(result){
+			console.log(result);
+			console.log(req.session.user);
+
+			res.send({'factory' : result.recordsets[0], 'process1' : result.recordsets[1]});
+		})
+	}
+});
+
 server.get('/viewer', function (req, res) {
 	console.log("viewer...");
 	console.log(req.query.id);
