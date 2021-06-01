@@ -6,7 +6,8 @@ module.exports = {
     modeler: './app/modeler.js',
     viewer : './app/viewer.js' ,
     home : './app/home.js',
-    modelList : './app/modelList.js'
+    modelList : './app/modelList.js',
+    simulation : './app/simulation.js'
   },
 
   output: {
