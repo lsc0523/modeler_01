@@ -10,64 +10,279 @@ $(document).ready(function(){
 
     treeList.listree();
     //Page loading 
-    $("#user-table > tbody > tr").hide();
-    $("#user-table > tbody").attr('style', "display:'';");
+    //$("#user-table > tbody > tr").show();
+    //$("#user-table > tbody").attr('style', "display:'';");
     //var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + $('#keyword').val() + "')");
-    var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + "조립" + "')");
-    $(temp).parent().show();
-
-    // selectElem = document.getElementById("company");
-    // for(var i=0; i < cattype.length; i++){
-    //   var item = cattype[i].MODELCATTYPENAME;
-    //   var element = document.createElement("option");
-    //   element.innerText = item;
-    //   selectElem.append(element);
-    // }
+    // var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + "조립" + "')");
+    // $(temp).parent().show();
 
     $("#keyword").keyup(function () {
       var k = $(this).val();
       $("#user-table > tbody > tr").hide();
-      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + k + "')");
+      $("#user-table > tbody > tr > td:nth-child(n):contains('" + k + "')").parent().show();
 
-      $(temp).parent().show();
     })
-
-    // $("#CategorySelectBox").keyup(function () {
-    //   var k = $(this).val();
-    //   $("#user-table > tbody > tr").hide();
-    //   var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + k + "')");
-
-    //   $(temp).parent().show();
-    // })
 
     $('#createModel').on('click', function(){
         location.href ="/modeler";
     });
 
     $('#company').on('change',function(){
-     
-      var com = $("#factory option:selected").text()
-      $("#user-table > tbody > tr").hide();
-      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + com + "')");
 
-      $(temp).parent().show();
+      $.ajax({
+        url: '/companycheck',
+        type:'GET',
+        dataType: "json",  
+        success : function(data) {
+
+          var ret = data['factory'];
+          var ret2 = data['process1'];
+          var selectElem = document.getElementById("factory");
+          var selectElem2 = document.getElementById("process1");
+          var target;
+
+          $('#factory').empty();
+          $('#process1').empty();
+          $('#process2').empty();
+          $('#factory').append($('<option>NULL</option>'));
+          $('#process1').append($('<option>NULL</option>'));
+          $('#process2').append($('<option>NULL</option>'));
+
+          for(var i=0;i<ret.length;i++){
+            if(ret[i].MODELCATTYPENAME==$('#company option:selected').text()){
+              target = ret[i].MODELCATTYPEID;
+            }
+          }
+
+            
+          for(var i=0;i<ret.length;i++){
+            if(ret[i].MODELCATTYPEID_PR==target){
+              var element = document.createElement("option");
+              element.innerText = ret[i].MODELCATTYPENAME;
+              selectElem.append(element);
+            }
+          }
+
+          for(var i=0;i<ret2.length;i++){
+            if(ret2[i].MODELCATTYPEID==target && !ret2[i].MODELCATID_PR){
+              var element = document.createElement("option");
+              element.innerText = ret2[i].MODELCATNAME;
+              selectElem2.append(element);
+            }
+          }
+          
+          $("#user-table > tbody > tr").hide();
+          if($("#company option:selected").text()=="NULL"){
+            $("#user-table > tbody > tr").show();
+          }
+          else{
+            $("#user-table > tbody > tr > td:nth-child(10):contains('" + target + "')").parent().show();
+          }
+         },
+        error : function(error) {
+           alert("메일 전송이 실패하였습니다.");
+         }
+
+     });
     });
 
     $('#factory').on('change',function(){
-     
-      var fac = $("#factory option:selected").text()
-      $("#user-table > tbody > tr").hide();
-      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + fac + "')");
 
-      $(temp).parent().show();
+      $.ajax({
+        url: '/companycheck',
+        type:'GET',
+        dataType: "json",  
+        success : function(data) {
+
+          var ret = data['factory'];
+          var ret2 = data['process1'];
+          var selectElem = document.getElementById("factory");
+          var selectElem2 = document.getElementById("process1");
+          var target;
+          var target_company;
+
+          $('#process1').empty();
+          $('#process2').empty();
+          $('#process1').append($('<option>NULL</option>'));
+          $('#process2').append($('<option>NULL</option>'));
+
+          for(var i=0;i<ret.length;i++){
+            if(ret[i].MODELCATTYPENAME==$('#factory option:selected').text()){
+              target = ret[i].MODELCATTYPEID;
+            }
+          }
+
+          for(var i=0;i<ret.length;i++){
+            if(ret[i].MODELCATTYPENAME==$('#company option:selected').text()){
+              target_company = ret[i].MODELCATTYPEID;
+            }
+          }
+          
+          $("#user-table > tbody > tr").hide();
+
+          if($("#factory option:selected").text()=="NULL"){
+            $("#user-table > tbody > tr > td:nth-child(10):contains('" + target_company + "')").parent().show();
+
+            for(var i=0;i<ret2.length;i++){
+              if(ret2[i].MODELCATTYPEID==target_company && !ret2[i].MODELCATID_PR){
+                var element = document.createElement("option");
+                element.innerText = ret2[i].MODELCATNAME;
+                selectElem2.append(element);
+              }
+            }
+
+          }
+          else{
+            $("#user-table > tbody > tr > td:nth-child(10):contains('" + target + "')").parent().show();
+
+            for(var i=0;i<ret2.length;i++){
+              if(ret2[i].MODELCATTYPEID==target && !ret2[i].MODELCATID_PR){
+                var element = document.createElement("option");
+                element.innerText = ret2[i].MODELCATNAME;
+                selectElem2.append(element);
+              }
+            }
+          }
+         },
+        error : function(error) {
+           alert("메일 전송이 실패하였습니다.");
+         }
+
+     });
     });
 
-    $('#process').on('change', function(){
-      var pcs = $("#process option:selected").text()
-      $("#user-table > tbody > tr").hide();
-      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + pcs + "')");
+    $('#process1').on('change', function(){
 
-      $(temp).parent().show();
+      $("#user-table > tbody > tr").hide();
+
+      $.ajax({
+        url: '/companycheck',
+        type:'GET',
+        dataType: "json",
+        success : function(data) {
+
+          var ret =data['factory'];
+          var ret2 = data['process1'];
+          var selectElem2 = document.getElementById("process2");
+          var target;
+          var target_company;
+          var target_factory;
+      
+          $('#process2').empty();
+          $('#process2').append($('<option>NULL</option>'));
+
+          for(var i=0;i<ret2.length;i++){
+            if(ret2[i].MODELCATNAME==$('#process1 option:selected').text()){
+              target = ret2[i].MODELCATID;
+            }
+          }
+
+          for(var i=0;i<ret.length;i++){
+            if(ret[i].MODELCATTYPENAME==$('#company option:selected').text()){
+              target_company = ret[i].MODELCATTYPEID;
+            }
+          }
+
+          for(var i=0;i<ret.length;i++){
+            if(ret[i].MODELCATTYPENAME==$('#factory option:selected').text()){
+              target_factory = ret[i].MODELCATTYPEID;
+            }
+          }
+
+          for(var i=0;i<ret2.length;i++){
+            if(ret2[i].MODELCATID_PR==target){
+              var element = document.createElement("option");
+              element.innerText = ret2[i].MODELCATNAME;
+              selectElem2.append(element);
+            }
+          }
+
+          $("#user-table > tbody > tr").hide();
+          if($("#process1 option:selected").text()=="NULL"){
+            if($("#factory option:selected").text()=="NULL"){
+              $("#user-table > tbody > tr > td:nth-child(10):contains('" + target_company + "')").parent().show();
+            }
+            else{
+              $("#user-table > tbody > tr > td:nth-child(10):contains('" + target_factory + "')").parent().show();
+            }
+          }
+          else{
+
+            $("#user-table > tbody > tr > td:nth-child(11):contains('" + target + "')").parent().show();
+
+            for(var i=0;i<ret2.length;i++){
+              if(ret2[i].MODELCATID_PR==target){
+                $("#user-table > tbody > tr > td:nth-child(11):contains('" + ret2[i].MODELCATID + "')").parent().show();
+                // $(temp2).parent().show();
+              }
+            }
+
+          }
+
+         },
+        error : function(error) {
+           alert("메일 전송이 실패하였습니다.");
+         }
+        
+      });
+    });
+
+    $('#process2').on('change',function(){
+      $("#user-table > tbody > tr").hide();
+
+      $.ajax({
+        url: '/companycheck',
+        type:'GET',
+        dataType: "json",
+        success : function(data) {
+
+          var ret =data['factory'];
+          var ret2 = data['process1'];
+          var target;
+          var target_process2;
+  
+          for(var i=0;i<ret2.length;i++){
+            if(ret2[i].MODELCATNAME==$('#process1 option:selected').text()){
+              target = ret2[i].MODELCATID;
+            }
+          }
+
+          for(var i=0;i<ret2.length;i++){
+            if(ret2[i].MODELCATNAME==$('#process2 option:selected').text()){
+              target_process2 = ret2[i].MODELCATID;
+            }
+          }
+
+  
+          $("#user-table > tbody > tr").hide();
+
+          if($("#process2 option:selected").text()=="NULL"){
+            $("#user-table > tbody > tr > td:nth-child(11):contains('" + target + "')").parent().show();
+
+            for(var i=0;i<ret2.length;i++){
+              if(ret2[i].MODELCATID_PR==target){
+                $("#user-table > tbody > tr > td:nth-child(11):contains('" + ret2[i].MODELCATID + "')").parent().show();
+                // $(temp2).parent().show();
+              }
+            }
+          }
+          else{
+            $("#user-table > tbody > tr > td:nth-child(11):contains('" + target_process2 + "')").parent().show();
+          }
+
+         },
+        error : function(error) {
+           alert("메일 전송이 실패하였습니다.");
+         }
+        
+      });
+
+      // if($('#process2 option:selected').text()=='NULL'){
+      //   $("#user-table > tbody > tr > td:nth-child(11):contains('" + $("#process1 option:selected").text() + "')").parent().show();
+      // }
+      // else{
+      //   $("#user-table > tbody > tr > td:nth-child(11):contains('" + $("#process2 option:selected").text() + "')").parent().show();
+      // }
     });
 
     var alert_select_value = function(select_obj){
@@ -75,9 +290,8 @@ $(document).ready(function(){
       var selected_value = select_obj.options[selected_index].value;
   
       $("#user-table > tbody > tr").hide();
-      var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + selected_value + "')");
-  
-      $(temp).parent().show();
+      $("#user-table > tbody > tr > td:nth-child(n):contains('" + selected_value + "')").parent().show();
+
     }
 
     $('#Progress_Loading').hide();

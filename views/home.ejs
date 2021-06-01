@@ -193,6 +193,7 @@ td
                                               margin-left : 5px;
                                               padding-left : 10px;
                                               font-size : 13px; ">
+        <option>NULL</option>             
         <% for(var i = 0; i < cattype.length; i++ ){ %>
           <% if( !cattype[i].MODELCATTYPEID_PR ) { %>
           <option><%= cattype[i].MODELCATTYPENAME %></option>
@@ -209,11 +210,12 @@ td
                                               margin-left : 5px;
                                               padding-left : 10px;
                                               font-size : 13px; ">
-        <% for(var i= 0; i < cattype.length; i++){ %>
+        <option>NULL</option>
+        <!-- <% for(var i= 0; i < cattype.length; i++){ %>
           <% if( cattype[i].MODELCATTYPEID_PR == "001") { %>
               <option><%= cattype[i].MODELCATTYPENAME %></option>
           <% } %>
-        <% } %>
+        <% } %> -->
         <!-- <option value="items1">오창</option>
         <option value="items2">빈강</option>
         <option value="items3">오창2</option> -->
@@ -225,11 +227,11 @@ td
                                               padding-left : 10px;
                                               font-size : 13px; ">
         <option>NULL</option>
-        <% for(var i = 0; i < cat.length; i++ ){ %>
+        <!-- <% for(var i = 0; i < cat.length; i++ ){ %>
           <% if( cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
           <option><%= cat[i].MODELCATNAME %></option>
           <% } %>
-        <% } %>
+        <% } %> -->
         <!-- <option value="items1">NULL</option>
         <option value="items2">BMA</option>
         <option value="items3">CMA</option>
@@ -244,12 +246,6 @@ td
                                             padding-left : 10px;
                                             font-size : 13px; ">
       <option>NULL</option>
-      <!-- <% for(var i = 0; i < cat.length; i++ ){ %>
-        <% if( !cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
-        <option><%= cat[i].MODELCATNAME %></option>
-        <% } %>
-      <% } %>
-      -->
     </select>
 
       <input type="text" id="keyword" style="height: 36px; width: 30%; border: 1px solid hsl(0 0% 80% / 1); font-size : 13px; ""></input>
@@ -345,12 +341,13 @@ td
         <th style="width: 15%">최종 수정 일시</th> 
         <th style="width: 10%">등록자</th>
         <th style="width: 10%">수정자</th>
-        <th style="width: 10%">모델타입</th>
+        <th style="display:none;">모델타입</th>
+        <th style="display:none;">모델카테고리</th>
         <th style="width: 5%;">더보기</th>
       </tr>
     </thead>
 
-    <tbody class="tableBody" style="visibility: hidden;">
+    <tbody class="tableBody" >
       <% for (var i=0; i < data.length; i++) { %>
       <%  var rows = data[i]; %>  
 
@@ -364,7 +361,8 @@ td
         <td ><%= rows.UPDDTTM %></td>
         <td ><%= rows.INSUSER %></td>   
         <td ><%= rows.UPDUSER %></td>
-        <td><%= rows.MODELCATID %></td>
+        <td style="display:none;"><%= rows.MODELTYPE %></td>
+        <td style="display:none;"><%= rows.MODELCATID %></td>
         <td>
         <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" 
                    id=<%= rows.MODELID %> > 
