@@ -1,6 +1,5 @@
 
-//var homeJs = "home JS";
-//console.log(homeJs);
+
 
 var treeList = require('./treeView.js');
 
@@ -42,6 +41,14 @@ $(document).ready(function(){
 
     $('#createModel').on('click', function(){
         location.href ="/modeler";
+    });
+
+    $('#selectHistoryl').on('click', function(){
+      // "delete"
+    });
+
+    $('#deleteModel').on('click', function(){
+      // "history"
     });
 
     $('#company').on('change',function(){

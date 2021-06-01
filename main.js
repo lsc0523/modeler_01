@@ -149,8 +149,8 @@ server.get('/modelListData', function(req , res){
 
 })
 
-server.get('/home', function (req, res) {
-	console.log("home...");
+server.get('/modelList', function (req, res) {
+	console.log("modelList...");
 
 	var CategorytypesqlQuery = 'SELECT * FROM MODELCATEGORYTYPE;'
 	var CategorysqlQuery = 'SELECT * FROM MODELCATEGORY;'
@@ -161,7 +161,7 @@ server.get('/home', function (req, res) {
 			var page = req.params.page;
 			console.log(req.session.user);
 
-			res.render('home', {
+			res.render('modelList', {
 				data: result.recordsets[0],
 				cattype : result.recordsets[1],
 				cat : result.recordsets[2],
@@ -469,7 +469,7 @@ server.get('/delete', function (req, res) {
 
 		Mssql.NonQuery(sqlQurey, function (result) {
 
-			res.render('home', {
+			res.render('modelList', {
 				data: result.recordset,
 				page: 1,
 				page_num: 10,
