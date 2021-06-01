@@ -251,7 +251,7 @@ $(function () {
   console.log(data);
   createNewDiagram(data[0].innerText);
 
-  $('#js-properties-panel').hide();
+  // $('#js-properties-panel').hide();
   $('.map').hide();
   $('.toggle').hide();
   $('.accordion').hide();
