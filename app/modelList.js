@@ -1,6 +1,6 @@
 
-//var homeJs = "home JS";
-//console.log(homeJs);
+var modelListJs = "modelList JS";
+console.log(modelListJs);
 
 var treeList = require('./treeView.js');
 
@@ -24,7 +24,61 @@ $(document).ready(function(){
     })
 
     $('#createModel').on('click', function(){
-        location.href ="/modeler";
+      
+      var DB_MODELID;
+      var DB_MODELCATID;
+
+      $.ajax({
+        url: '/companycheck',
+        type:'GET',
+        dataType: "json",  
+        success : function(data) {
+          var ret = data['factory'];
+          var ret2 = data['process1'];
+
+          if($('#factory option:selected').text()=='NULL'){
+            for(var i=0;i<ret.length;i++){
+              if($('#company option:selected').text()==ret[i].MODELCATTYPENAME){
+                DB_MODELID = ret[i].MODELCATTYPEID;
+              }
+            }
+          }
+          else{
+            for(var i=0;i<ret.length;i++){
+              if($('#factory option:selected').text()==ret[i].MODELCATTYPENAME){
+                DB_MODELID = ret[i].MODELCATTYPEID;
+              }
+            }
+          }
+
+          if($('#process2 option:selected').text()=='NULL'){
+            if($('#process1 option:selected').text()=='NULL'){
+              DB_MODELCATID = "NULL";
+            }
+            else{
+              for(var i=0;i<ret2.length;i++){
+                if($('#process1 option:selected').text()==ret2[i].MODELCATNAME){
+                  DB_MODELCATID = ret2[i].MODELCATID;
+                }
+              }
+            }       
+          }
+          else{
+            for(var i=0;i<ret2.length;i++){
+              if($('#process2 option:selected').text()==ret2[i].MODELCATNAME){
+                DB_MODELCATID = ret2[i].MODELCATID;
+              }
+            }
+          }
+
+
+        },
+        error : function(error) {
+          alert("메일 전송이 실패하였습니다.");
+        }
+      });
+      
+      location.href ="/modeler";
     });
 
     $('#company').on('change',function(){
@@ -355,6 +409,7 @@ $(document).ready(function(){
       var popupOption= "width="+winWidth+", height="+winHeight;
       var myWindow = window.open(url,"userPopup",popupOption);  
   });
+
 
   /*
   $('.viewHistory').on('click', function (e) {
