@@ -77,6 +77,11 @@ $(document).ready(function(){
           }
           else{
             $("#user-table > tbody > tr > td:nth-child(6):contains('" + target + "')").parent().show();
+            for(var i=0;i<ret.length;i++){
+              if(ret[i].MODELCATTYPEID_PR==target){
+                $("#user-table > tbody > tr > td:nth-child(6):contains('" + ret[i].MODELCATTYPEID + "')").parent().show();
+              }
+            }
           }
          },
         error : function(error) {
@@ -122,6 +127,12 @@ $(document).ready(function(){
 
           if($("#factory option:selected").text()=="NULL"){
             $("#user-table > tbody > tr > td:nth-child(6):contains('" + target_company + "')").parent().show();
+            
+            for(var i=0;i<ret.length;i++){
+              if(ret[i].MODELCATTYPEID_PR==target_company){
+                $("#user-table > tbody > tr > td:nth-child(6):contains('" + ret[i].MODELCATTYPEID + "')").parent().show();
+              }
+            }
 
             for(var i=0;i<ret2.length;i++){
               if(ret2[i].MODELCATTYPEID==target_company && !ret2[i].MODELCATID_PR){
