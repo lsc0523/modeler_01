@@ -24,7 +24,54 @@ $(document).ready(function(){
     })
 
     $('#createModel').on('click', function(){
-        location.href ="/modeler";
+      var DB_MODELID = "NULL";
+      var DB_MODELCATID = "NULL";
+
+      $.ajax({
+        url: '/companycheck',
+        type:'GET',
+        dataType: "json",
+        async : false,
+        success : function(data) {
+          var ret = data['factory'];
+          var ret2 = data['process1'];
+
+          if($('#factory option:selected').text()=='NULL'){
+            for(var i=0;i<ret.length;i++){
+              if($('#company option:selected').text()==ret[i].MODELCATTYPENAME){
+                DB_MODELID = ret[i].MODELCATTYPEID;
+              }
+            }
+          }
+          else{
+            for(var i=0;i<ret.length;i++){
+              if($('#factory option:selected').text()==ret[i].MODELCATTYPENAME){
+                DB_MODELID = ret[i].MODELCATTYPEID;
+              }
+            }
+          }
+
+          if($('#process2 option:selected').text()=='NULL'){
+            for(var i=0;i<ret2.length;i++){
+              if($('#process1 option:selected').text()==ret2[i].MODELCATNAME){
+                DB_MODELCATID = ret2[i].MODELCATID;
+              }
+            }
+          }
+          else{
+            for(var i=0;i<ret2.length;i++){
+              if($('#process2 option:selected').text()==ret2[i].MODELCATNAME){
+                DB_MODELCATID = ret2[i].MODELCATID;
+              }
+            }
+          }
+        },
+        error : function(error) {
+          alert("메일 전송이 실패하였습니다2." + error);
+        }
+      });
+      
+      location.href='/modeler?DB_ID=' + DB_MODELID + '&DB_CATID=' + DB_MODELCATID;
     });
 
     $('#company').on('change',function(){

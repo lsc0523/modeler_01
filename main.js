@@ -262,11 +262,11 @@ server.get('/modeler', function (req, res) {
 
 			res.render('modeler', {
 				name: "",
-				modelID: "",
+				modelID: req.query.DB_ID,
 				JsmodelName: "",
 				JsmodelDetailName: "",
 				JsFileList: JsFileList,
-				type: req.query.type,
+				type: req.query.DB_CATID,
 				enable : "Y",
 				data: result_data.recordset,
 				sess: req.session.user.id
