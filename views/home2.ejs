@@ -62,7 +62,7 @@
     }
 
     #blogCarousel {
-      padding-bottom: 100px;
+      padding-bottom: 10px;
     }
 
     .blog .carousel-indicators {
@@ -159,7 +159,7 @@
     }
 
     .item-box-blog-text {
-      max-height: 100px;
+      max-height: 50px;
       overflow: hidden;
     }
 
@@ -176,9 +176,59 @@
       margin-top: 10px;
     }
 
+    .item
+    {
+      text-decoration: none;
+      color: #333;
+    }
+
     .btn.bg-blue-ui.white.read:hover {
       box-shadow: 0px 5px 15px inset #4d5f77;
     }
+
+/* congratulations */
+#divPortletCongratulations table {width:100%;}
+#divPortletCongratulations .wNoData {/* display:none;  */text-align:left;}
+.widgetTable h4 {padding-left:25px; color:#f44179; font-size:17px; font-weight:normal; font-family:"LGSmHaR"; background:url(../../images/lgcns/icon/congraturation.png) no-repeat 0 0;}
+.widgetTable .birthday h4 {margin-top:30px; background-position:0 -3px;}
+.widgetTable .wedding  h4 {margin-top:30px; background-position:0 -28px}
+.widgetTable .long_service h4 {margin-top:30px; background-position:0 -53px}
+.widgetTable .congratulations li {margin-top:15px;}
+.widgetTable .congratulations li a {display:table; table-layout:fixed; width:100%; font-size:14px;}
+.widgetTable .congratulations li em {display:table-cell; width:15%; font-style:normal; color:#000}
+.widgetTable .congratulations li strong {overflow:hidden; display:table-cell; width:28%; font-weight:bold; color:#000; white-space:nowrap; text-overflow:ellipsis;}
+.widgetTable .congratulations li span {overflow:hidden; display:table-cell; color:#888; white-space:nowrap; text-overflow:ellipsis;}
+.widgetTable .congratulations li.today em {font-weight:bold;}
+.widgetTable .congratulations li.today strong {font-weight:bold;}
+
+ /* board Table1 : title/name/date ------------------------------*/
+.widgetTable {position:relative; /* padding-bottom:38px; */}
+.widgetTable .btn_config {position:absolute; top:-3px; right:0; display:block; width:20px; height:20px; border:none; font-size:0; background:url(../../images/lgcns/icon/btn_admin.png) no-repeat 50% 50%; background-size:12px 13px; cursor:pointer; opacity:0.5}
+.widgetTable h3 {color:#f44179; text-transform:uppercase; font-size:20px; font-family:"LGSmHaR";}
+.widgetTable ul {padding-bottom:20px;}
+.widgetTable li {margin-top:10px; }
+.widgetTable li, .widgetTable li a {font-size:12px; color:#999;}
+.widgetTable li a.wName:hover {color:#000}
+.widgetTable li strong {display:block; margin-bottom:5px;}
+.widgetTable li strong a {overflow:hidden; display:block; font-family:"LGSmHaR"; font-size:16px; font-weight:normal; color:#555; text-overflow:ellipsis; white-space:nowrap;}
+.widgetTable li strong a:hover {color:#000;}
+.widgetTable .configArea {display:none; border-bottom:1px #ddd solid}
+.widgetTable .configArea .blockButton {padding-bottom:20px;}
+.widgetTable .configArea .button {padding:0 8px; height:24px; line-height:23px;}
+.widgetTable .configArea ul {padding-bottom:0;}
+.widgetTable .congratulationConfig li select {margin-right:8px;}
+.widgetTable .congratulationConfig li span {margin-right:5px;}
+.widgetTable .congratulationConfig li label {margin-right:8px; }
+.widgetTable .congratulationConfig li label input {margin-top:-1px; margin-right:5px;}
+
+/* widgetMail -----------------------------------------------------------------*/
+.widgetMail li {position:relative;}
+.widgetMail li::after {position:absolute; left:0; bottom:1px; content:"\f2b7"; color:#aaa; font-size:14px; font-family:fontAwesome}
+.widgetMail li.unread::after {bottom:0; content:"\f003"; color:#f92465}
+.widgetMail li > a {margin-left:22px; display:inline-block; max-width:200px; white-space:nowrap;}
+.widgetMail li > span {display:inline-block; vertical-align:bottom;}
+.widgetMail .mailConfig li::after, .widgetMail li.wNoData::after {content:""}
+
   </style>
 </head>
 
@@ -211,7 +261,8 @@
 
   <div style="background-color: hsl(0,0%,97%); 
             padding: 25px 100px; 
-            position: relative; 
+            position: sticky;
+            top: 0; 
             height: 10%;
             border-bottom: 1px solid hsl(0 0% 87% / 1);
             border-top: 1px solid hsl(0 0% 87% / 1);
@@ -486,6 +537,78 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div id="portletLightpackBoard" class="widgetTable" style="padding-left: 10%;">
+    <h3>
+      
+        
+        
+          NOTICE
+        
+      
+    </h3>
+    <ul>
+      
+          
+           
+        
+           
+            <li>
+              <strong>
+                <a class="item" href="/lightpack/board/boardItem/readBoardItemLinkView.do?itemId=162245007365198" linktype="G" title="[중요]'21년 ">
+                [중요] EATS-설비사양서 v2.3.5 신규 배포되었습니다.
+                </a>
+              </strong>						
+              <a class="wName" href="#a" onclick="iKEP.goProfilePopupMain('P0951')">
+                전지설비제어팀
+              </a>
+              <span class="wDate">2021.05.31</span>
+              
+            </li>
+           
+            <li>
+              <strong>
+                <a class="item" href="/lightpack/board/boardItem/readBoardItemLinkView.do?itemId=162241928961995" linktype="G" title="[중요]2021년 ">
+                [중요] 공정운영시나리오 신규 업데이트 안내
+                </a>
+              </strong>						
+              <a class="wName" href="#a" onclick="iKEP.goProfilePopupMain('P0414')">
+                공정운영팀
+              </a>
+              <span class="wDate">2021.05.31</span>
+              
+            </li>
+           
+            <li>
+              <strong>
+                <a class="item" href="/lightpack/board/boardItem/readBoardItemLinkView.do?itemId=162244418718889" linktype="G" title="중국법인 6월 휴무일 공지">
+                폴란드 법인 3-1동 시뮬레이션 모델 v2.3 업데이트 공지
+                </a>
+              </strong>						
+              <a class="wName" href="#a" onclick="iKEP.goProfilePopupMain('66796')">
+                공정시뮬레이션팀
+              </a>
+              <span class="wDate">2021.06.02</span>
+              
+            </li>
+           
+            <li>
+              <strong>
+                <a class="item" href="/lightpack/board/boardItem/readBoardItemLinkView.do?itemId=162200686149522" linktype="G" title="빌드센터 Open Chapter Meeting - argoCD (6/14, 월)">
+                LG Display E5 시뮬레이션 모델 다운로드 안내 (6/14, 월)
+                </a>
+              </strong>						
+              <a class="wName" href="#a" onclick="iKEP.goProfilePopupMain('P1756')">
+                Digital-Twin 센터
+              </a>
+              <span class="wDate">2021.06.02</span>
+              
+            </li>       
+            
+        
+       
+    </ul>
   </div>
 
   <!-- <div style="display: inline-block; width: 20%; height: 20%; vertical-align: top; padding-left: 50px;">
