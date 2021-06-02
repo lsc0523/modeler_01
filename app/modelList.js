@@ -1,5 +1,6 @@
 
-
+//var homeJs = "home JS";
+//console.log(homeJs);
 
 var treeList = require('./treeView.js');
 
@@ -24,14 +25,6 @@ $(document).ready(function(){
 
     $('#createModel').on('click', function(){
         location.href ="/modeler";
-    });
-
-    $('#selectHistoryl').on('click', function(){
-      // "delete"
-    });
-
-    $('#deleteModel').on('click', function(){
-      // "history"
     });
 
     $('#company').on('change',function(){
@@ -83,7 +76,7 @@ $(document).ready(function(){
             $("#user-table > tbody > tr").show();
           }
           else{
-            $("#user-table > tbody > tr > td:nth-child(10):contains('" + target + "')").parent().show();
+            $("#user-table > tbody > tr > td:nth-child(6):contains('" + target + "')").parent().show();
           }
          },
         error : function(error) {
@@ -128,7 +121,7 @@ $(document).ready(function(){
           $("#user-table > tbody > tr").hide();
 
           if($("#factory option:selected").text()=="NULL"){
-            $("#user-table > tbody > tr > td:nth-child(10):contains('" + target_company + "')").parent().show();
+            $("#user-table > tbody > tr > td:nth-child(6):contains('" + target_company + "')").parent().show();
 
             for(var i=0;i<ret2.length;i++){
               if(ret2[i].MODELCATTYPEID==target_company && !ret2[i].MODELCATID_PR){
@@ -140,7 +133,7 @@ $(document).ready(function(){
 
           }
           else{
-            $("#user-table > tbody > tr > td:nth-child(10):contains('" + target + "')").parent().show();
+            $("#user-table > tbody > tr > td:nth-child(6):contains('" + target + "')").parent().show();
 
             for(var i=0;i<ret2.length;i++){
               if(ret2[i].MODELCATTYPEID==target && !ret2[i].MODELCATID_PR){
@@ -207,19 +200,19 @@ $(document).ready(function(){
           $("#user-table > tbody > tr").hide();
           if($("#process1 option:selected").text()=="NULL"){
             if($("#factory option:selected").text()=="NULL"){
-              $("#user-table > tbody > tr > td:nth-child(10):contains('" + target_company + "')").parent().show();
+              $("#user-table > tbody > tr > td:nth-child(6):contains('" + target_company + "')").parent().show();
             }
             else{
-              $("#user-table > tbody > tr > td:nth-child(10):contains('" + target_factory + "')").parent().show();
+              $("#user-table > tbody > tr > td:nth-child(6):contains('" + target_factory + "')").parent().show();
             }
           }
           else{
 
-            $("#user-table > tbody > tr > td:nth-child(11):contains('" + target + "')").parent().show();
+            $("#user-table > tbody > tr > td:nth-child(7):contains('" + target + "')").parent().show();
 
             for(var i=0;i<ret2.length;i++){
               if(ret2[i].MODELCATID_PR==target){
-                $("#user-table > tbody > tr > td:nth-child(11):contains('" + ret2[i].MODELCATID + "')").parent().show();
+                $("#user-table > tbody > tr > td:nth-child(7):contains('" + ret2[i].MODELCATID + "')").parent().show();
                 // $(temp2).parent().show();
               }
             }
@@ -264,17 +257,17 @@ $(document).ready(function(){
           $("#user-table > tbody > tr").hide();
 
           if($("#process2 option:selected").text()=="NULL"){
-            $("#user-table > tbody > tr > td:nth-child(11):contains('" + target + "')").parent().show();
+            $("#user-table > tbody > tr > td:nth-child(7):contains('" + target + "')").parent().show();
 
             for(var i=0;i<ret2.length;i++){
               if(ret2[i].MODELCATID_PR==target){
-                $("#user-table > tbody > tr > td:nth-child(11):contains('" + ret2[i].MODELCATID + "')").parent().show();
+                $("#user-table > tbody > tr > td:nth-child(7):contains('" + ret2[i].MODELCATID + "')").parent().show();
                 // $(temp2).parent().show();
               }
             }
           }
           else{
-            $("#user-table > tbody > tr > td:nth-child(11):contains('" + target_process2 + "')").parent().show();
+            $("#user-table > tbody > tr > td:nth-child(7):contains('" + target_process2 + "')").parent().show();
           }
 
          },
