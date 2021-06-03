@@ -287,7 +287,9 @@ td
     <label style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom:10px;">검색</label>
     <input type="text" id="keyword" style="float: right; padding-left:5px;text-align:right; height: 36px; width: 30%; border: 1px solid hsl(0 0% 80% / 1); font-size : 13px; margin-right: 2%;"></input>
 
-    
+    <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;">모델생성</button>
+    <button type="button" class="btn btn-primary" id="history" style="margin-left : 5px; margin-bottom: 5px;">이력보기</button>
+    <button type="button" class="btn btn-primary" id="delete" style="margin-left : 5px; margin-bottom: 5px;">삭제</button>
     <!-- <input  type="text" id="keyword" style="height: 36px; 
                               width: 30%; 
                               border: 1px solid hsl(0 0% 80% / 1);
@@ -386,7 +388,7 @@ td
 
   <tbody class="tableBody">
   <tr>
-  <div style="display: flex;
+  <!-- <div style="display: flex;
     -webkit-box-pack: end;
     justify-content: flex-end;
     margin-bottom: 15px;
@@ -396,7 +398,7 @@ td
     <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;">모델생성</button>
     <button type="button" class="btn btn-primary" id="history" style="margin-left : 5px; margin-bottom: 5px;">이력보기</button>
     <button type="button" class="btn btn-primary" id="delete" style="margin-left : 5px; margin-bottom: 5px;">삭제</button>
-  </div>
+  </div> -->
 
   <!-- "delete": {name: "삭제", icon: "delete"},
   "history" : {name : "이력보기" , icon : "paste"}, -->
@@ -409,7 +411,7 @@ td
   </p> -->
   </tr>
 
-  <% for (var i=0; i < 10; i++) { %>
+  <% for (var i=0; i < data.length; i++) { %>
   <%  var rows = data[i]; %>  
 
   <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1); ">
