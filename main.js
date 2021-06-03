@@ -262,11 +262,12 @@ server.get('/modeler', function (req, res) {
 
 			res.render('modeler', {
 				name: "",
-				modelID: req.query.DB_ID,
+				modelID: "",
 				JsmodelName: "",
 				JsmodelDetailName: "",
 				JsFileList: JsFileList,
-				type: req.query.DB_CATID,
+				type: req.query.DB_ID,
+				catid: req.query.DB_CATID,
 				enable : "Y",
 				data: result_data.recordset,
 				sess: req.session.user.id
@@ -286,6 +287,7 @@ server.get('/modeler', function (req, res) {
 				modelName = result.recordset[0].MODELNAME;
 				modelDetailName = result.recordset[0].MODELDESC;
 				modelType = result.recordset[0].MODELCATID;
+				modelcatid = result.recordset[0].MODELTYPE;
 
 				var fileParams = { MODELID: req.query.id };
 
@@ -303,6 +305,7 @@ server.get('/modeler', function (req, res) {
 						JsmodelDetailName: modelDetailName,
 						JsFileList: JsFileList,
 						type: modelType,
+						catid: modelcatid,
 						enable : enable,
 						data: result_data.recordset,
 						sess: req.session.user.id
@@ -337,7 +340,8 @@ function Padder(len, pad) {
 
 function InsertModelData(req, callback) {
 	var params = {
-		MODELCATID: req.body.type,
+		MODELTYPE: req.body.type,
+		MODELCATID: req.body.modelCatID,
 		PROCESSID: req.body.processID,
 		MODEL_XML: req.body.id,
 		MODELNAME: req.body.modelName,

@@ -430,6 +430,7 @@ $(function () {
     var JSmodeName = $('#modelName').val();
     var modelDetailName = $('#modelDetailName').val();
     var modelType = $('#modelType').val();
+    var modelCatID = $("#catid").val();
     var ProcessID = bpmnModeler._definitions.rootElements[0].id;
     var ProcessName = bpmnModeler._definitions.rootElements[0].name;
     var docText = "";
@@ -445,6 +446,7 @@ $(function () {
     formData.append("id", xmlData.replace(/(\r\n|\n|\r)/gm, ""));
     formData.append("modelID", modelID[0].innerText);
     formData.append("type", modelType);
+    formData.append("modelCatID", modelCatID);
     formData.append("processID", ProcessID);
     formData.append("historyYN", historyYN);
     formData.append("modelName", common.NVC(ProcessName));

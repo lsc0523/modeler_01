@@ -31,7 +31,8 @@ $(document).ready(function(){
       $.ajax({
         url: '/companycheck',
         type:'GET',
-        dataType: "json",  
+        dataType: "json",
+        async : false,
         success : function(data) {
           var ret = data['factory'];
           var ret2 = data['process1'];
@@ -78,7 +79,7 @@ $(document).ready(function(){
         }
       });
       
-      location.href ="/modeler";
+      location.href ="/modeler?DB_ID="+DB_MODELID+"&DB_CATID="+DB_MODELCATID;
     });
 
     $('#company').on('change',function(){
