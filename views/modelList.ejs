@@ -415,7 +415,7 @@ td
   <%  var rows = data[i]; %>  
 
   <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1); ">
-    <td><input type="checkbox" name="checkRow"></td>
+    <td><input type="checkbox" id="checkRow" class="chkbox"></td>
     <!-- <td style="display : none;"><%= rows.MODELID  %></td> -->
     <!-- <td ><%= rows.PROCESSID  %></td> -->
     <td><img with="15", height="15" src="model.svg" alt=""></td>
@@ -427,7 +427,7 @@ td
     <td style="display:none;"><%= rows.MODELCATID %></td>
     <!-- <td ><%= rows.INSUSER %></td>    -->
     <!-- <td ><%= rows.UPDUSER %></td> -->
-    <!-- <td><%= rows.MODELCATID %></td> -->
+    <td style="display:none;" id="modelid"><%= rows.MODELID %></td>
     <td>
     <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" 
               id=<%= rows.MODELID %> > 

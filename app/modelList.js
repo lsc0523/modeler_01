@@ -370,7 +370,7 @@ $(document).ready(function(){
       $('#Progress_Loading').hide(); //ajax종료시 로딩바를 숨겨준다.
     });
 
-    $("delete").on('click', function (e) {
+    $("#delete").on('click', function (e) {
       e.preventDefault();
       var checkDelete = confirm("삭제 하시겠습니까?");
 
@@ -379,24 +379,34 @@ $(document).ready(function(){
         var href = $(this).attr("href");
         //window.location = href;
         //window.location = returnurl;
-        $.ajax({
-          url: '/delete',
-          type: 'GET',
-          data: {
-            id: href.split('=')[1],
-            page : returnurl.split('/')[2]
-          },
-          dataType: 'text',
-          success: function (data) {
-              //Row 삭제
-              e.target.parentNode.parentNode.parentNode.remove();
-              alert("삭제 성공하였습니다.");
-          },
-          error: function (error) {
-            alert("삭제 실패하였습니다. 재시도 하시기 바랍니다.");
-            window.location = returnurl;
-          }
-        })
+        var $checklist = $("#user-table input[type='checkbox']:checked").parent().parent()
+        var modellist;
+
+        for(var i=0;i<$checklist.length;i++){
+          $.ajax({
+            url: '/delete',
+            type: 'GET',
+            async: false,
+            data: {
+              id: $checklist[i].children[7].innerText,
+              page : returnurl.split('/')[2]
+            },
+            dataType: 'text',
+            success: function (data) {
+                //Row 삭제
+                // e.target.parentNode.parentNode.parentNode.remove();
+                //alert("삭제 성공하였습니다.");
+            },
+            error: function (error) {
+              print(error);
+              alert("삭제 실패하였습니다. 재시도 하시기 바랍니다.");
+              window.location = returnurl;
+            }
+          })
+        }  
+
+        if (typeof window !== 'undefined') { alert("삭제 성공하였습니다.") };
+        location.href = "/modelList";
         
       }
     });

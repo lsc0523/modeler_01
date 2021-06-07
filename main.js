@@ -168,7 +168,7 @@ server.get('/modelList', function (req, res) {
 				page: page,
 				page_num: 10,
 				pass: true,
-				length: result.recordset.length - 1,
+				length: result.recordsets[0].length - 1,
 				sess: req.session.user.id
 			});
 		});
@@ -481,23 +481,28 @@ server.get('/delete', function (req, res) {
 	console.log("delete...");
 	//console.log(req.query.id);
 	var params = { MODELID: req.query.id };
-	//var pagenum = req.query.page;
-	//console.log(pagenum);
-
 	Mssql.DeleteModel(params, function (result) {
-
-		Mssql.NonQuery(sqlQurey, function (result) {
-
-			res.render('modelList', {
-				data: result.recordset,
-				page: 1,
-				page_num: 10,
-				pass: true,
-				length: result.recordset.length - 1,
-				sess: req.session.user.id
-			});
-		});
+		res.send("delete success!");
 	});
+
+
+	// 
+	// var params = { MODELID: req.query.id };
+
+	// Mssql.DeleteModel(params, function (result) {
+
+	// 	Mssql.NonQuery(sqlQurey, function (result) {
+
+	// 		res.render('modelList', {
+	// 			data: result.recordset,
+	// 			page: 1,
+	// 			page_num: 10,
+	// 			pass: true,
+	// 			length: result.recordset.length - 1,
+	// 			sess: req.session.user.id
+	// 		});
+	// 	});
+	// });
 });
 
 server.get('/download', function (req, res) {
