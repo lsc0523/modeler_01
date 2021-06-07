@@ -372,7 +372,7 @@ td
     id="user-table" >
   <thead>
   <tr>
-  <th style="width: 2%;"><input type="checkbox"></th>
+  <th style="width: 2%;"><input type="checkbox" name="checkAll" id="th_checkAll"></th>
   <!-- <th style="width: 0%; display: none;">모델 ID</th> -->
   <th style="width: 2%"></th>
   <th style="width: 10%">시나리오 명</th>
@@ -415,7 +415,7 @@ td
   <%  var rows = data[i]; %>  
 
   <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1); ">
-    <td><input type="checkbox"></td>
+    <td><input type="checkbox" name="checkRow"></td>
     <!-- <td style="display : none;"><%= rows.MODELID  %></td> -->
     <!-- <td ><%= rows.PROCESSID  %></td> -->
     <td><img with="15", height="15" src="model.svg" alt=""></td>

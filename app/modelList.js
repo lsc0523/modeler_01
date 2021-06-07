@@ -370,7 +370,7 @@ $(document).ready(function(){
       $('#Progress_Loading').hide(); //ajax종료시 로딩바를 숨겨준다.
     });
 
-    $(".delete").on('click', function (e) {
+    $("delete").on('click', function (e) {
       e.preventDefault();
       var checkDelete = confirm("삭제 하시겠습니까?");
 
@@ -577,3 +577,11 @@ $(document).ready(function(){
     
   });
 
+  $('#th_checkAll').on('click', function(e){
+    if( $("#th_checkAll").is(':checked')){
+      $("input[name=checkRow]").prop("checked", true);
+    }
+    else{
+      $("input[name=checkRow]").prop("checked", false);
+    }
+  });
