@@ -289,6 +289,7 @@ td
 
     <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;">모델생성</button>
     <button type="button" class="btn btn-primary" id="history" style="margin-left : 5px; margin-bottom: 5px;">이력보기</button>
+    <button type="button" class="btn btn-primary" id="copy" style="margin-left : 5px; margin-bottom: 5px;">복사</button>
     <button type="button" class="btn btn-primary" id="delete" style="margin-left : 5px; margin-bottom: 5px;">삭제</button>
     <!-- <input  type="text" id="keyword" style="height: 36px; 
                               width: 30%; 
@@ -417,17 +418,21 @@ td
   <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1); ">
     <td><input type="checkbox" id="checkRow" class="chkbox"></td>
     <!-- <td style="display : none;"><%= rows.MODELID  %></td> -->
-    <!-- <td ><%= rows.PROCESSID  %></td> -->
+    
     <td><img with="15", height="15" src="model.svg" alt=""></td>
     <td ><%= rows.MODELNAME %></td>
     <td ><%= rows.MODELDESC %></td>
-    <!-- <td style="padding-left: 20px;" ><%= rows.MODELDIAGRAM_CNT %></td> -->
     <td ><%= rows.UPDDTTM %></td>
     <td style="display:none;"><%= rows.MODELTYPE %></td>
     <td style="display:none;"><%= rows.MODELCATID %></td>
-    <!-- <td ><%= rows.INSUSER %></td>    -->
-    <!-- <td ><%= rows.UPDUSER %></td> -->
     <td style="display:none;" id="modelid"><%= rows.MODELID %></td>
+    
+    <td style="display:none;"><%= rows.PROCESSID  %></td>
+    <td style="display:none;"><%= rows.MODEL_XML  %></td>
+    <td style="padding-left: 20px; display:none" ><%= rows.MODELDIAGRAM_CNT %></td>
+    <td style="display:none;"><%= rows.INSUSER %></td>
+    <td style="display:none;"><%= rows.UPDUSER %></td>
+
     <td>
     <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" 
               id=<%= rows.MODELID %> > 

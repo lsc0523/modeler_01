@@ -411,6 +411,55 @@ $(document).ready(function(){
       }
     });
 
+    $("#copy").on('click', function (e) {
+      e.preventDefault();
+      var checkDelete = confirm("복사 하시겠습니까?");
+
+      if (checkDelete) {
+        var returnurl = window.location.pathname;
+        var href = $(this).attr("href");
+        var $checklist = $("#user-table input[type='checkbox']:checked").parent().parent()
+        var modellist;
+
+        for(var i=0;i<$checklist.length;i++){
+
+          var formData = new FormData();
+          formData.append("id", $checklist[i].children[9].innerText);
+          //formData.append("modelID", modelID[0].innerText);
+          formData.append("type", $checklist[i].children[5].innerText);
+          formData.append("modelCatID", $checklist[i].children[6].innerText);
+          formData.append("processID", $checklist[i].children[8].innerText);
+          formData.append("historyYN", false);
+          formData.append("modelName", $checklist[i].children[2].innerText+"_copy");
+          formData.append("modelDetailName", $checklist[i].children[3].innerText);
+          formData.append("modelComment" , "");
+          formData.append("diagramCnt" , $checklist[i].children[10].innerText);
+
+          $.ajax({
+            url: "/insert",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            async: false,
+            success: function (data) {
+              //alert("저장이 완료 되었습니다.");
+              //window.location.href = 'home/1';
+              //window.location.href = 'modeler?id=' + data.id;
+            },
+            error: function (error) {
+              alert("Error!");
+            }
+      
+          });
+        }  
+
+        if (typeof window !== 'undefined') { alert("복사 성공하였습니다.") };
+        location.href = "/modelList";
+      }
+    });
+
   });
   
   $('#btn_user').on('click', function(){

@@ -485,7 +485,6 @@ server.get('/delete', function (req, res) {
 		res.send("delete success!");
 	});
 
-
 	// 
 	// var params = { MODELID: req.query.id };
 
@@ -504,6 +503,7 @@ server.get('/delete', function (req, res) {
 	// 	});
 	// });
 });
+
 
 server.get('/download', function (req, res) {
 	res.download("./uploads/" + req.query.id);
