@@ -543,6 +543,39 @@ $(document).ready(function(){
     this.parentNode.remove()
   });
 
+  // $(window).scroll(function(){ 
+  //   var height = $(document).scrollTop(); 
+  //   console.log(height);
+  //   $('#section.section2').height = height;
+  // });
+
+
+  // $(function() {
+  //   var section2_top = $(document).scrollTop(); 
+  //   console.log(section2_top);
+  //   $(window).scroll(function() {
+     
+  //     var window = $(this).scrollTop();
+      
+  //     if(section2_top <= window) {
+  //       $(".section2").addClass("fixed");
+  //       // $(".section2").height = 100; 
+  //     }else{
+  //       $(".section2").removeClass("fixed");
+  //     }
+  //   })
+  // });
+  $(function(){
+    $(window).scroll(function(){  //스크롤하면 아래 코드 실행
+           var num = $(this).scrollTop();  // 스크롤값
+           if( num > 52 ){  // 스크롤을 36이상 했을 때
+              $(".section2").css("top",(num-45)+"px");
+           }else{
+               $(".section2").css("position","relative");
+               $(".section2").css("top","52px");
+           }
+      });
+    });
 
   //Javascript
   // var count = 0;
