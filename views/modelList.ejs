@@ -163,6 +163,7 @@ td
   .dropdown:hover .dropdown-content {
     display: block;
   }
+  
 
 </style>
 </head>
@@ -388,7 +389,7 @@ td
   </thead>
 
   <tbody class="tableBody">
-  <tr>
+  <!-- <tr> -->
   <!-- <div style="display: flex;
     -webkit-box-pack: end;
     justify-content: flex-end;
@@ -410,7 +411,7 @@ td
   <p style="text-align:right">
   <a href="#"><span class="Ltitle"> 전극-재작업 시나리오 업데이트되었습니다</span></a>
   </p> -->
-  </tr>
+  <!-- </tr> -->
 
   <% for (var i=0; i < data.length; i++) { %>
   <%  var rows = data[i]; %>  
@@ -453,22 +454,18 @@ td
   </td>
   </tr>
   -->
-  </tbody>
-  </table>
-</div>
-<div class="text-center">
-    <ui class="pagination">
-      <li><a href="#">1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><a href="#">6</a></li>
-      <li><a href="#">7</a></li>
-    </ui>
 
-</div>
+    <!-- <div class="listFooter">
+      <div class='paginate'></div>
+    </div> -->
 
+    </tbody>
+    </table>
+  </div>
+
+  <nav>
+    <ul class="pagination pagination-seperated"></ul>
+  </nav>
 
   <article>
   </article>

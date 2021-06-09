@@ -169,7 +169,7 @@ server.get('/modelList', function (req, res) {
 				page_num: 10,
 				pass: true,
 				length: result.recordsets[0].length - 1,
-				sess: req.session.user.id
+				sess: req.session.user.id,
 			});
 		});
 	} else {
