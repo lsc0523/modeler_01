@@ -27,6 +27,48 @@
       margin: 0;
     }
 
+    .searchOption {
+      position: absolute;
+      background-color: hsl(0,0%,97%); 
+      /* bottom: -41px; */
+      height: 10%;background: #fcfcfc;
+      width: 100%;
+      border-bottom: 1px solid hsl(0 0% 87% / 1);
+      border-top: 1px solid hsl(0 0% 87% / 1);
+      margin-top: 10px;
+      font-size: 19px;
+      box-shadow: 0px 20px 5px 5px rgba(255,255,255,1);
+    }
+    /* "background-color: hsl(0,0%,97%); 
+            padding: 25px 100px; 
+            position: sticky; 
+            top: 0;
+            height: 10%;
+            border-bottom: 1px solid hsl(0 0% 87% / 1);
+            border-top: 1px solid hsl(0 0% 87% / 1);
+            margin-top: 10px;
+            font-size: 19px; */
+ 
+    .totalSearch_header {
+      position: fixed;
+      z-index: 5;
+      top:0;
+      left:0;
+      right:0;
+      height:60px;
+      padding-top: 10px;
+      padding-bottom: 20px;
+      border-bottom: 1px #ddd solid;
+      background-color: white;;
+    }
+    .totalSearch_header, .searchText_wrap {transition:all 0.3s; }
+    .totalSearch_header .searchText_wrap {position:relative;width: 1000px;margin:52px auto auto;z-index:1; transform-origin: 0% 0%;}
+    .totalSearch_header.fold {height: 110px;border-color: #ccc;}
+    .totalSearch_header.fold .searchText_wrap {margin-top: 11px;transform:scale(0.75);}
+    .totalSearch_header.fold .nav li a {font-size:13px;}
+    .searchText_wrap label {vertical-align:middle; margin-left:20px;}
+    .totalSearch_header.fold .searchText_wrap label {transform: scale(1.3);margin-left: 40px;display: inline-block;}
+    .totalSearch_header.fold .autoList {transform: scale(1.3); transform-origin:left top; border-top:1px solid #ccc;} */
 
 /* .topFixBanner {
       text-align: left;
@@ -36,12 +78,12 @@
       border-bottom:#666666 solid 2px;
     } */
 
-.topFixBannerFixed {
+/* .topFixBannerFixed {
     position: fixed;
     top: 0px;
-    /* text-align:left;
-    padding-left:20px; */
-   }
+    text-align:left;
+    padding-left:20px; 
+   } */
 
   .active {
     text-decoration: underline;
@@ -54,7 +96,13 @@
         margin-top: -1px;
         width: 80%;
   }
+  .nav-up { top: -60px; }
 
+  /* .table-dv
+  {
+    position: relative;
+    top: 100px;
+  } */
   /* input
   {
     float: right;
@@ -166,6 +214,48 @@ td
   
 
 </style>
+
+
+  <div class="totalSearch_header">
+    <a href="/home2">
+      <img src="/logo.png" style="border-right: 1px solid hsl(0 0% 87% / 1); padding-right: 20px; padding-left: 20px; "></a>
+    <!-- <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Home</a> -->
+    <a href="/modelList" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Modeling</a>
+    <a href="/BBS" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">BBS</a>
+    <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">History</a>
+    <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">EATS-Online</a>
+    <a href="/Simulation" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Simulation</a>
+    <% if(sess) { %>
+    <a href="/logout" style="padding-left: 20px; 
+                            position: absolute; 
+                            right: 50px;
+                            top : 17px; 
+                            color: hsl(0 0% 50% / 1);">
+                            Logout</a>
+    <% } %>
+  </div>
+  <div class="welcome" style ="background-color: hsl(0,0%,97%); 
+            padding: 25px 100px; 
+            position:relative; 
+            top: 50px;;
+            height: 10%;
+            border-bottom: 1px solid hsl(0 0% 87% / 1);
+            border-top: 1px solid hsl(0 0% 87% / 1);
+            margin-top: 10px;
+            font-size: 19px;
+            z-index: 6;
+            ">
+    Welcome, LG CNS <%=sess%> 님
+    <% if(sess) { %>
+      <a href="/logout" style="padding-left: 20px; 
+                           position: absolute; 
+                           right: 50px; 
+                           top : 17px; 
+                           color:rgba(255, 0, 0, 0.609);">
+         To-Do : 5건</a>
+      <% } %>
+</div>
+
 </head>
 
 <body>
@@ -174,154 +264,116 @@ td
   <img src="/Progress_Loading.gif"/>
 </div> -->
 
-   <div style="height: 50px; 
-            padding-top: 10px;
-            padding-bottom: 20px;
-            position: sticky;
-            top: 0;
-  ">
-  <a href="/home2">
-    <img src="/logo.png"
-      style="border-right: 1px solid hsl(0 0% 87% / 1); 
-      padding-right: 20px; 
-      padding-left: 20px; "></a>
 
-  <!-- <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Home</a> -->
-  <a href="/modelList" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Modeling</a>
-  <a href="/BBS" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">BBS</a>
-  <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">History</a>
-  <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">EATS-Online</a>
-  <a href="/Simulation" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Simulation</a>
-  <% if(sess) { %>
-  <a href="/logout" style="padding-left: 20px; 
-                           position: absolute; 
-                           right: 50px; 
-                           top : 17px; 
-                           color: hsl(0 0% 50% / 1);">
-                           Logout</a>
-  <% } %>
-</div>
+<!-- <div class="searchOption"Welcome, <%=sess%> 님> -->
 
-<div  style="background-color: hsl(0,0%,97%); 
-            padding: 25px 100px; 
-            position: sticky; 
-            top: 0;
-            height: 10%;
-            border-bottom: 1px solid hsl(0 0% 87% / 1);
-            border-top: 1px solid hsl(0 0% 87% / 1);
-            margin-top: 10px;
-            font-size: 19px;
-            ">
-  Welcome, <%=sess%> 님
-</div>
-<div class="section"style="padding-left: 50px; 
-                            background-color: hsl(0,0%,97%); 
-                            height: 100%;">
-  <div class="section2" style="padding-top: 10px; padding-bottom: 10px; display: flex;" >
-    <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">회사</label>
-    <select name="회사" id="company" style=" height:36px;
-                                            border: 1px solid hsl(0 0% 80% / 1);
-                                            margin-left : 5px;
-                                            padding-left : 10px;
-                                            font-size : 13px; ">
-      <% for(var i = 0; i < cattype.length; i++ ){ %>
-        <% if( !cattype[i].MODELCATTYPEID_PR ) { %>
-        <option><%= cattype[i].MODELCATTYPENAME %></option>
-        <% } %>
+
+<div class="section"style="padding-left: 50px; background-color: hsl(0,0%,97%); height: 100%; position: relative; height: 50px;">
+  <div class="section2" 
+    style="
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    top: 52px;
+    flex-wrap: wrap;
+    position: relative;
+    background-color: hsl(0,0%,97%);" >
+  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">회사</label>
+  <select name="회사" id="company" style=" height:36px;
+                                          border: 1px solid hsl(0 0% 80% / 1);
+                                          margin-left : 5px;
+                                          padding-left : 10px;
+                                          font-size : 13px; ">
+    <% for(var i = 0; i < cattype.length; i++ ){ %>
+      <% if( !cattype[i].MODELCATTYPEID_PR ) { %>
+      <option><%= cattype[i].MODELCATTYPENAME %></option>
       <% } %>
-      <!-- <option value="items1">LG 에너지솔루션</option>
-      <option value="items2">LG 화학</option>
-      <option value="items3">LG 디스플레이</option>
-      <option value="items4">LG 전자</option> -->
-    </select>
-    <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공장</label>
-    <select name="공장" id="factory" style=" height:36px;
-                                            border: 1px solid hsl(0 0% 80% / 1);
-                                            margin-left : 5px;
-                                            padding-left : 10px;
-                                            font-size : 13px; ">
-      <option>NULL</option>
-      <% for(var i= 0; i < cattype.length; i++){ %>
-        <% if( cattype[i].MODELCATTYPEID_PR == "001") { %>
-            <option><%= cattype[i].MODELCATTYPENAME %></option>
-        <% } %>
-      <% } %>
-      <!-- <option value="items1">오창</option>
-      <option value="items2">빈강</option>
-      <option value="items3">오창2</option> -->
-    </select>
-    <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공정1</label>
-    <select name="공정1" id="process1" style=" height:36px;
-                                            border: 1px solid hsl(0 0% 80% / 1);
-                                            margin-left : 5px;
-                                            padding-left : 10px;
-                                            font-size : 13px; ">
-      <option>NULL</option>
-      <% for(var i = 0; i < cat.length; i++ ){ %>
-        <% if( cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
-        <option><%= cat[i].MODELCATNAME %></option>
-        <% } %>
-      <% } %>
-      <!-- <option value="items1">NULL</option>
-      <option value="items2">BMA</option>
-      <option value="items3">CMA</option>
-      <option value="items4">검사</option> -->
-    </select>
-    <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공정2</label>
-    <select name="공정2" id="process2" style=" height:36px;
+    <% } %>
+    <!-- <option value="items1">LG 에너지솔루션</option>
+    <option value="items2">LG 화학</option>
+    <option value="items3">LG 디스플레이</option>
+    <option value="items4">LG 전자</option> -->
+  </select>
+  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공장</label>
+  <select name="공장" id="factory" style=" height:36px;
                                           border: 1px solid hsl(0 0% 80% / 1);
                                           margin-left : 5px;
                                           padding-left : 10px;
                                           font-size : 13px; ">
     <option>NULL</option>
-    <!-- <% for(var i = 0; i < cat.length; i++ ){ %>
-      <% if( !cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
+    <% for(var i= 0; i < cattype.length; i++){ %>
+      <% if( cattype[i].MODELCATTYPEID_PR == "001") { %>
+          <option><%= cattype[i].MODELCATTYPENAME %></option>
+      <% } %>
+    <% } %>
+    <!-- <option value="items1">오창</option>
+    <option value="items2">빈강</option>
+    <option value="items3">오창2</option> -->
+  </select>
+  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공정1</label>
+  <select name="공정1" id="process1" style=" height:36px;
+                                          border: 1px solid hsl(0 0% 80% / 1);
+                                          margin-left : 5px;
+                                          padding-left : 10px;
+                                          font-size : 13px; ">
+    <option>NULL</option>
+    <% for(var i = 0; i < cat.length; i++ ){ %>
+      <% if( cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
       <option><%= cat[i].MODELCATNAME %></option>
       <% } %>
     <% } %>
-    -->
-    </select>  
-  
-    <!-- <label style=" margin-right : 5px;
-    padding-left : 180px;
-    font-size : 13px;" >검색</label> -->
-    <label style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom:10px;">검색</label>
-    <input type="text" id="keyword" style="float: right; padding-left:5px;text-align:right; height: 36px; width: 30%; border: 1px solid hsl(0 0% 80% / 1); font-size : 13px; margin-right: 2%;"></input>
 
-    <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;">모델생성</button>
-    <button type="button" class="btn btn-primary" id="history" style="margin-left : 5px; margin-bottom: 5px;">이력보기</button>
-    <button type="button" class="btn btn-primary" id="copy" style="margin-left : 5px; margin-bottom: 5px;">복사</button>
-    <button type="button" class="btn btn-primary" id="delete" style="margin-left : 5px; margin-bottom: 5px;">삭제</button>
-    <!-- <input  type="text" id="keyword" style="height: 36px; 
-                              width: 30%; 
-                              border: 1px solid hsl(0 0% 80% / 1);
-                              padding-left: 15px;
-                              font-size : 13px; "> -->
-    <!-- <label style="padding-top: 10px;">검색</label> -->
-    <!-- <span style="padding-left: 20px;"></span>
-        <input  type="text" id="keyword" style="height: 36px; 
-                              width: 30%; 
-                              border: 1px solid hsl(0 0% 80% / 1);
-                              padding-left: 15px;
-                              font-size : 13px; ">
-    <span style="padding-left: 20px;">
-    </span> -->
-    
-    <!-- <label style="padding-left: 15px; padding-top: 10px; padding-bottom:10px;">Category</label>
-    <select name="CategorySelectBox" id="CategorySelectBox" style=" height:36px;
-                                                                    border: 1px solid hsl(0 0% 80% / 1);
-                                                                    margin-left : 10px;
-                                                                    padding-left : 10px;
-                                                                    font-size : 13px; ">
-      <option value="선택" selected>선택</option>
-      <option value="gschun">gschun</option>
-      <option value="여형철">여형철</option>
-      <option value="나운영">나운영</option>
-    </select>
+  </select>
+  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공정2</label>
+  <select name="공정2" id="process2" style=" height:36px;
+                                        border: 1px solid hsl(0 0% 80% / 1);
+                                        margin-left : 5px;
+                                        padding-left : 10px;
+                                        font-size : 13px; ">
+  <option>NULL</option>
+  <!-- <% for(var i = 0; i < cat.length; i++ ){ %>
+    <% if( !cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
+    <option><%= cat[i].MODELCATNAME %></option>
+    <% } %>
+  <% } %>
   -->
-  </div>
+  </select>  
 
+  <label style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom:10px;">검색</label>
+  <input type="text" id="keyword" style="float: right; padding-left:5px;text-align:right; height: 36px; width: 30%; border: 1px solid hsl(0 0% 80% / 1); font-size : 13px; margin-right: 2%;"></input>
+  <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;">모델생성</button>
+  <button type="button" class="btn btn-primary" id="history" style="margin-left : 5px; margin-bottom: 5px;">이력보기</button>
+  <button type="button" class="btn btn-primary" id="copy" style="margin-left : 5px; margin-bottom: 5px;">복사</button>
+  <button type="button" class="btn btn-primary" id="delete" style="margin-left : 5px; margin-bottom: 5px;">삭제</button>
+  <!-- <input  type="text" id="keyword" style="height: 36px; 
+                            width: 30%; 
+                            border: 1px solid hsl(0 0% 80% / 1);
+                            padding-left: 15px;
+                            font-size : 13px; "> -->
+  <!-- <label style="padding-top: 10px;">검색</label> -->
+  <!-- <span style="padding-left: 20px;"></span>
+      <input  type="text" id="keyword" style="height: 36px; 
+                            width: 30%; 
+                            border: 1px solid hsl(0 0% 80% / 1);
+                            padding-left: 15px;
+                            font-size : 13px; ">
+  <span style="padding-left: 20px;">
+  </span> -->
   
+  <!-- <label style="padding-left: 15px; padding-top: 10px; padding-bottom:10px;">Category</label>
+  <select name="CategorySelectBox" id="CategorySelectBox" style=" height:36px;
+                                                                  border: 1px solid hsl(0 0% 80% / 1);
+                                                                  margin-left : 10px;
+                                                                  padding-left : 10px;
+                                                                  font-size : 13px; ">
+    <option value="선택" selected>선택</option>
+    <option value="gschun">gschun</option>
+    <option value="여형철">여형철</option>
+    <option value="나운영">나운영</option>
+  </select>
+-->
+</div>
   <!-- <ul class="listree">
     <li>
       <div class="listree-submenu-heading">전극</div>
@@ -367,26 +419,29 @@ td
     
   </ul> -->
 
+
+
+  
   <!-- table-striped-->
-<div>
+<div class="table-dv">
     <table class="table table-hover" 
-    style="width: 98%;"
+    style="width: 98%; padding-top: 40px;"
     id="user-table" >
-  <thead>
-  <tr>
-  <th style="width: 2%;"><input type="checkbox" name="checkAll" id="th_checkAll"></th>
-  <!-- <th style="width: 0%; display: none;">모델 ID</th> -->
-  <th style="width: 2%"></th>
-  <th style="width: 10%">시나리오 명</th>
-  <th style="width: 35%">시나리오 세부사항</th>
-  <!-- <th style="width: 5%">모델 수</th> -->
-  <th style="width: 10%">최종 수정 일시</th> 
-  <!-- <th style="width: 10%">등록자</th> -->
-  <!-- <th style="width: 10%">수정자</th> -->
-  <!-- <th style="width: 10%">모델타입</th> -->
-  <th style="width: 5%;">더보기</th>
-  </tr>
-  </thead>
+    <thead>
+      <tr>
+      <th style="width: 2%;"><input type="checkbox" name="checkAll" id="th_checkAll"></th>
+      <!-- <th style="width: 0%; display: none;">모델 ID</th> -->
+      <th style="width: 2%"></th>
+      <th style="width: 10%">시나리오 명</th>
+      <th style="width: 35%">시나리오 세부사항</th>
+      <!-- <th style="width: 5%">모델 수</th> -->
+      <th style="width: 10%">최종 수정 일시</th> 
+      <!-- <th style="width: 10%">등록자</th> -->
+      <!-- <th style="width: 10%">수정자</th> -->
+      <!-- <th style="width: 10%">모델타입</th> -->
+      <th style="width: 5%;">더보기</th>
+      </tr>
+    </thead>
 
   <tbody class="tableBody">
   <!-- <tr> -->
@@ -474,7 +529,8 @@ td
 <!-- Colaboratin -->
 <aside  style="height: 100%">
   <div class="collaborator">
-    <h3 id="collaborator-sidebar-title" class="collaborator_header">공유</h3>
+    <h3 id="collaborator-sidebar-title" class="collaborator_header" style="position: relative;
+    margin-top: 50px;">공유</h3>
 
     <div style="display: flex;
                 -webkit-box-pack: end;

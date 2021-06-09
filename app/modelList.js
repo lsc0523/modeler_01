@@ -576,7 +576,17 @@ $(document).on('click', '#deleteRow', function () {
   this.parentNode.remove()
 });
 
-
+$(function(){
+  $(window).scroll(function(){  //스크롤하면 아래 코드 실행
+         var num = $(this).scrollTop();  // 스크롤값
+         if( num > 52 ){  // 스크롤을 36이상 했을 때
+            $(".section2").css("top",(num-45)+"px");
+         }else{
+             $(".section2").css("position","relative");
+             $(".section2").css("top","52px");
+         }
+    });
+  });
 //Javascript
 // var count = 0;
 // //스크롤 바닥 감지
