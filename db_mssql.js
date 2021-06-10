@@ -31,7 +31,7 @@ var ModelHistory = "PROCESSMODELHISTORY";
 var sqlSelectModelQurey = 'select * from ' + Modeltable + ' where MODELID=@MODELID order by upddttm';
 
 var sqlSelectModelHistory = "SELECT A.MODELID ,\n" + 
-							"CONVERT(CHAR(19), A.CRETDTTM , 20) CRETDTTM ,\n" + 
+							"CONVERT(CHAR(23), A.CRETDTTM, 21) CRETDTTM ,\n" + 
 							"A.PROCESSID ,\n" + 
 							"A.MODEL_XML ,\n" + 
 							"A.MODELNAME ,\n" + 
@@ -42,7 +42,7 @@ var sqlSelectModelHistory = "SELECT A.MODELID ,\n" +
 							"ORDER BY UPDDTTM";
 
 var sqlSelectModelEachHistory = "SELECT A.MODELID ,\n" + 
-								"CONVERT(CHAR(19), A.CRETDTTM , 20) CRETDTTM ,\n" + 
+								"CONVERT(CHAR(23), A.CRETDTTM , 21) CRETDTTM ,\n" + 
 								"A.PROCESSID ,\n" + 
 								"A.MODEL_XML ,\n" + 
 								"A.MODELNAME ,\n" + 
@@ -50,7 +50,7 @@ var sqlSelectModelEachHistory = "SELECT A.MODELID ,\n" +
 								"A.MODELHISTDESC\n" + 
 								"FROM PROCESSMODELHISTORY A\n" + 
 								"WHERE A.MODELID   = @MODELID " + 
-								"AND   CONVERT(CHAR(19), A.CRETDTTM , 20)  = @CRETDTTM  \n" +
+								"AND   CONVERT(CHAR(23), A.CRETDTTM , 21)  = @CRETDTTM  \n" +
 								"ORDER BY UPDDTTM";
 
 
@@ -59,7 +59,7 @@ var sqlModelPagingList = 	"SELECT T.*\n" +
 							"(\n" + 
 							"SELECT\n" + 
 							"MODELCATID, MODELTYPE, MODELID, MODELID_REVISION, MODELNAME, MODELDESC, PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER,\n" + 
-							"CONVERT(CHAR(19), P.UPDDTTM ,20) UPDDTTM, ISNULL( MODELDIAGRAM_CNT ,0 ) MODELDIAGRAM_CNT , ROW_NUMBER() OVER (ORDER BY P.UPDDTTM) RNUM\n" + 
+							"CONVERT(CHAR(23), P.UPDDTTM ,21) UPDDTTM, ISNULL( MODELDIAGRAM_CNT ,0 ) MODELDIAGRAM_CNT , ROW_NUMBER() OVER (ORDER BY P.UPDDTTM) RNUM\n" + 
 							"FROM\n" + 
 							"PROCESSMODEL P )T\n" + 
 							"WHERE T.RNUM BETWEEN @START AND @END\n" + 
@@ -70,6 +70,9 @@ var sqlModelPagingList = 	"SELECT T.*\n" +
 var sqlUpdateModelQuery = 'update ' + Modeltable + ' set MODEL_XML=@XML where MODELID=@MODELID';
 
 var sqlDeleteModelQuery = 'delete from ' + Modeltable + ' where MODELID=@id';
+var sqlDeleteModelHistory =  'delete from PROCESSMODELHISTORY where MODELID=@MODELID and CRETDTTM = @CRETDTTM'
+
+
 var sqlInsertModelQuery = 'insert into ' + Modeltable + '(MODELCATID, MODELID, PROCESSID, MODEL_XML, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
 	+ ' values (@MODELCATID, @MODELID, @PROCESSID, @MODEL_XML, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
 var sqlSelectModelIDQurey = 'select top(1) MODELID from ' + Modeltable + ' where (convert(varchar(8), INSDTTM, 112) = convert(varchar(8), getdate(), 112))' + ' order by (MODELID) DESC'
@@ -611,6 +614,26 @@ function ExcuteSQLDeleteModel(params, callback) {
 	});
 }
 
+function ExcuteSQLDeleteModelHistory(params, callback) {
+
+	console.dir(sqlDeleteModelHistory);
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('CRETDTTM', sql.NVarChar, params.CRETDTTM)
+			.query(sqlDeleteModelHistory)	
+	}).then(result => {
+		console.dir(result.rowsAffected);
+		return callback(result.rowsAffected);
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	});
+}
+
+
+
 function ExecuteNonQuery(sqlQurey, callback) {
 	sql.connect(dbConnectionConfig).then(pool => {
 
@@ -656,6 +679,7 @@ module.exports = {
 	InsertModel: ExcuteSQLInsertModel,
 	//InsertModelHistory: ExcuteSQLInsertModelHistorybyPromises,
 	DeleteModel: ExcuteSQLDeleteModel,
+	DeleteModelHistory : ExcuteSQLDeleteModelHistory,
 	UpdateModelParams: ExcuteSQLUpdateModel,
 	UpdateModelandInsertHistory: ExcuteSQLUpdateModelHistory,
 	InsertModelRepos: ExcuteSQLInsertModelRepository,

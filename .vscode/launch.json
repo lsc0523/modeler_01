@@ -40,7 +40,7 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/main.js",
             "request": "launch",
-            "skipFiles": [
+                "skipFiles": [
                 "<node_internals>/**"
             ],
             "type": "pwa-node"

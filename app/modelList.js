@@ -556,7 +556,7 @@ $.contextMenu({
           "edit": {name: "수정", icon: "edit"},
           "open": {name: "열기", icon: "copy"},
           // "delete": {name: "삭제", icon: "delete"},
-          // "history" : {name : "이력보기" , icon : "paste"},
+          "history" : {name : "이력보기" , icon : "paste"},
           "sep1": "---------",
           "quit": {name: "나가기", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
       }
@@ -576,17 +576,17 @@ $(document).on('click', '#deleteRow', function () {
   this.parentNode.remove()
 });
 
-$(function(){
-  $(window).scroll(function(){  //스크롤하면 아래 코드 실행
-         var num = $(this).scrollTop();  // 스크롤값
-         if( num > 52 ){  // 스크롤을 36이상 했을 때
-            $(".section2").css("top",(num-45)+"px");
-         }else{
-             $(".section2").css("position","relative");
-             $(".section2").css("top","52px");
-         }
-    });
-  });
+// $(function(){
+//   $(window).scroll(function(){  //스크롤하면 아래 코드 실행
+//          var num = $(this).scrollTop();  // 스크롤값
+//          if( num > 52 ){  // 스크롤을 36이상 했을 때
+//             $(".section2").css("top",(num-45)+"px");
+//          }else{
+//              $(".section2").css("position","relative");
+//              $(".section2").css("top","52px");
+//          }
+//     });
+//   });
 //Javascript
 // var count = 0;
 // //스크롤 바닥 감지
@@ -704,8 +704,8 @@ function pagination() {
 
   jQuery('.pagination').empty();
 	jQuery('.pagination').append('<li class="page-item">'
-					+ '<a class="page-link" href="#" aria-label="Previous">'
-					+ '<span aria-hidden="true" class="mdi mdi-chevron-left"></span>'
+					+ '<a class="page-link" href="#" tabindex="-1"aria-label="Previous">'
+					+ '<span aria-hidden="true">&laquo;</span>'
 					+ '<span class="sr-only">Previous</span></a></li>');
 
 	for (var i = 1; i <= num_pages; i++) {
@@ -716,7 +716,7 @@ function pagination() {
 
 	jQuery('.pagination').append('<li class="page-item">'
 					+ '<a class="page-link" href="#" aria-label="Next">'
-					+ '<span aria-hidden="true" class="mdi mdi-chevron-right"></span>'
+					+ ' <span aria-hidden="true">&raquo;</span>'
 					+ '<span class="sr-only">Next</span></a></li>');
 
 	$tr.each(function(i) {
@@ -740,6 +740,12 @@ function pagination() {
 		for (var i = 0; i < req_num_row; i++) {
 			$tr.eq(start + i).show();
 		}
+ 
+    // console.log($(this).html().indexOf('Next'));
+    // if($(this).html().indexOf('Next') <= -1 && $(this).html().indexOf('Previous') <= -1){
+    // $pageItem.removeClass("active");
+    // $(this).addClass("active");
+  
 
 		if (temp >= 1) {
 			jQuery('.pagination li:first-child').removeClass("disabled");
@@ -747,7 +753,51 @@ function pagination() {
 			jQuery('.pagination li:first-child').addClass("disabled");
 		}
 
+    if (page == '«Previous'){
+      if (page === 1) {
+        page = Math.ceil($('.pagination .post').length/pageSize);
+    } else {
+        page--;
+    }
+    console.log(page);
+    showPage(page);
+    }
+
 	});
+
+  $('#prev').click(prevPage);
+  $('#next').click(nextPage);
+  // $(document).ready(function(){
+  //   var $pageItem = $(".pagination li")
+
+  //   $pageItem.click(function(){
+  //     console.log($(this).html().indexOf('Next'));
+  //     if($(this).html().indexOf('Next') <= -1 && $(this).html().indexOf('Previous') <= -1){
+  //     $pageItem.removeClass("active");
+  //     $(this).addClass("active");
+  //       }
+  //   });
+  // });
+
+  function prevPage() {
+    debugger;
+    if (page === 1) {
+        page = Math.ceil($('.pagination .post').length/pageSize);
+    } else {
+        page--;
+    }
+    console.log(page);
+    showPage(page);
+}
+
+function nextPage() {
+    if (page == Math.ceil($('.pagination .post').length/pageSize)) {
+        page = 1;
+    } else {
+        page++;
+    }
+    showPage(page);
+}
 
 	jQuery('.prev').click(function(e) {
 		e.preventDefault();

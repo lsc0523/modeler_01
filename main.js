@@ -398,6 +398,19 @@ function InsertModelData(req, callback) {
 	});
 }
 
+function DeleteModelHistoryData(req, callback){
+	var param = {
+			MODELID: req.query.id,
+			CRETDTTM: req.query.creDate
+	}
+
+	Mssql.DeleteModelHistory(param, function (file_result) {
+		console.log(file_result);
+		callback(file_result);
+	});
+}
+
+
 server.post('/insert', upload.any(), function (req, res) {
 
 	//console.log(req.body);
@@ -483,7 +496,26 @@ server.get('/delete', function (req, res) {
 	var params = { MODELID: req.query.id };
 	Mssql.DeleteModel(params, function (result) {
 		res.send("delete success!");
-	});
+	})
+});
+
+server.get('/deleteModelHistory', function (req, res) {
+	console.log("delete ModelHistory...");
+	//console.log(req.query.id);
+	var params = {
+		MODELID: req.query.id,
+		CRETDTTM: req.query.creDate}
+
+	DeleteModelHistoryData (req, function (file_result) {
+		console.log(file_result);
+		if (file_result.length =1 ) 
+		alert("삭제 되었습니다.");
+
+		// res.json({ id : newModelID});
+	})
+});
+
+
 
 	// 
 	// var params = { MODELID: req.query.id };
@@ -502,7 +534,6 @@ server.get('/delete', function (req, res) {
 	// 		});
 	// 	});
 	// });
-});
 
 
 server.get('/download', function (req, res) {
@@ -573,6 +604,7 @@ server.get('/userPopup', function (req, res) {
 
 //Mail app
 var nodemailer = require('nodemailer');
+// const { DeleteModelHistory } = require("./db_mssql.js");
 
 server.get('/mailSend', function (req, res) {
 
@@ -598,9 +630,9 @@ server.get('/mailSend', function (req, res) {
 		var mailOption = {
 			from: 'dugudcjfwin@gmail.com',
 			to: mailAddress,
-			subject: '모델러에 초대합니다',
+			subject: '공정운영시나리오 공유',
 			//text : 'Invite You Modeler.'
-			html: '<h1>공정운영시나리오 모델러 초대합니다.!</h1><a href="http://10.65.78.213:3000/login">초대수락</a>'
+			html: '<h1>공정운영시나리오가 공유되었습니다..!</h1><a href="http://10.65.78.213:3000/login">초대수락</a>'
 		};
 
 		transporter.sendMail(mailOption, function (err, info) {

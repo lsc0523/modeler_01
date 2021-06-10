@@ -142,8 +142,7 @@
           <td><%= rows.MODELDESC %></td>
           <td><%= rows.MODELHISTDESC %></td>
           <td><a href="/modeler?id=<%= rows.MODELID %>&his=Y&creDate=<%= rows.CRETDTTM%>&enable=N">열기</a></td>
-        <!--  <td><a href="/modeler?id=<%= rows.MODELID %>">수정</a></td> -->
-          <td><a href="/delete?id=<%= rows.MODELID %>">삭제</a></td>
+           <td><a href="/deleteModelHistory?id=<%= rows.MODELID%>&creDate=<%= rows.CRETDTTM%>">삭제</a></td>
         </tr>
         <% } %>
         <% } %>

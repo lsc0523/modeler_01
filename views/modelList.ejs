@@ -25,8 +25,13 @@
       height: 100%;
       padding: 0;
       margin: 0;
+      background-color: hsl(0,0%,97%);
+      overflow: hidden;
     }
 
+    .btn btn-primary{
+    background-color: #4d91ff;
+    }
     .searchOption {
       position: absolute;
       background-color: hsl(0,0%,97%); 
@@ -240,7 +245,6 @@ td
             top: 50px;;
             height: 10%;
             border-bottom: 1px solid hsl(0 0% 87% / 1);
-            border-top: 1px solid hsl(0 0% 87% / 1);
             margin-top: 10px;
             font-size: 19px;
             z-index: 6;
@@ -268,7 +272,7 @@ td
 <!-- <div class="searchOption"Welcome, <%=sess%> 님> -->
 
 
-<div class="section"style="padding-left: 50px; background-color: hsl(0,0%,97%); height: 100%; position: relative; height: 50px;">
+<div class="section"style="padding-left: 100px; background-color: hsl(0,0%,97%); height: 100%; position: relative; height: 50px;">
   <div class="section2" 
     style="
     padding-top: 10px;
@@ -278,13 +282,13 @@ td
     top: 52px;
     flex-wrap: wrap;
     position: relative;
-    background-color: hsl(0,0%,97%);" >
-  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">회사</label>
+    background-color: hsl(0,0%,97%)" >
+  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px ;color: #00000066;">회사</label>
   <select name="회사" id="company" style=" height:36px;
                                           border: 1px solid hsl(0 0% 80% / 1);
                                           margin-left : 5px;
                                           padding-left : 10px;
-                                          font-size : 13px; ">
+                                          font-size : 13px;">
     <% for(var i = 0; i < cattype.length; i++ ){ %>
       <% if( !cattype[i].MODELCATTYPEID_PR ) { %>
       <option><%= cattype[i].MODELCATTYPENAME %></option>
@@ -295,7 +299,7 @@ td
     <option value="items3">LG 디스플레이</option>
     <option value="items4">LG 전자</option> -->
   </select>
-  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공장</label>
+  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px; color: #00000066">공장</label>
   <select name="공장" id="factory" style=" height:36px;
                                           border: 1px solid hsl(0 0% 80% / 1);
                                           margin-left : 5px;
@@ -311,7 +315,7 @@ td
     <option value="items2">빈강</option>
     <option value="items3">오창2</option> -->
   </select>
-  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공정1</label>
+  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;color: #00000066">공정1</label>
   <select name="공정1" id="process1" style=" height:36px;
                                           border: 1px solid hsl(0 0% 80% / 1);
                                           margin-left : 5px;
@@ -325,7 +329,7 @@ td
     <% } %>
 
   </select>
-  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;">공정2</label>
+  <label style="padding-left: 10px; padding-top: 10px; padding-bottom:10px;color: #00000066">공정2</label>
   <select name="공정2" id="process2" style=" height:36px;
                                         border: 1px solid hsl(0 0% 80% / 1);
                                         margin-left : 5px;
@@ -341,11 +345,11 @@ td
   </select>  
 
   <label style="padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom:10px;">검색</label>
-  <input type="text" id="keyword" style="float: right; padding-left:5px;text-align:right; height: 36px; width: 30%; border: 1px solid hsl(0 0% 80% / 1); font-size : 13px; margin-right: 2%;"></input>
-  <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;">모델생성</button>
-  <button type="button" class="btn btn-primary" id="history" style="margin-left : 5px; margin-bottom: 5px;">이력보기</button>
-  <button type="button" class="btn btn-primary" id="copy" style="margin-left : 5px; margin-bottom: 5px;">복사</button>
-  <button type="button" class="btn btn-primary" id="delete" style="margin-left : 5px; margin-bottom: 5px;">삭제</button>
+  <input type="text" id="keyword" style="float: right; padding-left:5px; height: 36px; width: 30%; border: 1px solid hsl(0 0% 80% / 1); font-size : 13px; margin-right: 2%;"></input>
+  <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;background-color: #4d91ff">모델생성</button>
+  <!-- <button type="button" class="btn btn-primary" id="history" style="margin-left : 5px; margin-bottom: 5px;">이력보기</button> -->
+  <button type="button" class="btn btn-primary" id="copy" style="margin-left : 5px; margin-bottom: 5px;background-color: #4d91ff">복사</button>
+  <button type="button" class="btn btn-primary" id="delete" style="margin-left : 5px; margin-bottom: 5px;background-color: #4d91ff">삭제</button>
   <!-- <input  type="text" id="keyword" style="height: 36px; 
                             width: 30%; 
                             border: 1px solid hsl(0 0% 80% / 1);
@@ -423,9 +427,10 @@ td
 
   
   <!-- table-striped-->
-<div class="table-dv">
+<div >
+  <div class="table-dv" style="overflow: scroll;overflow-x: hidden;height: 680px;">
     <table class="table table-hover" 
-    style="width: 98%; padding-top: 40px;"
+    style="width: 98%; padding-top: 40px; background-color: hsl(0,0%,97%); "
     id="user-table" >
     <thead>
       <tr>
@@ -440,39 +445,23 @@ td
       <!-- <th style="width: 10%">수정자</th> -->
       <!-- <th style="width: 10%">모델타입</th> -->
       <th style="width: 5%;">더보기</th>
-      </tr>
-    </thead>
+      </tr>    </thead>
 
-  <tbody class="tableBody">
-  <!-- <tr> -->
-  <!-- <div style="display: flex;
-    -webkit-box-pack: end;
-    justify-content: flex-end;
-    margin-bottom: 15px;
-    margin-top: 15px;
-    margin-right : 30px;
-  ">
-    <button type="button" class="btn btn-primary" id="createModel" style="margin-left : 5px; margin-bottom: 5px;">모델생성</button>
-    <button type="button" class="btn btn-primary" id="history" style="margin-left : 5px; margin-bottom: 5px;">이력보기</button>
-    <button type="button" class="btn btn-primary" id="delete" style="margin-left : 5px; margin-bottom: 5px;">삭제</button>
-  </div> -->
-
-  <!-- "delete": {name: "삭제", icon: "delete"},
-  "history" : {name : "이력보기" , icon : "paste"}, -->
-
-  <!-- <p style="text-align:right">
-  <a href="#" ><span class="Ltitle"> EATS-설비사양서 2.31이 배포되었습니다.</span></a>
-  </p>
-  <p style="text-align:right">
-  <a href="#"><span class="Ltitle"> 전극-재작업 시나리오 업데이트되었습니다</span></a>
-  </p> -->
-  <!-- </tr> -->
+  <tbody class="tableBody" st>
+  
 
   <% for (var i=0; i < data.length; i++) { %>
   <%  var rows = data[i]; %>  
 
-  <tr style="background-color: #ffffff; border: 1px solid hsl(0 0% 87% / 1); ">
-    <td><input type="checkbox" id="checkRow" class="chkbox"></td>
+  <tr style="background-color: #ffffff; 
+                color:hsl(0,0%,50%);
+                cursor: default;
+                border-radius: 3px;
+                background-color: white;
+                border: 1px solid hsl(0,0%,87%);
+                box-shadow: rgb(0 0 0 / 10%) 0px 1px 4px 0px; 
+                ">
+    <td style="border-left:1px solid hsl(0,0%,87%);"><input type="checkbox" id="checkRow" class="chkbox"></td>
     <!-- <td style="display : none;"><%= rows.MODELID  %></td> -->
     
     <td><img with="15", height="15" src="model.svg" alt=""></td>
@@ -489,7 +478,7 @@ td
     <td style="display:none;"><%= rows.INSUSER %></td>
     <td style="display:none;"><%= rows.UPDUSER %></td>
 
-    <td>
+    <td style="border-right:1px solid hsl(0,0%,87%);">
     <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" 
               id=<%= rows.MODELID %> > 
     <img src="/menu.svg" style="padding-right: 5px;" with="13", height="13">            
@@ -517,17 +506,20 @@ td
     </tbody>
     </table>
   </div>
+</div>
 
-  <nav>
-    <ul class="pagination pagination-seperated"></ul>
-  </nav>
+  <div class="text-center">
+    <nav>
+      <ul class="pagination pagination-seperated"  ></ul>
+    </nav>  
+  </div>
 
   <article>
   </article>
 </div>
 
 <!-- Colaboratin -->
-<aside  style="height: 100%">
+<aside  style="height: 100%; position: sticky;" >
   <div class="collaborator">
     <h3 id="collaborator-sidebar-title" class="collaborator_header" style="position: relative;
     margin-top: 50px;">공유</h3>
@@ -538,7 +530,7 @@ td
                 margin-bottom: 15px;
                 margin-top: 15px;
     ">
-        <button id="btn_user" class="btn btn-primary" style="width: 80px;">추가</button>
+        <button id="btn_user" class="btn btn-primary" style="width: 80px;background-color: #4d91ff">추가</button>
     </div>
     <div style="display: flex;
                 -webkit-box-align: center;
