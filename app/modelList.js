@@ -8,6 +8,7 @@ $(document).ready(function(){
 
 
 
+
   treeList.listree();
   //Page loading 
   //$("#user-table > tbody > tr").show();
@@ -17,6 +18,8 @@ $(document).ready(function(){
   $("#user-table > tbody > tr").addClass('show_paging');
   pagination();
   jQuery('.pagination li:first-child').addClass("disabled");
+
+  checkForHash();
 
 
   $("#keyword").keyup(function () {
@@ -118,6 +121,7 @@ $(document).ready(function(){
           if(ret[i].MODELCATTYPEID_PR==target){
             var element = document.createElement("option");
             element.innerText = ret[i].MODELCATTYPENAME;
+            element.value = ret[i].MODELCATTYPENAME;
             selectElem.append(element);
           }
         }
@@ -126,6 +130,7 @@ $(document).ready(function(){
           if(ret2[i].MODELCATTYPEID==target && !ret2[i].MODELCATID_PR){
             var element = document.createElement("option");
             element.innerText = ret2[i].MODELCATNAME;
+            element.value = ret2[i].MODELCATNAME;
             selectElem2.append(element);
           }
         }
@@ -207,6 +212,7 @@ $(document).ready(function(){
             if(ret2[i].MODELCATTYPEID==target_company && !ret2[i].MODELCATID_PR){
               var element = document.createElement("option");
               element.innerText = ret2[i].MODELCATNAME;
+              element.value = ret2[i].MODELCATNAME;
               selectElem2.append(element);
             }
           }
@@ -220,6 +226,7 @@ $(document).ready(function(){
             if(ret2[i].MODELCATTYPEID==target && !ret2[i].MODELCATID_PR){
               var element = document.createElement("option");
               element.innerText = ret2[i].MODELCATNAME;
+              element.value = ret2[i].MODELCATNAME;
               selectElem2.append(element);
             }
           }
@@ -274,6 +281,7 @@ $(document).ready(function(){
           if(ret2[i].MODELCATID_PR==target){
             var element = document.createElement("option");
             element.innerText = ret2[i].MODELCATNAME;
+            element.value = ret2[i].MODELCATNAME;
             selectElem2.append(element);
           }
         }
@@ -536,19 +544,28 @@ $.contextMenu({
           var modelId = options.$trigger[0].id;
 
           if(key == 'edit'){
+            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+            location.hash = "#" + str_hash;
             window.location = "/modeler?id=" + modelId;
           }
           else if(key == 'delete'){
             var checkDelete = confirm("삭제하시겠습니까?");
 
             if (checkDelete) {
+              str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+            location.hash = "#" + str_hash;
               window.location = "/delete?id=" + modelId;
             }
           }
           else if(key == 'open'){
+            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+            location.hash = "#" + str_hash;
             window.location = "/viewer?id=" + modelId;
+
           }
           else if (key == 'history'){
+            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+            location.hash = "#" + str_hash;
             window.location = '/history/1?id=' + modelId;
           }
       },
@@ -788,16 +805,16 @@ function pagination() {
     }
     console.log(page);
     showPage(page);
-}
+  }
 
-function nextPage() {
+  function nextPage() {
     if (page == Math.ceil($('.pagination .post').length/pageSize)) {
         page = 1;
     } else {
         page++;
     }
     showPage(page);
-}
+  }
 
 	jQuery('.prev').click(function(e) {
 		e.preventDefault();
@@ -809,4 +826,114 @@ function nextPage() {
 		jQuery('.pagination li:last-child').removeClass("active");
 	});
 
+}
+
+function checkForHash(){
+  if(location.hash){
+    var str_hash = location.hash;
+    str_hash = decodeURI(str_hash.replace("#",""));
+    arr_curpage=str_hash.split("^");
+
+    $.ajax({
+      url: '/companycheck',
+      type:'GET',
+      dataType: "json",
+      async : false,
+      success : function(data) {
+
+        var ret = data['factory'];
+        var ret2 = data['process1'];
+        var target_company = null; 
+        var target_factory = null; 
+        var target_process1 = null;
+        var target_process2 = null;
+
+        $('#company').empty();
+        $('#factory').empty();
+        $('#process1').empty();
+        $('#process2').empty();
+        $('#company').append($('<option>NULL</option>'));
+        $('#factory').append($('<option>NULL</option>'));
+        $('#process1').append($('<option>NULL</option>'));
+        $('#process2').append($('<option>NULL</option>'));
+          
+        for(var i=0;i<ret.length;i++){
+          if(!ret[i].MODELCATTYPEID_PR){
+            var element = document.createElement("option");
+            element.innerText = ret[i].MODELCATTYPENAME;
+            element.value = ret[i].MODELCATTYPENAME
+            $('#company').append(element);
+
+            if(ret[i].MODELCATTYPENAME==arr_curpage[0]){
+              target_company = ret[i].MODELCATTYPEID;
+            }
+          }
+          else if(ret[i].MODELCATTYPEID_PR==target_company){
+            var element = document.createElement("option");
+            element.innerText = ret[i].MODELCATTYPENAME;
+            element.value = ret[i].MODELCATTYPENAME;
+            $('#factory').append(element);
+
+            if(ret[i].MODELCATTYPENAME==arr_curpage[1]){
+              target_factory = ret[i].MODELCATTYPEID;
+            }
+          }
+        }
+
+        $('#company').val(arr_curpage[0]).attr("selected","selected");
+        $('#factory').val(arr_curpage[1]).attr("selected","selected");
+
+        if(target_factory!=null){
+          target_company = target_factory;
+        }
+
+        for(var i=0;i<ret2.length;i++){
+          if(!ret2[i].MODELCATID_PR && ret2[i].MODELCATTYPEID==target_company){
+            var element = document.createElement("option");
+            element.innerText = ret2[i].MODELCATNAME;
+            element.value = ret2[i].MODELCATNAME;
+            $('#process1').append(element);
+
+            if(ret2[i].MODELCATNAME==arr_curpage[2]){
+              target_process1 = ret2[i].MODELCATID;
+            }
+          }
+          else if(ret2[i].MODELCATID_PR==target_process1 && ret2[i].MODELCATTYPEID==target_company){
+            var element = document.createElement("option");
+            element.innerText = ret2[i].MODELCATNAME;
+            element.value = ret2[i].MODELCATNAME;
+            $('#process2').append(element);
+
+            if(ret2[i].MODELCATNAME==arr_curpage[3]){
+              target_process2 = ret2[i].MODELCATNAME;
+            }
+          }
+        }
+
+        $('#process1').val(arr_curpage[2]).attr("selected","selected");
+        $('#process2').val(arr_curpage[3]).attr("selected","selected");
+
+        // $("#user-table > tbody > tr").hide();
+        // $("#user-table > tbody > tr").removeClass('show_paging');
+       
+        // if($("#company option:selected").text()=="NULL"){
+        //   $("#user-table > tbody > tr").show();
+        //   $("#user-table > tbody > tr").addClass('show_paging');
+        // }
+        // else{
+        //   $("#user-table > tbody > tr > td:nth-child(6):contains('" + target + "')").parent().show();
+        //   $("#user-table > tbody > tr > td:nth-child(6):contains('" + target + "')").parent().addClass('show_paging');
+        //   for(var i=0;i<ret.length;i++){
+        //     if(ret[i].MODELCATTYPEID_PR==target){
+        //       $("#user-table > tbody > tr > td:nth-child(6):contains('" + ret[i].MODELCATTYPEID + "')").parent().show();
+        //       $("#user-table > tbody > tr > td:nth-child(6):contains('" + ret[i].MODELCATTYPEID + "')").parent().addClass('show_paging');
+        //     }
+        //   }
+        // }
+      },
+      error : function(error) {
+          alert("메일 전송이 실패하였습니다.");
+      }
+    })
+  }
 }

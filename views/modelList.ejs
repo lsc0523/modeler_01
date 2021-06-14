@@ -291,7 +291,7 @@ td
                                           font-size : 13px;">
     <% for(var i = 0; i < cattype.length; i++ ){ %>
       <% if( !cattype[i].MODELCATTYPEID_PR ) { %>
-      <option><%= cattype[i].MODELCATTYPENAME %></option>
+      <option value='<%= cattype[i].MODELCATTYPENAME %>'><%= cattype[i].MODELCATTYPENAME %></option>
       <% } %>
     <% } %>
     <!-- <option value="items1">LG 에너지솔루션</option>
@@ -308,7 +308,7 @@ td
     <option>NULL</option>
     <% for(var i= 0; i < cattype.length; i++){ %>
       <% if( cattype[i].MODELCATTYPEID_PR == "001") { %>
-          <option><%= cattype[i].MODELCATTYPENAME %></option>
+          <option value='<%= cattype[i].MODELCATTYPENAME %>'><%= cattype[i].MODELCATTYPENAME %></option>
       <% } %>
     <% } %>
     <!-- <option value="items1">오창</option>
@@ -324,7 +324,7 @@ td
     <option>NULL</option>
     <% for(var i = 0; i < cat.length; i++ ){ %>
       <% if( cat[i].MODELCATTYPEID=="001" && !cat[i].MODELCATID_PR) { %>
-      <option><%= cat[i].MODELCATNAME %></option>
+      <option value='<%= cat[i].MODELCATNAME %>'><%= cat[i].MODELCATNAME %></option>
       <% } %>
     <% } %>
 
