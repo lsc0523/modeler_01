@@ -16,11 +16,11 @@ $(document).ready(function(){
   //var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + $('#keyword').val() + "')");
   // var temp = $("#user-table > tbody > tr > td:nth-child(n):contains('" + "조립" + "')");
   $("#user-table > tbody > tr").addClass('show_paging');
-  pagination();
+  
   jQuery('.pagination li:first-child').addClass("disabled");
 
   checkForHash();
-
+  pagination();
 
   $("#keyword").keyup(function () {
     var k = $(this).val();
@@ -84,7 +84,8 @@ $(document).ready(function(){
         alert("메일 전송이 실패하였습니다.");
       }
     });
-    
+    str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+    location.hash = "#" + str_hash;
     location.href ="/modeler?DB_ID="+DB_MODELID+"&DB_CATID="+DB_MODELCATID;
   });
 
@@ -445,10 +446,10 @@ $(document).ready(function(){
       var categoryProcess1 = $('#process1 option:selected').text();
       var categoryProcess2 = $('#process2 option:selected').text();
 
-      location.href = "/modelList";
-      $("#user-table > tbody > tr").hide();
-
-      
+      str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+      location.hash = "#" + str_hash;
+      location.reload();
+      //$("#user-table > tbody > tr").hide();
     }
   });
 
@@ -497,7 +498,9 @@ $(document).ready(function(){
       }  
 
       if (typeof window !== 'undefined') { alert("복사 성공하였습니다.") };
-      location.href = "/modelList";
+      str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+      location.hash = "#" + str_hash;
+      location.reload();
     }
   });
 
@@ -544,7 +547,7 @@ $.contextMenu({
           var modelId = options.$trigger[0].id;
 
           if(key == 'edit'){
-            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
             location.hash = "#" + str_hash;
             window.location = "/modeler?id=" + modelId;
           }
@@ -552,19 +555,19 @@ $.contextMenu({
             var checkDelete = confirm("삭제하시겠습니까?");
 
             if (checkDelete) {
-              str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+              str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
             location.hash = "#" + str_hash;
               window.location = "/delete?id=" + modelId;
             }
           }
           else if(key == 'open'){
-            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
             location.hash = "#" + str_hash;
             window.location = "/viewer?id=" + modelId;
 
           }
           else if (key == 'history'){
-            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+            str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
             location.hash = "#" + str_hash;
             window.location = '/history/1?id=' + modelId;
           }
@@ -718,6 +721,7 @@ function pagination() {
 		num_pages++;
 		num_pages = Math.floor(num_pages++);
 	}
+  var start = 0;
 
   jQuery('.pagination').empty();
 	jQuery('.pagination').append('<li class="page-item">'
@@ -735,12 +739,35 @@ function pagination() {
 					+ '<a class="page-link" href="#" aria-label="Next">'
 					+ ' <span aria-hidden="true">&raquo;</span>'
 					+ '<span class="sr-only">Next</span></a></li>');
+  
+  if(location.hash){
+    var str_hash = location.hash;
+    str_hash = decodeURI(str_hash.replace("#",""));
+    arr_curpage=str_hash.split("^");
+    var page_number = parseInt(arr_curpage[4]);
 
+    start = (page_number-1) * req_num_row;
+
+    jQuery('.pagination li').removeClass("active");
+    $('.pagination li').eq(page_number).addClass("active");
+		// jQuery(this).parent().addClass("active");
+  }
+
+  $tr.hide();
 	$tr.each(function(i) {
-		jQuery(this).hide();
+		//jQuery(this).hide();
+
+    // if(location.hash){
+    //   var str_hash = location.hash;
+    //   str_hash = decodeURI(str_hash.replace("#",""));
+    //   arr_curpage=str_hash.split("^");
+    //   start = (parseInt(arr_curpage[4])-1) * req_num_row;
+    // }
+
 		if (i + 1 <= req_num_row) {
-			$tr.eq(i).show();
+			$tr.eq(start+i).show();
 		}
+
 	});
 
 	jQuery('.pagination a').click('.pagination-link', function(e) {
@@ -905,13 +932,47 @@ function checkForHash(){
             $('#process2').append(element);
 
             if(ret2[i].MODELCATNAME==arr_curpage[3]){
-              target_process2 = ret2[i].MODELCATNAME;
+              target_process2 = ret2[i].MODELCATID;
             }
           }
         }
 
         $('#process1').val(arr_curpage[2]).attr("selected","selected");
         $('#process2').val(arr_curpage[3]).attr("selected","selected");
+
+        $("#user-table > tbody > tr").hide();
+        $("#user-table > tbody > tr").removeClass('show_paging');
+
+        if($("#process2 option:selected").text()!="NULL"){
+          $("#user-table > tbody > tr > td:nth-child(7):contains('" + target_process2 + "')").parent().show();
+          $("#user-table > tbody > tr > td:nth-child(7):contains('" + target_process2 + "')").parent().addClass('show_paging');
+        }
+        else if($("#process1 option:selected").text()!="NULL"){
+          $("#user-table > tbody > tr > td:nth-child(7):contains('" + target_process1 + "')").parent().show();
+          $("#user-table > tbody > tr > td:nth-child(7):contains('" + target_process1 + "')").parent().addClass('show_paging');
+
+          for(var i=0;i<ret2.length;i++){
+            if(ret2[i].MODELCATID_PR==target_process1){
+              $("#user-table > tbody > tr > td:nth-child(7):contains('" + ret2[i].MODELCATID + "')").parent().show();
+              $("#user-table > tbody > tr > td:nth-child(7):contains('" + ret2[i].MODELCATID + "')").parent().addClass('show_paging');
+              // $(temp2).parent().show();
+            }
+          }
+        }
+        else if($("#factory option:selected").text()!="NULL"){          
+          $("#user-table > tbody > tr > td:nth-child(6):contains('" + target_company + "')").parent().show();
+          $("#user-table > tbody > tr > td:nth-child(6):contains('" + target_company + "')").parent().addClass('show_paging');
+        }
+        else{
+          $("#user-table > tbody > tr > td:nth-child(6):contains('" + target_company + "')").parent().show();
+          $("#user-table > tbody > tr > td:nth-child(6):contains('" + target_company + "')").parent().addClass('show_paging');
+          for(var i=0;i<ret.length;i++){
+            if(ret[i].MODELCATTYPEID_PR==target_company){
+              $("#user-table > tbody > tr > td:nth-child(6):contains('" + ret[i].MODELCATTYPEID + "')").parent().show();
+              $("#user-table > tbody > tr > td:nth-child(6):contains('" + ret[i].MODELCATTYPEID + "')").parent().addClass('show_paging');
+            }
+          }
+        }
 
         // $("#user-table > tbody > tr").hide();
         // $("#user-table > tbody > tr").removeClass('show_paging');
@@ -935,5 +996,7 @@ function checkForHash(){
           alert("메일 전송이 실패하였습니다.");
       }
     })
+
+
   }
 }
