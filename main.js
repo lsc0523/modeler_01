@@ -508,9 +508,10 @@ server.get('/deleteModelHistory', function (req, res) {
 
 	DeleteModelHistoryData (req, function (file_result) {
 		console.log(file_result);
-		if (file_result.length =1 ) 
-		alert("삭제 되었습니다.");
-
+		if (file_result.length =1 ) { 
+			// if (typeof window !== 'undefined') { alert ("삭제 성공하였습니다.") };
+			res.send(file_result);
+		}
 		// res.json({ id : newModelID});
 	})
 });

@@ -141,8 +141,14 @@
           <td><%= rows.MODELNAME %></td>
           <td><%= rows.MODELDESC %></td>
           <td><%= rows.MODELHISTDESC %></td>
+          <!-- <td> <button class="btn-ht" style="border: 1px solid hsl(0 0% 87% / 1); 
+            padding-right: 20px; 
+            padding-left: 20px; " id="delete" onclick="">
+            삭제
+            </button></td> -->
           <td><a href="/modeler?id=<%= rows.MODELID %>&his=Y&creDate=<%= rows.CRETDTTM%>&enable=N">열기</a></td>
-           <td><a href="/deleteModelHistory?id=<%= rows.MODELID%>&creDate=<%= rows.CRETDTTM%>">삭제</a></td>
+          <!-- <td><a href="/deleteModelHistory?id=<%= rows.MODELID%>&creDate=<%= rows.CRETDTTM%>" >삭제</a></td> -->
+          <td><a id="delete" href="#" onclick="deletehist('<%= rows.MODELID%>','<%= rows.CRETDTTM%>');" >삭제</a></td>
         </tr>
         <% } %>
         <% } %>
@@ -160,6 +166,25 @@
 </body>
 <script type="text/javascript">
 
+
+function deletehist( id,  creDate ) {
+      $.ajax({
+            url: '/deleteModelHistory',
+            type: 'GET',
+            data: {
+              id: id,
+              creDate : creDate,
+            },
+            dataType: "json",
+            success: function (data) {
+              alert("삭제 되었습니다.");
+            },
+            error: function (error) {
+              alert("삭제 실패하였습니다.");
+            }
+          })
+    }
+
   $(document).ready(function () {
 
     $('#modelHistID').on('keypress', function (e) {
@@ -169,7 +194,23 @@
       }
     });
 
-    /*
+
+
+    // $.button({
+    //   selector: '.context-menu-one', 
+    //   trigger: 'left',
+    //   callback: function(key, options) {
+    //       var m = "clicked: " + key;
+          //window.console && console.log(m) || alert(m); 
+    //       var modelId = options.$trigger[0].id;
+    //   }
+    // });
+
+    $("#delete").on('click', function (e) {
+    e.preventDefault();
+    var checkDelete = confirm("삭제 하시겠습니까?");
+    });
+
       $('#modelHistID').on('keypress', function (e) {
         //Enter Event
         if (e.keyCode == 13) {
@@ -189,7 +230,6 @@
           })
         }
       });
-    */
     });
 
 </script>

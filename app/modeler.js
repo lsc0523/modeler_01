@@ -291,7 +291,7 @@ $(function () {
   var minutes = today.getMinutes();  // 분
   var seconds = today.getSeconds();  // 초
 
-  //$('#save-time').val(" Autosaved at " + hours + ":" + minutes + ":" + seconds);
+  $('#save-time').val(" Autosaved at " + hours + ":" + minutes + ":" + seconds);
 
 
   bpmnModeler.on('element.click', function (e) {
@@ -523,7 +523,7 @@ $(function () {
 
       setTimeout(function () {
         //$('#Progress_Loading').hide();
-        //$('#save-time').show();
+        // $('#save-time').show();
         var hours = today.getHours();
         var minutes = today.getMinutes();
         var seconds = today.getSeconds();
