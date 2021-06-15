@@ -89,7 +89,7 @@ $(document).ready(function(){
     location.hash = "#" + str_hash;
     location.href ="/modeler?DB_ID="+DB_MODELID+"&DB_CATID="+DB_MODELCATID;
   });
-
+//수정
   $('#company').on('change',function(){
 
     $.ajax({
@@ -732,8 +732,38 @@ $('#th_checkAll').on('click', function(e){
   }
 });
 
+jQuery('.pagination a').click(function(e) {
+  e.preventDefault();
+  $tr.hide();
+  var page = jQuery(this).text();
+
+  if ($(this).attr('aria-label')=='Next'){
+    drawPage( (Math.floor(($(".page-item.active > a").text()-1)/page_num_row)+1)*page_num_row + 1);
+    // page = (Math.floor(($(".page-item.active > a").text()-1)/page_num_row))*page_num_row + 1
+  }
+  else if($(this).attr('aria-label')=='Previous'){
+    drawPage( (Math.floor(($(".page-item.active > a").text()-1)/page_num_row))*page_num_row);
+  }
+  else{
+    jQuery('.pagination li').removeClass("active");
+    jQuery(this).parent().addClass("active");
+  }
+
+  page = $(".page-item.active > a").text(); 
+  var temp = page - 1;
+  var start = temp * req_num_row;
+  var current_link = temp;
+
+  for (var i = 0; i < req_num_row; i++) {
+    $tr.eq(start + i).show();
+  }
+
+});
+
 function pagination() {
 	var req_num_row = 20;  //화면에 표시할 목록 개수
+  var page_num_row = 5;  //화면에 표시할 paging 개수
+  var page_number = 1;   //화면에서 가리키는 page 위치
 	var $tr = jQuery('.tableBody .show_paging');  // paging 대상 class 명
 	var total_num_row = $tr.length;
 	var num_pages = 0;
@@ -747,35 +777,60 @@ function pagination() {
 	}
   var start = 0;
 
-  jQuery('.pagination').empty();
-	jQuery('.pagination').append('<li class="page-item">'
-					+ '<a class="page-link" href="#" tabindex="-1"aria-label="Previous">'
-					+ '<span aria-hidden="true">&laquo;</span>'
-					+ '<span class="sr-only">Previous</span></a></li>');
-
-	for (var i = 1; i <= num_pages; i++) {
-		jQuery('.pagination').append('<li class="page-item "><a class="page-link" href="#">' + i + '</a></li>');
-		jQuery('.pagination li:nth-child(2)').addClass("active");
-		jQuery('.pagination a').addClass("pagination-link");
-	}
-
-	jQuery('.pagination').append('<li class="page-item">'
-					+ '<a class="page-link" href="#" aria-label="Next">'
-					+ ' <span aria-hidden="true">&raquo;</span>'
-					+ '<span class="sr-only">Next</span></a></li>');
-  
   if(location.hash){
     var str_hash = location.hash;
     str_hash = decodeURI(str_hash.replace("#",""));
-    arr_curpage=str_hash.split("^");
-    var page_number = parseInt(arr_curpage[4]);
+    arr_curpage = str_hash.split("^");
+    page_number = parseInt(arr_curpage[4]);
 
     start = (page_number-1) * req_num_row;
-
-    jQuery('.pagination li').removeClass("active");
-    $('.pagination li').eq(page_number).addClass("active");
-		// jQuery(this).parent().addClass("active");
   }
+
+  drawPage(page_number);
+  // jQuery('.pagination').empty();
+	// jQuery('.pagination').append('<li class="page-item">'
+	// 				+ '<a class="page-link" href="#" tabindex="-1"aria-label="Previous">'
+	// 				+ '<span aria-hidden="true">&laquo;</span>'
+	// 				+ '<span class="sr-only">Previous</span></a></li>');
+
+	// for (var i = 1; i <= num_pages && i <= page_num_row ; i++) {
+	// 	jQuery('.pagination').append('<li class="page-item "><a class="page-link" href="#">' + (Math.floor((page_number-1)/page_num_row)*page_num_row+i) + '</a></li>');
+	// 	jQuery('.pagination li:nth-child(2)').addClass("active");
+	// 	jQuery('.pagination a').addClass("pagination-link");
+	// }
+
+	// jQuery('.pagination').append('<li class="page-item">'
+	// 				+ '<a class="page-link" href="#" aria-label="Next">'
+	// 				+ ' <span aria-hidden="true">&raquo;</span>'
+	// + '<span class="sr-only">Next</span></a></li>');
+
+
+  // if (page_number <= page_num_row){
+  //   $('.pagination li:first-child').css('visibility','hidden');
+  // }
+  // else{
+  //   $('.pagination li:first-child').css('visibility','');
+  // }
+
+  // if(num_pages <= page_num_row || page_number >= (num_pages-page_num_row+1) ){
+  //   $('.pagination li:last-child').css('visibility','hidden');
+  // }
+  // else{
+  //   $('.pagination li:last-child').css('visibility','');
+  // }
+  
+  // if(location.hash){
+  //   var str_hash = location.hash;
+  //   str_hash = decodeURI(str_hash.replace("#",""));
+  //   arr_curpage=str_hash.split("^");
+  //   page_number = parseInt(arr_curpage[4]);
+
+  //   start = (page_number-1) * req_num_row;
+
+  //   jQuery('.pagination li').removeClass("active");
+  //   $('.pagination li').eq(page_number).addClass("active");
+	// 	// jQuery(this).parent().addClass("active");
+  // }
 
   $tr.hide();
 	$tr.each(function(i) {
@@ -794,16 +849,67 @@ function pagination() {
 
 	});
 
-	jQuery('.pagination a').click('.pagination-link', function(e) {
+	jQuery('.pagination a').click(function(e) {
 		e.preventDefault();
 		$tr.hide();
 		var page = jQuery(this).text();
+
+    if ($(this).attr('aria-label')=='Next'){
+      var next_num = (Math.floor(($(".page-item.active > a").text()-1)/page_num_row)+1)*page_num_row + 1;
+      for (var i = 1; i <= num_pages && i <= page_num_row ; i++) {
+        $('.pagination li').eq(i).children(0).text(next_num);
+        next_num += 1;
+      }
+
+      $('.pagination li').removeClass("active");
+      $('.pagination li').eq(1).addClass("active");
+
+      if ($('.pagination li').eq(1).children(0).text() <= page_num_row){
+        $('.pagination li:first-child').css('visibility','hidden');
+      }
+      else{
+        $('.pagination li:first-child').css('visibility','');
+      }
+      if(num_pages <= page_num_row || $('.pagination li').eq(1).children(0).text() >= (num_pages-page_num_row+1) ){
+        $('.pagination li:last-child').css('visibility','hidden');
+      }
+      else{
+        $('.pagination li:last-child').css('visibility','');
+      }
+    }
+    else if($(this).attr('aria-label')=='Previous'){
+      var next_num = (Math.floor(($(".page-item.active > a").text()-1)/page_num_row))*page_num_row;
+      for (var i = 1; i <= num_pages && i <= page_num_row ; i++) {
+        $('.pagination li').eq(i).children(0).text(next_num-(page_num_row)+i);
+        
+      }
+
+      $('.pagination li').removeClass("active");
+      $('.pagination li').eq(page_num_row).addClass("active");
+
+      if ( $('.pagination li').eq(page_num_row).children(0).text() <= page_num_row){
+        $('.pagination li:first-child').css('visibility','hidden');
+      }
+      else{
+        $('.pagination li:first-child').css('visibility','');
+      }
+  
+      if(num_pages <= page_num_row || $('.pagination li').eq(1).children(0).text() >= (num_pages-page_num_row+1) ){
+        $('.pagination li:last-child').css('visibility','hidden');
+      }
+      else{
+        $('.pagination li:last-child').css('visibility','');
+      }
+    }
+    else{
+      jQuery('.pagination li').removeClass("active");
+      jQuery(this).parent().addClass("active");
+    }
+
+    page = $(".page-item.active > a").text(); 
 		var temp = page - 1;
 		var start = temp * req_num_row;
 		var current_link = temp;
-
-		jQuery('.pagination li').removeClass("active");
-		jQuery(this).parent().addClass("active");
 
 		for (var i = 0; i < req_num_row; i++) {
 			$tr.eq(start + i).show();
@@ -815,21 +921,21 @@ function pagination() {
     // $(this).addClass("active");
   
 
-		if (temp >= 1) {
-			jQuery('.pagination li:first-child').removeClass("disabled");
-		} else {
-			jQuery('.pagination li:first-child').addClass("disabled");
-		}
+		// if (temp >= 1) {
+		// 	jQuery('.pagination li:first-child').removeClass("disabled");
+		// } else {
+		// 	jQuery('.pagination li:first-child').addClass("disabled");
+		// }
 
-    if (page == '«Previous'){
-      if (page === 1) {
-        page = Math.ceil($('.pagination .post').length/pageSize);
-    } else {
-        page--;
-    }
-    console.log(page);
-    showPage(page);
-    }
+    // if (page == '«Previous'){
+    //   if (page === 1) {
+    //     page = Math.ceil($('.pagination .post').length/pageSize);
+    // } else {
+    //     page--;
+    // }
+    // console.log(page);
+    // showPage(page);
+    // }
 
 	});
 
@@ -865,6 +971,40 @@ function pagination() {
         page++;
     }
     showPage(page);
+  }
+
+  function drawPage(page_number){
+    jQuery('.pagination').empty();
+    jQuery('.pagination').append('<li class="page-item">'
+            + '<a class="page-link" href="#" tabindex="-1"aria-label="Previous">'
+            + '<span aria-hidden="true">&laquo;</span>'
+            + '<span class="sr-only">Previous</span></a></li>');
+
+    for (var i = 1; i <= num_pages && i <= page_num_row ; i++) {
+      jQuery('.pagination').append('<li class="page-item "><a class="page-link" href="#">' + (Math.floor((page_number-1)/page_num_row)*page_num_row+i) + '</a></li>');
+      jQuery('.pagination li:nth-child(2)').addClass("active");
+      jQuery('.pagination a').addClass("pagination-link");
+    }
+
+    jQuery('.pagination').append('<li class="page-item">'
+            + '<a class="page-link" href="#" aria-label="Next">'
+            + ' <span aria-hidden="true">&raquo;</span>'
+    + '<span class="sr-only">Next</span></a></li>');
+
+
+    if (page_number <= page_num_row){
+      $('.pagination li:first-child').css('visibility','hidden');
+    }
+    else{
+      $('.pagination li:first-child').css('visibility','');
+    }
+
+    if(num_pages <= page_num_row || page_number >= (num_pages-page_num_row+1) ){
+      $('.pagination li:last-child').css('visibility','hidden');
+    }
+    else{
+      $('.pagination li:last-child').css('visibility','');
+    }
   }
 
 	jQuery('.prev').click(function(e) {
