@@ -21,6 +21,7 @@ $(document).ready(function(){
 
   checkForHash();
   pagination();
+  location.hash=""
 
   $("#keyword").keyup(function () {
     var k = $(this).val();
