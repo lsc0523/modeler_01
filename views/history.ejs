@@ -127,7 +127,7 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody  id="tbody_hist">
 
         <% for(var i = (page * page_num) - page_num; i < (page * page_num); i++) {  %>
         <%      if(i > length){
@@ -148,7 +148,7 @@
             </button></td> -->
           <td><a href="/modeler?id=<%= rows.MODELID %>&his=Y&creDate=<%= rows.CRETDTTM%>&enable=N">열기</a></td>
           <!-- <td><a href="/deleteModelHistory?id=<%= rows.MODELID%>&creDate=<%= rows.CRETDTTM%>" >삭제</a></td> -->
-          <td><a id="delete" href="#" onclick="deletehist('<%= rows.MODELID%>','<%= rows.CRETDTTM%>');" >삭제</a></td>
+          <td><a id="delete" href="#" onclick="deletehist(this,'<%= rows.MODELID%>','<%= rows.CRETDTTM%>');" >삭제</a></td>
         </tr>
         <% } %>
         <% } %>
@@ -167,7 +167,10 @@
 <script type="text/javascript">
 
 
-function deletehist( id,  creDate ) {
+function deletehist(tr, id, creDate) {
+
+       var rowIndex = tr.parentNode.parentNode.parentNode.rowIndex;
+
       $.ajax({
             url: '/deleteModelHistory',
             type: 'GET',
@@ -178,11 +181,21 @@ function deletehist( id,  creDate ) {
             dataType: "json",
             success: function (data) {
               alert("삭제 되었습니다.");
+              location.reload();
+              // deleteRow(rowIndex);
+              // alert(rowIndex);      
+
             },
             error: function (error) {
               alert("삭제 실패하였습니다.");
             }
           })
+    }
+
+    function deleteRow (index)
+    {
+      document.getElementById('tbody_hist').deleteRow(rowIndex);
+      alert(index);
     }
 
   $(document).ready(function () {
