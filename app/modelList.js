@@ -592,11 +592,17 @@ $(document).on('click', '[name="historyclick"]', function () {
   var s = "";
 });
 
-$(document).on('click', '.trModel', function (e) {  
-  var modelId =  this.children[7].innerText;
-  str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
-  location.hash = "#" + str_hash;
-  window.location = "/modeler?id=" + modelId;
+$(document).on('click', '.trModel', function (e) {
+  
+  if (!this.children[0].childNodes[0].focus)
+  {
+  // if (this.cusor ! =)
+
+    var modelId =  this.children[7].innerText;
+    str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
+    location.hash = "#" + str_hash;
+    window.location = "/modeler?id=" + modelId;
+   }
 });
 
 
