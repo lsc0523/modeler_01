@@ -88,7 +88,15 @@
 
     .trModel:hover{
       cursor: pointer;
-      color:#4d91ff;       
+      color:#4d91ff;    
+    }
+
+    .context-menu-one:hover
+    { 
+      /* padding-bottom: 25px; */
+      /* outline:#4d91ff; */
+      border: 1px solid hsl(0,0%,87%);
+      box-shadow: rgb(0 0 0 / 50%) 0px 1px 4px 0px; 
     }
     
 /* .topFixBanner {
@@ -488,9 +496,9 @@ td
     <td style="display:none;"><%= rows.UPDUSER %></td>
 
     <td style="border-right:1px solid hsl(0,0%,87%);">
-    <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" 
+    <button class="context-menu-one" style="background-color: #ffffff; outline: none; border: none;;" 
               id=<%= rows.MODELID %> > 
-    <img src="/menu.svg" style="padding-right: 5px;" with="13", height="13">            
+    <img src="/menu.svg" with="13", height="13">            
     </button> 
     </td>
     </tr>
