@@ -606,10 +606,14 @@ $(document).on('click', '[name="historyclick"]', function () {
 //    }
 // });
 
+
+
 // tr 클릭이벤트. 체크박스 제외
 $('.trModel').click(function(e){
 
-  if (e.target.nodeName=='INPUT') return;
+  if (e.target.nodeName=='INPUT' || e.target.nodeName=='BUTTON' || e.target.nodeName=='IMG'  ) return;
+
+  // if (e.target.nodeName==)
 
   var modelId =  this.children[7].innerText;
   str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
@@ -669,7 +673,7 @@ $('.trModel').click(function(e){
 //                                 '<td>' + data.data[i].UPDDTTM +'</td>' +
 //                                 '<td>' + data.data[i].INSUSER +'</td>' +
 //                                 '<td>' + data.data[i].UPDUSER +'</td>' +
-//                                 '<td> <button class="context-menu-one btn btn-link" style="background-color: #ffffff;" id=' + data.data[i].MODELID + '>' +
+//                                 '<td> <button class="context-menu-one" style="background-color: #ffffff;" id=' + data.data[i].MODELID + '>' +
 //                                 '<img src="/menu.svg" style="padding-right: 5px;" with="13", height="13">' +            
 //                                 '</button> </td>' 
 //                               + '</tr>'+
