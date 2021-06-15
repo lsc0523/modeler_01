@@ -986,9 +986,12 @@ function pagination() {
 
     for (var i = 1; i <= num_pages && i <= page_num_row ; i++) {
       jQuery('.pagination').append('<li class="page-item "><a class="page-link" href="#">' + (Math.floor((page_number-1)/page_num_row)*page_num_row+i) + '</a></li>');
-      jQuery('.pagination li:nth-child(2)').addClass("active");
+      //jQuery('.pagination li:nth-child('+page_number+')').addClass("active");
       jQuery('.pagination a').addClass("pagination-link");
     }
+
+    $('.pagination li').removeClass("active");
+    jQuery('.pagination li:nth-child('+ (page_number%page_num_row+1) +')').addClass("active");
 
     jQuery('.pagination').append('<li class="page-item">'
             + '<a class="page-link" href="#" aria-label="Next">'
