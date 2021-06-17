@@ -44,7 +44,7 @@ var bpmnModeler = new BpmnModeler({
     propertiesProviderModule,
     customTranslateModule,
     tooliplugin,
-    customContextPad
+    customContextPad,
     // TokenSimulationModule
   ],
   /*
@@ -251,6 +251,10 @@ $(function () {
   console.log(data);
   createNewDiagram(data[0].innerText);
 
+  $('#zoom-reset').animate({right : "300px"},500);            
+  $('#zoom-in').animate({right : "300px"},500);            
+  $('#zoom-out').animate({right : "300px"},500);
+
   // $('#js-properties-panel').hide();
   $('.map').hide();
   $('.toggle').hide();
@@ -306,10 +310,23 @@ $(function () {
 
   $('#btn-panel').on('click', function () {
     if ($('#js-properties-panel').is(':visible')) {
-      $('#js-properties-panel').hide();
+       
+      $('#zoom-reset').animate({right: "50px"},300);            
+      $('#zoom-in').animate({right: "50px"},300);                
+      $('#zoom-out').animate({right: "50px"},300);     
+      $('#js-properties-panel').hide().fadeOut;  //zoom
     }
     else {
-      $('#js-properties-panel').show();
+
+      var postion1 = $.data($('#zoom-reset'), 'position', $('#zoom-reset').position());
+
+      $('#zoom-reset').animate({right : "300px"},500);            
+      $('#zoom-in').animate({right : "300px"},500);            
+      $('#zoom-out').animate({right : "300px"},500);
+
+      $('#js-properties-panel').show().fadeIn();
+      // $('#zoom').animate({scrollLeft : -300},500);
+
     }
   });
 
@@ -523,7 +540,7 @@ $(function () {
 
       setTimeout(function () {
         //$('#Progress_Loading').hide();
-        // $('#save-time').show();
+        $('#save-time').show();
         var hours = today.getHours();
         var minutes = today.getMinutes();
         var seconds = today.getSeconds();
