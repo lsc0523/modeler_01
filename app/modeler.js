@@ -10,6 +10,7 @@ import CliModule from 'bpmn-js-cli';
 import bpmn from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
+import fileDownload from 'downloadjs'
 // import TokenSimulationModule from 'bpmn-js-token-simulation';
 
 
@@ -245,6 +246,39 @@ function hideInterface() {
   selectWrapper.style.display = 'none';
 }
 
+//export
+function saveDiagram(done) {
+
+
+}
+
+function setEncoded(link, name, data) {
+  var encodedData = encodeURIComponent(data);
+
+  if (data) {
+    link.addClass('active').attr({
+      'href': 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
+      'download': name
+    });
+  } else {
+    link.removeClass('active');
+  }
+}
+
+
+function debounce(fn, timeout) {
+
+  var timer;
+
+  return function () {
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(fn, timeout);
+  };
+}
+
 $(function () {
 
   var data = $("#xmlData");
@@ -261,7 +295,7 @@ $(function () {
   $('.accordion').hide();
 
   var downloadLink = $('#js-download-diagram');
-  //var downloadSvgLink = $('#js-download-svg');
+  var downloadSvgLink = $('#js-download-svg');
 
   //if ($('#file_length') > 0) {
   //  $('#btn-download').css({ color: "green" });
@@ -274,6 +308,32 @@ $(function () {
     }
   });
 
+
+
+  var downloadLink = $('#js-download-diagram');
+  // var downloadSvgLink = $('#js-download-svg');
+
+  $('#modelExport').click(async function(e) {
+
+    // var hiddenElement = document.createElement('a');
+    // hiddenElement.href = xmlData;
+    // hiddenElement.target = '_blank';
+    // hiddenElement.download = 'diagram-xml';
+    // hiddenElement.click();    
+
+    var xml = await bpmnModeler.saveXML({ format: true });
+    var xmlData = xml.xml.replace('<?xml version="1.0" encoding="UTF-8"?>', '');
+    // localStorage['diagram-xml'] = xmlData;
+
+    fileDownload(xmlData, 'diagram.bpmn', 'application/xml');
+
+    // setEncoded(downloadLink, 'diagram.bpmn', err ? null : xmlData);
+  
+    // console.log(xmlData);
+    // saveDiagram(function(err, xml) {
+    //   setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
+    // });
+  })
   //$('camunda-id').attr("readonly", true);
 
   //side menu event..
@@ -754,7 +814,6 @@ $(function () {
         return this;
       });
     },
-
   };
 
   $("#picker1").colorPick({
@@ -780,17 +839,3 @@ $(function () {
     }
   });
 });
-
-function debounce(fn, timeout) {
-
-  var timer;
-
-  return function () {
-    if (timer) {
-      clearTimeout(timer);
-    }
-
-    timer = setTimeout(fn, timeout);
-  };
-}
-

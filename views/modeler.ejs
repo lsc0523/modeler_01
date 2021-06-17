@@ -197,13 +197,7 @@ padding-bottom: 20px;
   </button> 
   
 
-  <label class="btn btn-light btn-file" 
-          data-toggle="tooltip" data-placement="bottom" title="업로드"
-          style="width: 4%; top: 10%; left: 20%; border:0; outline :0; position: absolute;">
-    <img src="/Attach_icon.svg" width="70%" height="70%" >
-    <input type="file" id="fileInput" name="fileInput" multiple style="display:none">
-  </label>
-  
+
   <input type="text" id="save-time" 
          style="top: 20%;   
                 border:0; 
@@ -215,11 +209,16 @@ padding-bottom: 20px;
          style="width: 25%; 
                 top: 25%; 
                 left: 30%; 
-                border:0; 
+                border:0;
                 outline :0; 
                 position: absolute;
                 background-color: hsl(0,0%,97%);
                 color: black; ">
+
+
+
+
+
 
   <button class="btn btn-light" id="js-download-diagram"
           data-toggle="tooltip" data-placement="bottom" title="저장"
@@ -228,10 +227,25 @@ padding-bottom: 20px;
   </button>
   
   <button class="btn btn-light" id="modelinfo"
-          data-toggle="tooltip" data-placement="bottom" title="EXPORT"
+          data-toggle="tooltip" data-placement="bottom" title="모델 정보 변경"
           style="width: 4%; top: 10%; left: 15%; border:0; outline :0; position: absolute;">
     <img src="/info_icon.svg" width="70%" height="70%">
   </button>
+
+  <button class="btn btn-light" id="modelExport"
+  data-toggle="tooltip" data-placement="bottom" title="파일 저장"
+  style="width: 4%; top: 10%; left: 20%; border:0; outline :0; position: absolute;">
+    <img src="/export.svg" width="70%" height="70%">
+  </button> 
+  
+  <label class="btn btn-light btn-file" 
+  data-toggle="tooltip" data-placement="bottom" title="업로드"
+  style="width: 4%; top: 10%; left: 25%; border:0; outline :0; position: absolute;">
+  <img src="/Attach_icon.svg" width="70%" height="70%" >
+  <input type="file" id="fileInput" name="fileInput" multiple style="display:none">
+  </label>
+
+
  
   <button class="btn btn-light" id="btn-download"  
           data-toggle="tooltip" data-placement="bottom" title="다운로드"
