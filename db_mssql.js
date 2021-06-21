@@ -28,7 +28,8 @@ var ModelHistory = "PROCESSMODELHISTORY";
 
 
 //sql Qurey
-var sqlSelectModelQurey = 'select * from ' + Modeltable + ' where MODELID=@MODELID order by upddttm';
+var sqlSelectModelQurey = "SELECT * FROM "+ Modeltable +
+                                    " where MODELID=@MODELID and USE_YN ='Y' order by upddttm";
 
 var sqlSelectModelHistory = "SELECT A.MODELID ,\n" + 
 							"CONVERT(CHAR(23), A.CRETDTTM, 21) CRETDTTM ,\n" + 
@@ -63,6 +64,7 @@ var sqlModelPagingList = 	"SELECT T.*\n" +
 							"FROM\n" + 
 							"PROCESSMODEL P )T\n" + 
 							"WHERE T.RNUM BETWEEN @START AND @END\n" + 
+							"AND USE_YN = 'Y'\n" + 
 							"ORDER BY\n" + 
 							"T.UPDDTTM\n";
 
