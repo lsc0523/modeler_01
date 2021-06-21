@@ -53,6 +53,7 @@
     "dataformat": "^1.0.0",
     "dateformat": "^3.0.3",
     "diagram-js-minimap": "^1.2.1",
+    "downloadjs": "^1.4.7",
     "ejs": "^3.1.5",
     "ejs-render-loader": "^1.0.0",
     "express-session": "^1.17.1",
