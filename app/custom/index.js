@@ -5,7 +5,8 @@ import CustomRenderer from './CustomRenderer';
 export default {
   //customContextPad
   __init__: [ 'customPalette', 'customRenderer' ],
-  //customContextPad: [ 'type', CustomContextPad ],
+  __init__: [ 'customContextPad', 'customRenderer' ],
+  customContextPad: [ 'type', CustomContextPad ],
   customPalette: [ 'type', CustomPalette ],
   customRenderer: [ 'type', CustomRenderer ]
 
