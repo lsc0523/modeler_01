@@ -25,7 +25,7 @@ export default class CustomContextPad {
 
     function appendServiceTask(event, element) {
       if (autoPlace) {
-        //const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
+       // const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
         modeling.setColor(element, {
           stroke: 'black',
           fill: 'black'
@@ -48,7 +48,7 @@ export default class CustomContextPad {
 
     function appendTestTask(event, element) {
       if (autoPlace) {
-        const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
+       // const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
 
 
         openColorPicker(element);
@@ -376,10 +376,10 @@ function openColorPicker (element)
       //   }
       // },
 
-      'colorlist': {
+      'expand.SubProcess': {
         group: 'edit',
-        className: 'bpmn-icon-color',
-        title: translate('Set Color'),
+        className: 'ex-SubProcessr',
+        title: translate('Expand SubProcess'),
 //        html : '<div class="entry"><div class="cawemo-icon-colorize">&nbsp;</div></div>',
         action: {
           click: appendServiceTask,
@@ -389,7 +389,7 @@ function openColorPicker (element)
 
       'append.test-task': {
         group: 'model',
-        className: 'bpmn-icon-test-task',
+        className: 'Color-Piker',
         title: translate('Color Piker'),
 //         html : '<div class="entry"><div class="cawemo-icon-colorize">&nbsp;</div></div>',
         action: {

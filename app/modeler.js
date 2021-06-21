@@ -11,10 +11,12 @@ import bpmn from 'bpmn-js-cli';
 import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
 import fileDownload from 'downloadjs'
-// import TokenSimulationModule from 'bpmn-js-token-simulation';
-
+import TokenSimulationModule from 'bpmn-js-token-simulation';
+import magicPropertiesProviderModule from './CustomProvider/SystemPropertiesProvier';
+import magicModdleDescriptor from './CustomProvider/magic.json'
 
 var common = require('./common.js');
+
 //var mod = require('korean-text-analytics');
 //var colorPick = require('./colorPick');
 
@@ -46,6 +48,7 @@ var bpmnModeler = new BpmnModeler({
     customTranslateModule,
     tooliplugin,
     customContextPad,
+    magicPropertiesProviderModule
     // TokenSimulationModule
   ],
   /*
@@ -54,7 +57,8 @@ var bpmnModeler = new BpmnModeler({
   },
   */
   moddleExtensions: {
-    camunda: camundaModdleDescriptor
+    camunda: camundaModdleDescriptor,
+    magic : magicModdleDescriptor
   }
 });
 
@@ -308,11 +312,6 @@ $(function () {
     }
   });
 
-
-
-  var downloadLink = $('#js-download-diagram');
-  // var downloadSvgLink = $('#js-download-svg');
-
   $('#modelExport').click(async function(e) {
 
     // var hiddenElement = document.createElement('a');
@@ -374,17 +373,17 @@ $(function () {
       $('#zoom-reset').animate({right: "50px"},300);            
       $('#zoom-in').animate({right: "50px"},300);                
       $('#zoom-out').animate({right: "50px"},300);     
-      $('#js-properties-panel').hide().fadeOut;  //zoom
+      $('#js-properties-panel').hide(300)  //zoom
     }
     else {
 
       var postion1 = $.data($('#zoom-reset'), 'position', $('#zoom-reset').position());
 
-      $('#zoom-reset').animate({right : "300px"},500);            
-      $('#zoom-in').animate({right : "300px"},500);            
-      $('#zoom-out').animate({right : "300px"},500);
+      $('#zoom-reset').animate({right : "300px"},100);            
+      $('#zoom-in').animate({right : "300px"},100);            
+      $('#zoom-out').animate({right : "300px"},100);
 
-      $('#js-properties-panel').show().fadeIn();
+      $('#js-properties-panel').show(300);
       // $('#zoom').animate({scrollLeft : -300},500);
 
     }
