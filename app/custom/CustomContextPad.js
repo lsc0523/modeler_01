@@ -1,3 +1,5 @@
+import BPMNReplace from "bpmn-js/lib/features/replace/BpmnReplace";
+
 export default class CustomContextPad {
   constructor(config, contextPad, create, elementFactory, injector, translate, modeling, popupMenu) {
     this.create = create;
@@ -26,19 +28,30 @@ export default class CustomContextPad {
     function appendServiceTask(event, element) {
       if (autoPlace) {
        // const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
-        modeling.setColor(element, {
-          stroke: 'black',
-          fill: 'black'
-        });
+        // modeling.setColor(element, {
+        //   stroke: 'black',
+        //   fill: 'black'
+        // });
         
         
-        popupMenu.open(
-          element,
-          'bpmn-colorize'
-          //assign(self.getColorMenuPosition(element), {
-          //  cursor: { x: event.x, y: event.y }
-          // })
-        );
+        // popupMenu.open(
+        //   element,
+        //   'bpmn-colorize'
+        //   //assign(self.getColorMenuPosition(element), {
+        //   //  cursor: { x: event.x, y: event.y }
+        //   // })
+        // );
+
+        var bpmnreplace = new BPMNReplace(modeling);
+
+        var replaceElement = bpmnreplace.replaceElement;
+
+        // replaceElement(element, {type: 'bpmn:SubProcess', isExpanded: true} ,modeling);
+
+        if(element['collapsed'] == true) 
+          replaceElement(element, {type: 'bpmn:SubProcess', isExpanded: true} , null, modeling);
+        else
+          replaceElement(element, {type: 'bpmn:SubProcess', isExpanded: false} , null, modeling);
         
         autoPlace.append(element, shape);
       } else {
