@@ -624,7 +624,7 @@ $('.modelDesc').click(function(e){
 })
 
 
-
+//test
 // $(function(){
 //   $(window).scroll(function(){  //스크롤하면 아래 코드 실행
 //          var num = $(this).scrollTop();  // 스크롤값
@@ -836,6 +836,10 @@ function pagination() {
   //   $('.pagination li').eq(page_number).addClass("active");
 	// 	// jQuery(this).parent().addClass("active");
   // }
+
+  $("tr input[name=checkRow]").prop("checked", false);
+  $("tr input[name=checkAll]").prop("checked", false);
+  $(".trModel.show_paging.show_inpage").removeClass("show_inpage");
 
   $tr.hide();
 	$tr.each(function(i) {
