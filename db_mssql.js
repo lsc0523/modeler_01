@@ -251,7 +251,7 @@ function getNewRepositoryID(id, callback) {
 
 	var params = { MODELID: id };
 
-	ExcuteSQLSelectModelReposbyPromises(params, function (result) {
+	ExcuteSQLSelectModelRepository(params, function (result) {
 		console.log(result);
 		if (result.rowsAffected != 0) {
 			var data = result.recordset[0].REPOSID;
