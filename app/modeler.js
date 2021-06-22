@@ -547,7 +547,8 @@ $(function () {
       success: function (data) {
         alert("저장이 완료 되었습니다.");
         //window.location.href = 'home/1';
-        window.location.href = 'modeler?id=' + data.id;
+        // window.location.href = 'modeler?id=' + data.id;
+        window.location = "/modelList";
       },
       error: function (error) {
         alert("Error!");
