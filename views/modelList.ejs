@@ -478,12 +478,12 @@ td
   <%  var rows = data[i]; %>  
 
   <tr class="trModel" style="background-color: white;">
-    <td style="border-left:1px solid hsl(0,0%,87%);"><input type="checkbox" name="checkRow" id="checkRow" class="chkbox"></td>
+    <td class = "tdchkBox" style="border-left:1px solid hsl(0,0%,87%);"><input type="checkbox" name="checkRow" id="checkRow" class="chkbox"></td>
     <!-- <td style="display : none;"><%= rows.MODELID  %></td> -->
     
     <td><img with="15", height="15" src="model.svg" alt=""></td>
-    <td ><%= rows.MODELNAME %></td>
-    <td ><%= rows.MODELDESC %></td>
+    <td>  <%= rows.MODELNAME %></td>
+    <td class="modelDesc"><%= rows.MODELDESC %></td>
     <td ><%= rows.UPDDTTM %></td>
     <td style="display:none;"><%= rows.MODELTYPE %></td>
     <td style="display:none;"><%= rows.MODELCATID %></td>

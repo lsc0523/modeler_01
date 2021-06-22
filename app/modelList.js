@@ -609,17 +609,18 @@ $(document).on('click', '[name="historyclick"]', function () {
 
 
 // tr 클릭이벤트. 체크박스 제외
-$('.trModel').click(function(e){
+$('.modelDesc').click(function(e){
 
-  if (e.target.nodeName=='INPUT' || e.target.nodeName=='BUTTON' || e.target.nodeName=='IMG'  ) return;
+  // if (e.target.nodeName=='INPUT' || e.target.nodeName=='BUTTON' || e.target.nodeName=='IMG'  ) return;
 
-  // if (e.target.nodeName==)
+//  if ( e.target.id == '#modelDesc')
+//   {
 
-  var modelId =  this.children[7].innerText;
+  var modelId =  this.parentElement.children[7].innerText;
   str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
   location.hash = "#" + str_hash;
   window.location = "/modeler?id=" + modelId;
-
+  // }
 })
 
 
