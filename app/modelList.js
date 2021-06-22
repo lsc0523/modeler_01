@@ -461,7 +461,7 @@ $(document).ready(function(){
     if (checkDelete) {
       var returnurl = window.location.pathname;
       var href = $(this).attr("href");
-      var $checklist = $("#user-table input[type='checkbox']:checked").parent().parent()
+      var $checklist = $(".trModel.show_paging input[type='checkbox']:checked").parent().parent();
       var modellist;
 
       for(var i=0;i<$checklist.length;i++){
