@@ -85,9 +85,9 @@ $(document).ready(function(){
         alert("메일 전송이 실패하였습니다.");
       }
     });
-    str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+    str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text();
     location.hash = "#" + str_hash;
-    location.href ="/modeler?DB_ID="+DB_MODELID+"&DB_CATID="+DB_MODELCATID;
+    window.location ="/modeler?DB_ID="+DB_MODELID+"&DB_CATID="+DB_MODELCATID;
   });
 //수정
   $('#company').on('change',function(){
@@ -415,7 +415,7 @@ $(document).ready(function(){
       var href = $(this).attr("href");
       //window.location = href;
       //window.location = returnurl;
-      var $checklist = $("#user-table input[type='checkbox']:checked").parent().parent()
+      var $checklist = $(".trModel.show_paging input[type='checkbox']:checked").parent().parent()
       var modellist;
 
       for(var i=0;i<$checklist.length;i++){
@@ -447,7 +447,7 @@ $(document).ready(function(){
       var categoryProcess1 = $('#process1 option:selected').text();
       var categoryProcess2 = $('#process2 option:selected').text();
 
-      str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+      str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
       location.hash = "#" + str_hash;
       location.reload();
       //$("#user-table > tbody > tr").hide();
@@ -461,7 +461,7 @@ $(document).ready(function(){
     if (checkDelete) {
       var returnurl = window.location.pathname;
       var href = $(this).attr("href");
-      var $checklist = $("#user-table input[type='checkbox']:checked").parent().parent()
+      var $checklist = $(".trModel.show_paging input[type='checkbox']:checked").parent().parent();
       var modellist;
 
       for(var i=0;i<$checklist.length;i++){
@@ -499,7 +499,7 @@ $(document).ready(function(){
       }  
 
       if (typeof window !== 'undefined') { alert("복사 성공하였습니다.") };
-      str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text()
+      str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
       location.hash = "#" + str_hash;
       location.reload();
     }
@@ -729,40 +729,40 @@ $(document).on('click','#SendMail',function(){
 
 $('#th_checkAll').on('click', function(e){
   if( $("#th_checkAll").is(':checked')){
-    $("input[name=checkRow]").prop("checked", true);
+    $(".trModel.show_paging.show_inpage input[name=checkRow]").prop("checked", true);
   }
   else{
-    $("input[name=checkRow]").prop("checked", false);
+    $(".trModel.show_paging.show_inpage input[name=checkRow]").prop("checked", false);
   }
 });
 
-jQuery('.pagination a').click(function(e) {
-  e.preventDefault();
-  $tr.hide();
-  var page = jQuery(this).text();
+// jQuery('.pagination a').click(function(e) {
+//   e.preventDefault();
+//   $tr.hide();
+//   var page = jQuery(this).text();
 
-  if ($(this).attr('aria-label')=='Next'){
-    drawPage( (Math.floor(($(".page-item.active > a").text()-1)/page_num_row)+1)*page_num_row + 1);
-    // page = (Math.floor(($(".page-item.active > a").text()-1)/page_num_row))*page_num_row + 1
-  }
-  else if($(this).attr('aria-label')=='Previous'){
-    drawPage( (Math.floor(($(".page-item.active > a").text()-1)/page_num_row))*page_num_row);
-  }
-  else{
-    jQuery('.pagination li').removeClass("active");
-    jQuery(this).parent().addClass("active");
-  }
+//   if ($(this).attr('aria-label')=='Next'){
+//     drawPage( (Math.floor(($(".page-item.active > a").text()-1)/page_num_row)+1)*page_num_row + 1);
+//     // page = (Math.floor(($(".page-item.active > a").text()-1)/page_num_row))*page_num_row + 1
+//   }
+//   else if($(this).attr('aria-label')=='Previous'){
+//     drawPage( (Math.floor(($(".page-item.active > a").text()-1)/page_num_row))*page_num_row);
+//   }
+//   else{
+//     jQuery('.pagination li').removeClass("active");
+//     jQuery(this).parent().addClass("active");
+//   }
 
-  page = $(".page-item.active > a").text(); 
-  var temp = page - 1;
-  var start = temp * req_num_row;
-  var current_link = temp;
+//   page = $(".page-item.active > a").text(); 
+//   var temp = page - 1;
+//   var start = temp * req_num_row;
+//   var current_link = temp;
 
-  for (var i = 0; i < req_num_row; i++) {
-    $tr.eq(start + i).show();
-  }
+//   for (var i = 0; i < req_num_row; i++) {
+//     $tr.eq(start + i).show();
+//   }
 
-});
+// });
 
 function pagination() {
 	var req_num_row = 20;  //화면에 표시할 목록 개수
@@ -836,6 +836,10 @@ function pagination() {
 	// 	// jQuery(this).parent().addClass("active");
   // }
 
+  $("tr input[name=checkRow]").prop("checked", false);
+  $("tr input[name=checkAll]").prop("checked", false);
+  $(".trModel.show_paging.show_inpage").removeClass("show_inpage");
+
   $tr.hide();
 	$tr.each(function(i) {
 		//jQuery(this).hide();
@@ -849,6 +853,7 @@ function pagination() {
 
 		if (i + 1 <= req_num_row) {
 			$tr.eq(start+i).show();
+      $tr.eq(start+i).addClass("show_inpage");
 		}
 
 	});
@@ -860,6 +865,7 @@ function pagination() {
 
     if ($(this).attr('aria-label')=='Next'){
       var next_num = (Math.floor(($(".page-item.active > a").text()-1)/page_num_row)+1)*page_num_row + 1;
+      //drawPage(next_num);
       for (var i = 1; i <= num_pages && i <= page_num_row ; i++) {
         $('.pagination li').eq(i).children(0).text(next_num);
         next_num += 1;
@@ -883,6 +889,7 @@ function pagination() {
     }
     else if($(this).attr('aria-label')=='Previous'){
       var next_num = (Math.floor(($(".page-item.active > a").text()-1)/page_num_row))*page_num_row;
+      //drawPage(next_num);
       for (var i = 1; i <= num_pages && i <= page_num_row ; i++) {
         $('.pagination li').eq(i).children(0).text(next_num-(page_num_row)+i);
         
@@ -915,8 +922,14 @@ function pagination() {
 		var start = temp * req_num_row;
 		var current_link = temp;
 
+    $("tr input[name=checkRow]").prop("checked", false);
+    $("tr input[name=checkAll]").prop("checked", false);
+    $(".trModel.show_paging.show_inpage").removeClass("show_inpage");
+
 		for (var i = 0; i < req_num_row; i++) {
 			$tr.eq(start + i).show();
+      $tr.eq(start+i).addClass("show_inpage");
+      
 		}
  
     // console.log($(this).html().indexOf('Next'));
