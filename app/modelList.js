@@ -836,6 +836,10 @@ function pagination() {
 	// 	// jQuery(this).parent().addClass("active");
   // }
 
+  $("tr input[name=checkRow]").prop("checked", false);
+  $("tr input[name=checkAll]").prop("checked", false);
+  $(".trModel.show_paging.show_inpage").removeClass("show_inpage");
+
   $tr.hide();
 	$tr.each(function(i) {
 		//jQuery(this).hide();
