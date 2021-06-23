@@ -1032,7 +1032,7 @@ function pagination() {
     }
 
     $('.pagination li').removeClass("active");
-    jQuery('.pagination li:nth-child('+ (page_number%page_num_row+1) +')').addClass("active");
+    jQuery('.pagination li:nth-child('+ ((page_number-1)%page_num_row+2) +')').addClass("active");
 
     jQuery('.pagination').append('<li class="page-item">'
             + '<a class="page-link" href="#" aria-label="Next">'
@@ -1047,7 +1047,7 @@ function pagination() {
       $('.pagination li:first-child').css('visibility','');
     }
 
-    if(num_pages <= page_num_row || page_number >= (num_pages-page_num_row+1) ){
+    if(num_pages <= page_num_row || page_number >= Math.floor((num_pages-1)/page_num_row)*page_num_row + 1 ) {
       $('.pagination li:last-child').css('visibility','hidden');
     }
     else{
