@@ -872,6 +872,15 @@ function pagination() {
         next_num += 1;
       }
 
+      for (var i = 1; i <= page_num_row ; i++) {
+        if($('.pagination li').eq(i).children(0).text() > num_pages){
+          $('.pagination li').eq(i).css('display','none');
+        }
+        else{
+          $('.pagination li').eq(i).css('display','');
+        }
+      }
+
       $('.pagination li').removeClass("active");
       $('.pagination li').eq(1).addClass("active");
 
@@ -894,6 +903,15 @@ function pagination() {
       for (var i = 1; i <= num_pages && i <= page_num_row ; i++) {
         $('.pagination li').eq(i).children(0).text(next_num-(page_num_row)+i);
         
+      }
+
+      for (var i = 1; i <= page_num_row ; i++) {
+        if($('.pagination li').eq(i).children(0).text() > num_pages){
+          $('.pagination li').eq(i).css('display','none');
+        }
+        else{
+          $('.pagination li').eq(i).css('display','');
+        }
       }
 
       $('.pagination li').removeClass("active");
@@ -1002,6 +1020,15 @@ function pagination() {
       jQuery('.pagination').append('<li class="page-item "><a class="page-link" href="#">' + (Math.floor((page_number-1)/page_num_row)*page_num_row+i) + '</a></li>');
       //jQuery('.pagination li:nth-child('+page_number+')').addClass("active");
       jQuery('.pagination a').addClass("pagination-link");
+    }
+
+    for (var i = 1; i <= page_num_row ; i++) {
+      if($('.pagination li').eq(i).children(0).text() > num_pages){
+        $('.pagination li').eq(i).css('display','none');
+      }
+      else{
+        $('.pagination li').eq(i).css('display','');
+      }
     }
 
     $('.pagination li').removeClass("active");
