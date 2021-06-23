@@ -48,6 +48,7 @@ var bpmnModeler = new BpmnModeler({
     customTranslateModule,
     tooliplugin,
     customContextPad,
+    TokenSimulationModule,
     magicPropertiesProviderModule
     // TokenSimulationModule
   ],
