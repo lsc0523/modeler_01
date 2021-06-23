@@ -61,14 +61,13 @@ a:hover{
   border-left: 1px solid #ccc;
   overflow: auto;
   background: #f8f8f8;
-  &:empty {
-    display: none;
-  }
-  > .djs-properties-panel {
+  display: none;;
+}
+.content >.djs-properties-panel {
     padding-bottom: 70px;
     min-height:100%;
   }
-}
+
 
 
 .content .error .details {

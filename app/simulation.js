@@ -1,13 +1,14 @@
 import $ from 'jquery';
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import customTranslate from './customTranslate/customTranslate';
 import TokenSimulationModule from 'bpmn-js-token-simulation';
 import fileDrop from 'file-drops';
 import exampleXML from '../resources/example.bpmn';
 
 var common = require('./common.js');
 var url = new URL(window.location.href);
-var canvas = $('#js-canvas');
+// var canvas = $('#js-canvas');
 
 var persistent = url.searchParams.has('p');
 var active = url.searchParams.has('e');
@@ -30,37 +31,37 @@ if (persistent) {
   hideDropMessage();
 }
 
-var ExampleModule = {
-  __init__: [
-    [ 'eventBus', 'bpmnjs', 'toggleMode', function(eventBus, bpmnjs, toggleMode) {
+// var ExampleModule = {
+//   __init__: [
+//     [ 'eventBus', 'bpmnjs', 'toggleMode', function(eventBus, bpmnjs, toggleMode) {
 
-      if (persistent) {
-        eventBus.on('commandStack.changed', function() {
-          bpmnjs.saveXML().then(result => {
-            localStorage['diagram-xml'] = result.xml;
-          });
-        });
-      }
+//       if (persistent) {
+//         eventBus.on('commandStack.changed', function() {
+//           bpmnjs.saveXML().then(result => {
+//             localStorage['diagram-xml'] = result.xml;
+//           });
+//         });
+//       }
 
-      if ('history' in window) {
-        eventBus.on('tokenSimulation.toggleMode', event => {
+//       if ('history' in window) {
+//         eventBus.on('tokenSimulation.toggleMode', event => {
 
-          if (event.active) {
-            url.searchParams.set('e', '1');
-          } else {
-            url.searchParams.delete('e');
-          }
+//           if (event.active) {
+//             url.searchParams.set('e', '1');
+//           } else {
+//             url.searchParams.delete('e');
+//           }
 
-          history.replaceState({}, document.title, url.toString());
-        });
-      }
+//           history.replaceState({}, document.title, url.toString());
+//         });
+//       }
 
-      eventBus.on('diagram.init', 500, () => {
-        toggleMode.toggleMode(active);
-      });
-    } ]
-  ]
-};
+//       eventBus.on('diagram.init', 500, () => {
+//         toggleMode.toggleMode(active);
+//       });
+//     } ]
+//   ]
+// };
 
 // const modeler = new BpmnModeler({
 //   container: '#canvas',
@@ -74,20 +75,43 @@ var ExampleModule = {
 //   }
 // });
 
-var modeler = new BpmnModeler({
-  container: '#canvas',
-  keyboard: { bindTo: document },
-  propertiesPanel: {
-    parent: '#js-properties-panel'
-  },
-  additionalModules: [  
-    TokenSimulationModule,
-    ExampleModule
+var container = $('#js-drop-zone');
+var canvas = $('.bjs-canvas');
+var customTranslateModule = {
+  translate: ['value', customTranslate]
+};
+// var modeler = new BpmnModeler({
+//   container: canvas,
+//   keyboard: { bindTo: document },
+//   propertiesPanel: {
+//     parent: '#js-properties-panel'
+//   },
+//   additionalModules: [  
+//     TokenSimulationModule,
+//     ExampleModule
+//   ],
+//   keyboard: {
+//     bindTo: document
+//   }
+// });
+
+
+const modeler = new BpmnModeler({
+  container: canvas,
+  // keyboard: { bindTo: document },
+  // propertiesPanel: {
+  //   parent: '#js-properties-panel'
+  // },
+  additionalModules: [
+    TokenSimulationModule
   ],
+
   keyboard: {
     bindTo: document
   }
 });
+
+
 
 function createNewDiagram(xml) {
 
@@ -146,18 +170,64 @@ document.body.addEventListener('dragover', fileDrop('Open BPMN diagram', functio
 
   if (files.length) {
     hideDropMessage();
-    modeler.openDiagram(files[0].contents);
+    openDiagram(files[0].contents);
   }
 
 }), false);
+
+function registerFileDrop(canvas, callback) {
+
+  function handleFileSelect(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    var files = e.dataTransfer.files;
+
+    var file = files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+
+      var xml = e.target.result;
+
+      callback(xml);
+    };
+
+    reader.readAsText(file);
+  }
+
+  function handleDragOver(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+  }
+
+  container.get(0).addEventListener('dragover', handleDragOver, false);
+  container.get(0).addEventListener('drop', handleFileSelect, false);
+}
+
+
+
+if (!window.FileList || !window.FileReader) {
+  window.alert(
+    'Looks like you use an older browser that does not support drag and drop. ' +
+    'Try using Chrome, Firefox or the Internet Explorer > 10.');
+} else {
+  registerFileDrop(canvas, openDiagram);
+}
+
+
 
 
 $(function () { 
 
   openDiagram(exampleXML)
- 
-  var data = $("#xmlData");
-  console.log(data);
+
+  // this.get('canvas').zoom('fit-viewport');
+  // var data = $("#xmlData");
+  //console.log(data);
   // modeler.importXML(exampleXML);
 });
 
