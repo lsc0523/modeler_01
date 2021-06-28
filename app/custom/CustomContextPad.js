@@ -1,4 +1,10 @@
 import BPMNReplace from "bpmn-js/lib/features/replace/BpmnReplace";
+import {
+  assign,
+  forEach,
+  isArray
+} from 'min-dash';
+
 
 export default class CustomContextPad {
   constructor(config, contextPad, create, elementFactory, injector, translate, modeling, popupMenu) {
@@ -64,7 +70,7 @@ export default class CustomContextPad {
        // const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
 
 
-        openColorPicker(element);
+        // openColorPicker(element);
         
         // shape.colorPick({
         //   'initialColor': 'hsl(0,0%,97%)',
@@ -94,13 +100,13 @@ export default class CustomContextPad {
         //   fill: 'black'
         // });        
         
-        // popupMenu.open(
-        //   element,
-        //   'bpmn-colorize'
-        //   // assign(self.getColorMenuPosition(element), {
-        //   //   cursor: { x: event.x, y: event.y },
-        //   //  })
-        // );
+        popupMenu.open(
+          element,
+          'bpmn-colorize',
+          assign(self.getColorMenuPosition(element), {
+            cursor: { x: event.x, y: event.y },
+           })
+        );
         
         autoPlace.append(element, shape);
       } else {

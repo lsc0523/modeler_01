@@ -14,22 +14,24 @@ module.exports = {
     //__dirname + 
     //path: '/dist',\
     path: path.join(__dirname, "dist"),
-    filename: '[name].app.js'
+       filename: '[name].app.js'
   },
   module: {
     rules: [
        { test: /\.bpmn$/, use: 'raw-loader' },
-       { test: /\.ejs$/, loader: "ejs-render-loader" } 
+       { test: /\.ejs$/, loader: "ejs-render-loader" }
+
     ]
   },
   plugins: [
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin([      
       { from: 'assets/**', to: 'vendor/bpmn-js', context: 'node_modules/bpmn-js/dist/' },
       { from: 'assets/**', to: 'vendor/diagram-js-minimap', context: 'node_modules/diagram-js-minimap/' },
       { from: 'assets/**', to: 'vendor/bpmn-js-properties-panel', context: 'node_modules/bpmn-js-properties-panel/dist' },
-      { from: '**/*.{html,css}', context: 'app/' }
+      // { from: 'assets/**', to: 'vendor/bpmn-js-token-simulation', context: 'node_modules/bpmn-js-token-simulation/assets/' },
+      { from: 'node_modules/bpmn-js-token-simulation/assets/**', to: 'vendor/bpmn-js-token-simulation/assets' },
+      { from: '**/*.{html,css}', context: 'app/' }      
     ])
-
   ],
   mode: 'development',
   devtool: 'source-map',
