@@ -40,7 +40,7 @@ ColorMenuProvider.prototype.getHeaderEntries = function (element) {
     return {
       id: `colorize-${color.label.toLowerCase()}`,
       title: color.label,
-      className: 'bjs-color-menu-entry',
+      className: 'bpmn-colorize',
       action: function () {
         modeling.setColor(element, {
           fill: color.fill,

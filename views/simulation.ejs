@@ -4,51 +4,113 @@
 <head>
   <title>SIMULATION</title>
   <meta charset="utf-8">
+
   <link rel="stylesheet" href="vendor/bpmn-js/assets/diagram-js.css" />
   <link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
   <link rel="stylesheet" href="vendor/diagram-js-minimap/assets/diagram-js-minimap.css" />
   <link rel="stylesheet" href="vendor/bpmn-js-properties-panel/assets/bpmn-js-properties-panel.css" />
+  <!-- <link rel="stylesheet" href="vendor/bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css" />
+  <link rel="stylesheet" type="text/css" href="../node_modules/bpmn-js-token-simulation/assets/css/normalize.css"> -->
+  <link rel="stylesheet" href="css/bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css" />
+  <link rel="stylesheet" href="css/bpmn-js-token-simulation/assets/css/normalize.css" />
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
- 
-  <link rel="stylesheet" href="vendor/bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css" />
-  <link rel="stylesheet" href="vendor/bpmn-js-token-simulation/assets/css/normalize.css" />
-  <link rel="stylesheet" href="vendor/bpmn-js-token-simulation/assets/font-awesome/css/font-awesome.min.css" />
+
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
+   
+  <link rel="stylesheet" href="css/app.css" />
+  <!-- <link rel="stylesheet" href="css/bpmn-js-token-simulation.css"/>
+  <link rel="stylesheet" href="css/normalize.css"/> -->
   
-  <!-- <link rel="stylesheet" href="css/app.css" /> -->
-  <link rel="stylesheet" href="css/simulation.css" />
+  <!-- <link rel="stylesheet" href="/app/font-awesome/css/font-awesome.min.css" /> -->
+  
+
+  <!-- <link rel="stylesheet" href="css/simulation.css" /> -->
  
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <!-- <script type="text/javascript" src="/js/history.js"></script>  -->
   <style type="text/css">
     @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-    @import url(/font-awesome/css/font-awesome.min.css);
 
-    /* body , html
-    {
-      font-family: "Noto Sans KR", sans-serif !important;
-      font-weight: normal;
-      font-style: normal;
-      height: 100%;
-      padding: 0;
-      margin: 0;
-    }
-  
+html, body, #canvas {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Arial", sans-serif;
+}
 
-  .active {
-     text-decoration: underline;
-     cursor: pointer;
-  }
+.links {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
 
-  .panel {
-    padding: 0 18px;
-    background-color: gray;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease-out;
-    line-height: 8px;
-  } */
+.link {
+  color: var(--token-simulation-grey-darken-30, #212121);
+  display: inline-block;
+  padding: 6px;
+  font-size: 16px;
+  border-radius: 2px;
+  background-color: var(--token-simulation-silver-darken-94, #EFEFEF);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--token-simulation-white, #FFFFFF);
+  background-color: var(--token-simulation-green-base-44, #10D070);
+}
+
+.links .link + .link {
+  margin-left: 20px;
+}
+
+/** file-drops */
+
+.drop-message {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--token-simulation-silver-darken-94, #EFEFEF);
+  border-radius: 2px;
+  padding: 6px 12px;
+  font-size: 16px;
+  color: var(--token-simulation-grey-darken-30, #212121);
+  user-select: none;
+}
+
+.drop-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  padding: 50px;
+
+  background: rgba(255, 255, 255, .9);
+
+  z-index: 1000;
+}
+
+.drop-overlay .box {
+  text-align: center;
+  border: dashed 4px #CCC;
+  height: 100%;
+  width: 100%;
+  display: table;
+}
+
+.drop-overlay .label {
+  font-size: 26px;
+  color: #888;
+  margin: auto;
+
+  display: table-cell;
+  vertical-align: middle;
+}
 
   </style>
 
@@ -75,7 +137,7 @@
       </button>
     </div>
   </div> -->
-
+<!-- 
   <div style="height: 50px; 
             padding-top: 10px;
             padding-bottom: 20px;
@@ -86,7 +148,7 @@
       padding-right: 20px; 
       padding-left: 20px; "></a>
 
-  <!-- <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Home</a> -->
+  <a href="/home2" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Home</a>
   <a href="/modelList" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">Modeling</a>
   <a href="/BBS" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">BBS</a>
   <a href="/history/1" style="padding-left: 20px; color: hsl(0 0% 50% / 1);">History</a>
@@ -99,10 +161,10 @@
                            top : 17px; 
                            color: hsl(0 0% 50% / 1);">
       Logout</a>
-    <% } %>
-  </div>
+    <% } %> -->
+  <!-- </div> --> 
 
-  <div style="background-color: hsl(0,0%,97%); 
+  <!-- <div style="background-color: hsl(0,0%,97%); 
             padding: 25px 100px; 
             position: relative; 
             height: 10%;
@@ -113,12 +175,16 @@
             ">
     Welcome, <%=sess%> 님
   </div>
-</div> 
+</div>  -->
 
 <!-- <div id="canvas"></div> -->
 
 <div class="content with-diagram" id="js-drop-zone">
-  <div class= 'bjs-canvas'></div>
+
+    <div id="canvas"></div>
+    </div>
+  
+ 
    <!-- <div class="message intro">
     <div class="note">
       Drop BPMN diagram from your desktop or <a id="js-create-diagram" href>create a new diagram</a> to get started.

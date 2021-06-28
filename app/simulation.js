@@ -1,5 +1,6 @@
 import $ from 'jquery';
 
+// import BpmnModeler from 'bpmn-js/lib/Modeler';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import customTranslate from './customTranslate/customTranslate';
 import TokenSimulationModule from 'bpmn-js-token-simulation';
@@ -76,7 +77,8 @@ if (persistent) {
 // });
 
 var container = $('#js-drop-zone');
-var canvas = $('.bjs-canvas');
+var canvas = $('#canvas');
+
 var customTranslateModule = {
   translate: ['value', customTranslate]
 };
@@ -98,7 +100,7 @@ var customTranslateModule = {
 
 const modeler = new BpmnModeler({
   container: canvas,
-  // keyboard: { bindTo: document },
+  keyboard: { bindTo: document },
   // propertiesPanel: {
   //   parent: '#js-properties-panel'
   // },

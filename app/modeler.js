@@ -294,7 +294,7 @@ $(function () {
   $('#zoom-in').animate({right : "300px"},500);            
   $('#zoom-out').animate({right : "300px"},500);
 
-  // $('#js-properties-panel').hide();
+  $('#js-properties-panel').show();
   $('.map').hide();
   $('.toggle').hide();
   $('.accordion').hide();
