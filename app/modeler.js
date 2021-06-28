@@ -12,8 +12,8 @@ import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
 import fileDownload from 'downloadjs'
 import TokenSimulationModule from 'bpmn-js-token-simulation';
-import magicPropertiesProviderModule from './CustomProvider/SystemPropertiesProvier';
-import magicModdleDescriptor from './CustomProvider/magic.json'
+//import magicPropertiesProviderModule from './CustomProvider';
+//import magicModdleDescriptor from '.CustomProvider';
 
 var common = require('./common.js');
 
@@ -29,11 +29,13 @@ import {
 import tooliplugin from './TooltipInfoService';
 //import tokenSimulation from 'bpmn-js-token-simulation';
 
-var container = $('#js-drop-zone');
-var canvas = $('#js-canvas');
-var customTranslateModule = {
+var container = $('#js-drop-zone'),
+     canvas = $('#js-canvas'),
+     customTranslateModule = {
   translate: ['value', customTranslate]
 };
+
+
 
 var bpmnModeler = new BpmnModeler({
   container: canvas,
@@ -48,9 +50,8 @@ var bpmnModeler = new BpmnModeler({
     customTranslateModule,
     tooliplugin,
     customContextPad,
-    TokenSimulationModule,
-    magicPropertiesProviderModule
-    // TokenSimulationModule
+    TokenSimulationModule
+//    magicPropertiesProviderModule,    
   ],
   /*
   cli: {
@@ -58,8 +59,8 @@ var bpmnModeler = new BpmnModeler({
   },
   */
   moddleExtensions: {
-    camunda: camundaModdleDescriptor,
-    magic : magicModdleDescriptor
+    camunda: camundaModdleDescriptor
+//    magic : magicModdleDescriptor
   }
 });
 
