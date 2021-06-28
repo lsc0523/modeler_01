@@ -112,7 +112,7 @@
 
 .notifications {
   position: absolute;
-  bottom: 20px;
+  bottom: 150px;
   left: 20px;
 }
 
@@ -295,7 +295,7 @@
 .token-simulation-log {
   position: absolute;
   top: 128px;
-  bottom: 20px;
+  bottom: 150px;
   left: 20px;
   right: 20px;
   background-color: var(--token-simulation-silver-darken-94, #EFEFEF);
@@ -446,7 +446,7 @@
 
 .set-animation-speed {
   position: absolute;
-  bottom: 20px;
+  bottom: 150px;
   left: 50%;
   transform: translate(-50%, 0);
   font-size: 16px;

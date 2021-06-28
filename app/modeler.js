@@ -41,7 +41,7 @@ var bpmnModeler = new BpmnModeler({
   propertiesPanel: {
     parent: '#js-properties-panel'
   },
-  additionalModules: [
+    additionalModules: [
     minimapModule,
     propertiesPanelModule,
     propertiesProviderModule,
@@ -660,6 +660,38 @@ $(function () {
     $('.djs-palette').css("border", "0px")
     $('.djs-palette-entries').css("display", "none");
   }
+
+  //Process Start
+  $('.toggle-mode').on('click', function (e) {
+
+    var element = e.element;
+    
+    var togglemode = bpmnModeler.get('toggleMode');
+    var Notifications = bpmnModeler.get('notifications');
+
+    if (!togglemode._active){
+      $('.approvalTable').show(300);
+      $('#js-properties-panel').show(300);
+
+      $('#zoom-reset').animate({right : "300px"},500);            
+      $('#zoom-in').animate({right : "300px"},500);            
+      $('#zoom-out').animate({right : "300px"},500);
+      
+      $('.zoom-out')
+
+
+    }
+    else{
+    $('.approvalTable').hide(300);
+    $('#js-properties-panel').hide(300);
+
+    $('#zoom-reset').animate({right: "50px"},300);            
+    $('#zoom-in').animate({right: "50px"},300);                
+    $('#zoom-out').animate({right: "50px"},300); 
+    }
+  });
+  
+
   //color picker..
   $.fn.colorPick = function (config) {
 
