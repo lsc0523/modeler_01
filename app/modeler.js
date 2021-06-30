@@ -12,8 +12,8 @@ import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
 import fileDownload from 'downloadjs'
 import TokenSimulationModule from 'bpmn-js-token-simulation';
-//import magicPropertiesProviderModule from './CustomProvider';
-//import magicModdleDescriptor from '.CustomProvider';
+// import magicPropertiesProviderModule from './properties-panel-extension/app/provider/magic';
+// import magicModdleDescriptor from './properties-panel-extension/app/descriptors/magic.json';
 
 var common = require('./common.js');
 
@@ -29,11 +29,16 @@ import {
 import tooliplugin from './TooltipInfoService';
 //import tokenSimulation from 'bpmn-js-token-simulation';
 
+var magicPropertiesProviderModule = require('./properties-panel-extension/app/provider/magic');
+var magicModdleDescriptor = require('./properties-panel-extension/app/descriptors/magic.json');
+
+
 var container = $('#js-drop-zone'),
      canvas = $('#js-canvas'),
      customTranslateModule = {
   translate: ['value', customTranslate]
 };
+var propertiesPanel = $('#js-properties-panel')
 
 
 
@@ -47,11 +52,11 @@ var bpmnModeler = new BpmnModeler({
     minimapModule,
     propertiesPanelModule,
     propertiesProviderModule,
+    magicPropertiesProviderModule,    
     customTranslateModule,
     tooliplugin,
     customContextPad,
     TokenSimulationModule
-//    magicPropertiesProviderModule,    
   ],
   /*
   cli: {
@@ -59,8 +64,8 @@ var bpmnModeler = new BpmnModeler({
   },
   */
   moddleExtensions: {
-    camunda: camundaModdleDescriptor
-//    magic : magicModdleDescriptor
+    //  camunda: camundaModdleDescriptor,
+     magic : magicModdleDescriptor
   }
 });
 
@@ -290,6 +295,10 @@ $(function () {
   var data = $("#xmlData");
   console.log(data);
   createNewDiagram(data[0].innerText);
+
+  propertiesPanel.add()
+  // magicPropertiesProviderModule;
+  // magicPropertiesProviderModule(propertiesPanel,customTranslateModule);
 
   $('#zoom-reset').animate({right : "300px"},500);            
   $('#zoom-in').animate({right : "300px"},500);            
