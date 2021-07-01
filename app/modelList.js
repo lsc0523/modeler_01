@@ -87,7 +87,7 @@ $(document).ready(function(){
     });
     str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text();
     location.hash = "#" + str_hash;
-    window.location ="/modeler?DB_ID="+DB_MODELID+"&DB_CATID="+DB_MODELCATID;
+    window.location ="/modeler?DB_ID="+DB_MODELID+"&DB_CATID="+DB_MODELCATID+"&page="+$(".page-item.active > a").text();
   });
 //수정
   $('#company').on('change',function(){
@@ -1068,10 +1068,24 @@ function pagination() {
 }
 
 function checkForHash(){
-  if(location.hash){
-    var str_hash = location.hash;
+  if(location.hash || (location.search !== '') ){
+
+
+    var str_hash;
+    var arr_curpage;
+
+    str_hash = location.hash;
     str_hash = decodeURI(str_hash.replace("#",""));
-    arr_curpage=str_hash.split("^");
+    if (location.hash){
+      arr_curpage=str_hash.split("^");  
+    }
+    else{
+      arr_curpage = new Array(5);
+      arr_curpage[4] = getParameterByName('page');
+      for(var i=0;i<4;i++){
+          arr_curpage[i] = "NULL";
+      }
+    }
 
     $.ajax({
       url: '/companycheck',
@@ -1086,6 +1100,45 @@ function checkForHash(){
         var target_factory = null; 
         var target_process1 = null;
         var target_process2 = null;
+
+        if(location.hash == '' && location.search !== ''){
+          var type = getParameterByName('type');
+          var modelCatID = getParameterByName('modelCatID');
+
+          for (var i=0; i<ret.length;i++){
+            if(ret[i].MODELCATTYPEID==type){
+              if(!ret[i].MODELCATTYPEID_PR){
+                arr_curpage[0] = ret[i].MODELCATTYPENAME;
+                arr_curpage[1] = "NULL";
+              }
+              else{
+                arr_curpage[1] = ret[i].MODELCATTYPENAME;
+                for(var j=0;j<ret.length; j++){
+                    if(ret[i].MODELCATTYPEID_PR==ret[j].MODELCATTYPEID){
+                      arr_curpage[0] = ret[j].MODELCATTYPENAME;
+                    }
+                }
+              }
+            }
+          }
+
+          for (var i=0; i<ret2.length;i++){
+            if(ret2[i].MODELCATID==modelCatID){
+              if(!ret2[i].MODELCATID_PR){
+                arr_curpage[2] = ret2[i].MODELCATNAME;
+                arr_curpage[3] = "NULL";
+              }
+              else{
+                arr_curpage[3] = ret[i].MODELCATNAME;
+                for(var j=0;j<ret2.length; j++){
+                    if(ret2[i].MODELCATID_PR==ret2[j].MODELCATID){
+                      arr_curpage[2] = ret[j].MODELCATNAME;
+                    }
+                }
+              }
+            }
+          }
+        }
 
         $('#company').empty();
         $('#factory').empty();
@@ -1185,30 +1238,19 @@ function checkForHash(){
             }
           }
         }
-        //test
-        // $("#user-table > tbody > tr").hide();
-        // $("#user-table > tbody > tr").removeClass('show_paging');
-       
-        // if($("#company option:selected").text()=="NULL"){
-        //   $("#user-table > tbody > tr").show();
-        //   $("#user-table > tbody > tr").addClass('show_paging');
-        // }
-        // else{
-        //   $("#user-table > tbody > tr > td:nth-child(6):contains('" + target + "')").parent().show();
-        //   $("#user-table > tbody > tr > td:nth-child(6):contains('" + target + "')").parent().addClass('show_paging');
-        //   for(var i=0;i<ret.length;i++){
-        //     if(ret[i].MODELCATTYPEID_PR==target){
-        //       $("#user-table > tbody > tr > td:nth-child(6):contains('" + ret[i].MODELCATTYPEID + "')").parent().show();
-        //       $("#user-table > tbody > tr > td:nth-child(6):contains('" + ret[i].MODELCATTYPEID + "')").parent().addClass('show_paging');
-        //     }
-        //   }
-        // }
+
       },
       error : function(error) {
           alert("메일 전송이 실패하였습니다.");
       }
     })
-
-
   }
 }
+
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
