@@ -12,8 +12,8 @@ import customTranslate from './customTranslate/customTranslate';
 import customContextPad from './custom';
 import fileDownload from 'downloadjs'
 import TokenSimulationModule from 'bpmn-js-token-simulation';
-// import magicPropertiesProviderModule from './properties-panel-extension/app/provider/magic';
-// import magicModdleDescriptor from './properties-panel-extension/app/descriptors/magic.json';
+//import magicPropertiesProviderModule from './properties-panel-extension/app/provider/magic';
+//import magicModdleDescriptor from './properties-panel-extension/app/descriptors/magic.json';
 
 var common = require('./common.js');
 
@@ -559,7 +559,7 @@ $(function () {
         alert("저장이 완료 되었습니다.");
         //window.location.href = 'home/1';
         // window.location.href = 'modeler?id=' + data.id;
-        window.location = "/modelList";
+        window.location = "/modelList?type=" + modelType + "&modelCatID=" + modelCatID + "&page=" + getParameterByName('page');
       },
       error: function (error) {
         alert("Error!");
@@ -878,3 +878,11 @@ $(function () {
     }
   });
 });
+
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+  return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
