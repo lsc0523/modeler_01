@@ -210,10 +210,13 @@ function populateDiagramCombo() {
   const currentDiagram = diagramSwitch._diagramUtil.currentDiagram();
   const diagrams = diagramSwitch._diagramUtil.diagrams();
 
+
   diagrams.forEach((diagram) => {
+
+    var name = diagram.plane.bpmnElement.name;
     const diagramName = diagram.name || diagram.id;
     select.append(`
-        <option value="${diagram.id}"> ${diagramName} </option>
+    <option value="${name+","+diagram.id}"> ${name} </option>
       `);
       bpmnModeler.get('zoomScroll').reset();
   });
