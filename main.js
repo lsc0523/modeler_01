@@ -40,7 +40,7 @@ var sqlQurey = "SELECT MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,\n" +
 										"MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER,  CONVERT(CHAR(19), p.upddttm , 20) UPDDTTM, ISNULL( MODELDIAGRAM_CNT , 0 ) MODELDIAGRAM_CNT\n"+ 	
 										" FROM PROCESSMODEL P\n"+
 										"WHERE P.USE_YN = 'Y' or P.USE_YN is null\n"+
-										"ORDER BY UPDDTTM;";
+										"ORDER BY MODELNAME;";
 
 //html render
 server.engine('html', require('ejs').renderFile);
