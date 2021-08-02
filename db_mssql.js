@@ -84,7 +84,7 @@ var sqlSelectModelReposIDQurey = 'select top(1) * from ' + ModelRepostable + ' w
 //All file List from db
 var allFileList = 'select * from ' + ModelRepostable + ' where MODELID=@MODELID order by (REPOSID) DESC'
 
-var sqlUpdateModelQuery_Dev = 'update ' + Modeltable + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID where MODELID=@MODELID';
+var sqlUpdateModelQuery_Dev = 'update ' + Modeltable + ' set MODELNAME=@MODELNAME, MODELDESC=@MODELDESC, MODEL_XML=@MODEL_XML, MODELID_PR=@MODELID_PR, MODELID_PR_NODEID=@MODELID_PR_NODEID, UPDDTTM=@UPDDTTM  where MODELID=@MODELID';
 
 var sqlInsertModelQuery_Dev = 'insert into ' + Modeltable +
 	'(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM, MODELDIAGRAM_CNT)'

@@ -69,6 +69,7 @@ export default class CustomContextPad {
       if (autoPlace) {
        // const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });
 
+       
 
         // openColorPicker(element);
         
@@ -100,19 +101,45 @@ export default class CustomContextPad {
         //   fill: 'black'
         // });        
         
-        popupMenu.open(
-          element,
-          'bpmn-colorize',
-          assign(self.getColorMenuPosition(element), {
-            cursor: { x: event.x, y: event.y },
-           })
-        );
+        // popupMenu.open(
+        //   element,
+        //   'bpmn-colorize',
+        //   assign(self.getColorMenuPosition(element), {
+        //     cursor: { x: event.x, y: event.y },
+        //    })
+        // );
+       // popupColorPickOpen 구현
+       // popupCololPickerOpen();
         
-        autoPlace.append(element, shape);
+        // autoPlace.append(element, shape);
+
+
+
+
       } else {
         appendServiceTaskStart(event, element);
       }
     }
+
+      //color picker..
+  $.fn.colorPick = function (config) {
+
+    return this.each(function () {
+      new $.colorPick(this, config || {});
+    });
+
+  };
+
+    function popupColorPickOpen() {
+      var url = "/modelPopup";
+      var winWidth = 500;
+      var winHeight = 500;
+      var popupOption = "width=" + winWidth + ", height=" + winHeight; 
+      var myWindow = window.open(url, "modelPopup", popupOption);
+    }
+
+
+    
 
     function appendServiceTaskStart(event) {
       const shape = elementFactory.createShape({ type: 'bpmn:TextAnnotation' });

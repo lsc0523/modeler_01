@@ -876,7 +876,7 @@ $(function () {
          stroke: 'black',
          fill: this.color
        });
-        elementsToColor.push(bpmnModeler.get('selection').get()[i]);
+        // elementsToColor.push(bpmnModeler.get('selection').get()[i]);
       }
     }
   });
