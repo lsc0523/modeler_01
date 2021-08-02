@@ -19,6 +19,22 @@ $(document).ready(function(){
   
   jQuery('.pagination li:first-child').addClass("disabled");
 
+  if($('#save_page').val()=='true'){
+    if(location.hash==""){
+      $.ajax({
+        url: '/savePage',
+        type: 'GET',
+        dataType: 'json',
+        async : false,
+        success : function(data){
+          console.log(data);
+          location.hash = "#" + data[0].company + "^" + data[0].factory + "^" + data[0].process1 + "^" + data[0].process2 + "^" + data[0].page;
+          $('#save_page').val('false');
+        }
+      })
+    }
+  }
+
   checkForHash();
   pagination();
   location.hash=""
@@ -616,10 +632,36 @@ $('.modelDesc').click(function(e){
 //  if ( e.target.id == '#modelDesc')
 //   {
 
+  var company = $("#company option:selected").text();
+  var factory = $('#factory option:selected').text();
+  var process1 = $('#process1 option:selected').text();
+  var process2 = $('#process2 option:selected').text();
+  var page = $(".page-item.active > a").text();
   var modelId =  this.parentElement.children[7].innerText;
-  str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
-  location.hash = "#" + str_hash;
-  window.location = "/modeler?id=" + modelId;
+
+  $.ajax({
+    url:'/prevPage',
+    type:'GET',
+    dataType: "json",
+    async : false,
+    data: { 
+      company : company, 
+      factory : factory,
+      process1 : process1,
+      process2 : process2,
+      page : page
+    },
+    success : function(result){
+      str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
+      location.hash = "#" + str_hash;
+      window.location = "/modeler?id=" + modelId;
+    }
+  })
+
+  // var modelId =  this.parentElement.children[7].innerText;
+  // str_hash = $("#company option:selected").text() + "^" + $('#factory option:selected').text() + "^" + $('#process1 option:selected').text() + "^" + $('#process2 option:selected').text() + "^" + $(".page-item.active > a").text()
+  // location.hash = "#" + str_hash;
+  // window.location = "/modeler?id=" + modelId;
   // }
 })
 
