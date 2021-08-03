@@ -657,7 +657,7 @@ function ExcuteSQLSelectQuery(sqlQurey, params, callback) {
 		// Query		    
 		var request = pool.request();
 		for (var key in params) {
-			request.input(key, sql.NVarChar, parmas[key]);
+			request.input(key, sql.NVarChar, params[key]);
 		}
 		return request.query(sqlQurey)
 

@@ -177,6 +177,7 @@ server.get('/modelList', function (req, res) {
 				pass: true,
 				length: result.recordsets[0].length - 1,
 				sess: req.session.user.id,
+				save: req.query.save
 			});
 		});
 	} else {
@@ -198,6 +199,36 @@ server.get('/companycheck', function (req, res){
 		})
 	}
 });
+
+server.get('/prevPage',function(req,res){
+	console.log("prevPage");
+	var prevPageSave = "UPDATE temp2 set company=\'" + req.query.company 
+	            	 + "\',factory=\'"+ req.query.factory
+					 + "\',process1=\'" + req.query.process1
+					 + "\',process2=\'" + req.query.process2
+					 + "\',page=\'" + req.query.page + "\'";
+	// var params = [req.query.company, req.query.factory, req.query.process1, req.query.process2, req.query.page];
+	
+	if(isNotEmpty(req.session.user)){
+		Mssql.NonQuery(prevPageSave,function(result){
+			res.send(result);
+		})
+	}
+});
+
+server.get('/savePage',function(req,res){
+	console.log("savePage");
+	var temp2sqlQuery = "SELECT * FROM temp2;"
+
+	if(isNotEmpty(req.session.user)){
+		Mssql.NonQuery(temp2sqlQuery, function(result){
+			console.log(result);
+			console.log(req.session.user);
+
+			res.send(result.recordset);
+		})
+	}
+})
 
 server.get('/viewer', function (req, res) {
 	console.log("viewer...");
