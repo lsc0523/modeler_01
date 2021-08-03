@@ -562,7 +562,7 @@ $(function () {
         alert("저장이 완료 되었습니다.");
         //window.location.href = 'home/1';
         // window.location.href = 'modeler?id=' + data.id;
-        window.location = "/modelList?type=" + modelType + "&modelCatID=" + modelCatID + "&page=" + getParameterByName('page');
+        // window.location = "/modelList?type=" + modelType + "&modelCatID=" + modelCatID + "&page=" + getParameterByName('page');
       },
       error: function (error) {
         alert("Error!");
