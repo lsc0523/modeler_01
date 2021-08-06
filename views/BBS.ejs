@@ -13,6 +13,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
 
 <style type="text/css"> 
     @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
@@ -183,19 +186,26 @@ td
   Welcome, <%=sess%> 님
 </div>
 
-<div class="container mb-3">
-    <h2 class="mb-3">Board</h2>
+<div></div>
 
-    <table class="board-table table table-sm border-bottom">
+
+<div class="container mb-3">
+    <a href="https://bbscns.creatorlink.net/" class="mb-3" style="color: rgba(25, 117, 56, 0.849); font-size:  60px; "><u>게시판 이동</u> </a>
+    <div class="item-box-blog-text">
+      <p> ID : gschun@lgcns.com </p>
+      <p> PW : #cns123 </p>
+    </div>
+    <!-- <table class="board-table table table-sm border-bottom">
 
       <thead class="thead-light">
         <tr>
+          <th scope="col">No</th>
           <th scope="col">Title</th>
-          <th scope="col" class="date">Date</th>
+          <th scope="col" class="date">Date</th>          
         </tr>
-      </thead>
+      </thead> -->
 
-      <tbody>
+<!--       <tbody>
         <% if(data == null || data.length == 0){ %>
           <tr>
             <td colspan=2> There is no data to show :( </td>
@@ -204,19 +214,29 @@ td
         <% data.forEach(function(post) { %>
           <tr>
             <td>
-                <!--<a href="/posts/<%= post._id %>">-->
                 <div class="ellipsis"><%= data.title %></div></a>
             </td>
             <td class="date">
-                <span data-date="<%= post.createdAt %>"></span> <!-- 1 -->
+                <span data-date="<%= post.createdAt %>"></span> 
             </td>
           </tr>
         <% }) %>
-      </tbody>
+      </tbody> -->
 
     </table>
 
-    <div>
-      <!--<a class="btn btn-primary" href="/posts/new">New</a>-->
+    <!-- <div class="container">
+      <textarea class="summernote" name="editor_data"></textarea>    
     </div>
+    <div class="row">
+      <div class="col-md-3" style="float: right" >
+        <button type="button" class="btn btn-success btn-lg" id="saveBtn" style=" float: right ; background-color: #4d91ff">작성</button>
+    </div>
+     -->
+    <script>
+    $('.summernote').summernote({
+        height: 150,
+        lang: "ko-KR"
+     });
+     </script>
 </div>
