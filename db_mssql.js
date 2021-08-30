@@ -197,7 +197,7 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 		// Query		    
 		return pool.request()
 			.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('CRETDTTM' , sql.NVarChar ,  "")
+			.input('CRETDTTM' , sql.NVarChar ,  params.CRETDTTM)
 			.query(sqlSelectModelHistory)
 
 	}).then(result => {
