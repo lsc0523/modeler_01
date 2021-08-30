@@ -405,21 +405,20 @@ function ExcuteSQLUpdateModel(params, callback) {
 }
 
 function ExcuteSQLUpdateModelHistory(params, callback) {
+   
+	ExcuteSQLUpdateModel(params, function(result)
+	{
+		strSql = 'INSERT INTO ' + ModelHistory + ' (MODELCATID, MODELTYPE, MODELID, CRETDTTM, MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODE, PROCESSID, MODEL_XML, MODELHISTDESC, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+		strSql = strSql + ' SELECT MODELCATID, MODELTYPE, MODELID, getdate(), MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODEID, PROCESSID, MODEL_XML, @MODELHISTDESC, USERID, INSUSER, getdate(), UPDUSER, getdate() FROM PROCESSMODEL'
+		strSql = strSql + ' WHERE MODELID=@MODELID';
 
-	ExcuteSQLInsertModelHistory(params, function(result){
-		var now = new Date();
 		sql.connect(dbConnectionConfig).then(pool => {
 			// Query		    
 			return pool.request()
 				.input('MODELID', sql.NVarChar, params.MODELID)
-				.input('MODEL_XML', sql.Xml, params.MODEL_XML)
-				.input('MODELNAME', sql.NVarChar, params.MODELNAME)
-				.input('MODELDESC', sql.NVarChar, params.MODELDESC)
-				.input('MODELID_PR', sql.NVarChar, params.MODELID_PR)
-				.input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
-				.input('UPDUSER', sql.NVarChar, params.UPDUSER)
-				.input('UPDDTTM', sql.DateTimeOffset, now)
-				.query(sqlUpdateModelQuery_Dev)
+				.input('MODELHISTDESC', sql.NVarChar, params.MODELHISTDESC)
+				.query(strSql)
+
 		}).then(result => {
 			console.dir(result);
 			return callback(result.rowsAffected);
