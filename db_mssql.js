@@ -90,6 +90,11 @@ var sqlInsertModelQuery_Dev = 'insert into ' + Modeltable +
 	'(MODELCATID, MODELTYPE, MODELID, MODELID_REVISION,  MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, MODELID_PR_NODEID, INSUSER, INSDTTM, UPDUSER, UPDDTTM, MODELDIAGRAM_CNT)'
 	+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @MODELID_REVISION, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @MODELID_PR_NODEID, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM, @MODELDIAGRAM_CNT)';
 
+var sqlInsertModelHistory = 'insert into ' + ModelHistory +
+	'(MODELCATID, MODELTYPE, MODELID, CRETDTTM, MODELID_REVISION, MODELNAME, MODELDESC,  PROCESSID, MODEL_XML, MODELID_PR, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+	+ ' values (@MODELCATID, @MODELTYPE, @MODELID, @CRETDTTM, @MODELID_REVISION, @MODELNAME, @MODELDESC, @PROCESSID, @MODEL_XML, @MODELID_PR, @INSUSER, @INSDTTM, @UPDUSER, @UPDDTTM)';
+
+
 var sqlInsertModelReposQuery = 'insert into '
 	+ ModelRepostable +
 	'(MODELID, REPOSID, MODEL_NODEID, REPOSNAME, REPOSINFO)'
@@ -408,16 +413,29 @@ function ExcuteSQLUpdateModelHistory(params, callback) {
    
 	ExcuteSQLUpdateModel(params, function(result)
 	{
-		strSql = 'INSERT INTO ' + ModelHistory + ' (MODELCATID, MODELTYPE, MODELID, CRETDTTM, MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODE, PROCESSID, MODEL_XML, MODELHISTDESC, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
-		strSql = strSql + ' SELECT MODELCATID, MODELTYPE, MODELID, getdate(), MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODEID, PROCESSID, MODEL_XML, @MODELHISTDESC, USERID, INSUSER, getdate(), UPDUSER, getdate() FROM PROCESSMODEL'
-		strSql = strSql + ' WHERE MODELID=@MODELID';
-
+		// strSql = 'INSERT INTO ' + ModelHistory + ' (MODELCATID, MODELTYPE, MODELID, CRETDTTM, MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODE, PROCESSID, MODEL_XML, MODELHISTDESC, USERID, INSUSER, INSDTTM, UPDUSER, UPDDTTM)'
+		// strSql = strSql + ' SELECT MODELCATID, MODELTYPE, MODELID, getdate(), MODELNAME, MODELDESC, MODELID_PR, MODELID_PR_NODEID, PROCESSID, MODEL_XML, @MODELHISTDESC, USERID, INSUSER, getdate(), UPDUSER, getdate() FROM PROCESSMODEL'
+		// strSql = strSql + ' WHERE MODELID=@MODELID';
+		var now = new Date();
 		sql.connect(dbConnectionConfig).then(pool => {
 			// Query		    
 			return pool.request()
-				.input('MODELID', sql.NVarChar, params.MODELID)
-				.input('MODELHISTDESC', sql.NVarChar, params.MODELHISTDESC)
-				.query(strSql)
+			.input('MODELCATID', sql.NVarChar, params.MODELCATID)
+			.input('MODELTYPE', sql.NVarChar, params.MODELTYPE)
+			.input('MODELID_REVISION', sql.NVarChar, params.MODELID_REVISION)
+			.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('CRETDTTM', sql.DateTimeOffset, now)
+			.input('MODELNAME', sql.NVarChar, params.MODELNAME)
+			.input('MODELDESC', sql.NVarChar, params.MODELDESC)
+			.input('PROCESSID', sql.NVarChar, params.PROCESSID)
+			.input('MODEL_XML', sql.Xml, params.MODEL_XML)
+			.input('MODELID_PR', sql.NVarChar, params.MODELID_PR)
+			// .input('MODELID_PR_NODEID', sql.NVarChar, params.MODELID_PR_NODEID)
+			.input('INSUSER', sql.NVarChar, params.INSUSER)
+			.input('INSDTTM', sql.DateTimeOffset, now)
+			.input('UPDUSER', sql.NVarChar, params.UPDUSER)
+			.input('UPDDTTM', sql.DateTimeOffset, now)
+			.query(sqlInsertModelHistory)
 
 		}).then(result => {
 			console.dir(result);
