@@ -39,7 +39,8 @@ var sqlSelectModelHistory = "SELECT A.MODELID ,\n" +
 							"A.MODELDESC ,\n" + 
 							"A.MODELHISTDESC\n" + 
 							"FROM PROCESSMODELHISTORY A\n" + 
-							"WHERE A.MODELID   = @MODELID " + 
+							"WHERE A.MODELID = @MODELID " + 
+							"AND A.CRETDTTM = @CRETDTTM \n" +
 							"ORDER BY UPDDTTM";
 
 var sqlSelectModelEachHistory = "SELECT A.MODELID ,\n" + 
