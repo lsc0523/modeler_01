@@ -39,9 +39,21 @@ var sqlSelectModelHistory = "SELECT A.MODELID ,\n" +
 							"A.MODELDESC ,\n" + 
 							"A.MODELHISTDESC\n" + 
 							"FROM PROCESSMODELHISTORY A\n" + 
+							"WHERE A.MODELID   = @MODELID " + 
+							"ORDER BY UPDDTTM";
+
+var sqlSelectModelHistoryByCRETDTTM = "SELECT A.MODELID ,\n" + 
+							"CONVERT(CHAR(23), A.CRETDTTM, 21) CRETDTTM ,\n" + 
+							"A.PROCESSID ,\n" + 
+							"A.MODEL_XML ,\n" + 
+							"A.MODELNAME ,\n" + 
+							"A.MODELDESC ,\n" + 
+							"A.MODELHISTDESC\n" + 
+							"FROM PROCESSMODELHISTORY A\n" + 
 							"WHERE A.MODELID = @MODELID " + 
 							"AND A.CRETDTTM = @CRETDTTM \n" +
 							"ORDER BY UPDDTTM";
+
 
 var sqlSelectModelEachHistory = "SELECT A.MODELID ,\n" + 
 								"CONVERT(CHAR(23), A.CRETDTTM , 21) CRETDTTM ,\n" + 
@@ -203,7 +215,6 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 		// Query		    
 		return pool.request()
 			.input('MODELID', sql.NVarChar, params.MODELID)
-			.input('CRETDTTM' , sql.NVarChar ,  params.CRETDTTM)
 			.query(sqlSelectModelHistory)
 
 	}).then(result => {
@@ -214,6 +225,25 @@ function ExcuteSQLSelectModelHistory(params, callback) {
 		// ... error checks
 	})
 }
+
+function ExcuteSQLSelectModelHistoryByCRETDTTM(params, callback) {
+
+	sql.connect(dbConnectionConfig).then(pool => {
+		// Query		    
+		return pool.request()
+			.input('MODELID', sql.NVarChar, params.MODELID)
+			.input('CRETDTTM' , sql.NVarChar ,  params.CRETDTTM)
+			.query(sqlSelectModelHistoryByCRETDTTM)
+
+	}).then(result => {
+		//console.dir(result);
+		return callback(result);
+	}).catch(err => {
+		console.dir(err);
+		// ... error checks
+	})
+}
+
 
 //Select Model Repository
 function ExcuteSQLSelectModelRepository(params, callback) {
@@ -694,6 +724,7 @@ module.exports = {
 
 	//모델 변경 이력 조회
 	SelectModelHistory: ExcuteSQLSelectModelHistory,
+	SelectModelHistoryCRETDTTM:ExcuteSQLSelectModelHistoryByCRETDTTM,
 	SelectModelRepos: ExcuteSQLSelectModelRepository,
 	//UpdateModel: ExcuteSQLUpdateModelbyPromises,
 	InsertModel: ExcuteSQLInsertModel,
