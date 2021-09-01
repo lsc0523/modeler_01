@@ -311,13 +311,51 @@ server.get('/modeler', function (req, res) {
 				sess: req.session.user.id
 			});
 
-		}
-		else {
+		}else if(req.query.creDate == undefined) {
 
 			var params = { MODELID: req.query.id };
 			var enable = req.query.enable;
 
 			Mssql.SelectModel(params, function (result) {
+				//console.log(result);
+
+				xmlData = result.recordset[0].MODEL_XML;
+				modelID = result.recordset[0].MODELID;
+				modelName = result.recordset[0].MODELNAME;
+				modelDetailName = result.recordset[0].MODELDESC;
+				modelType = result.recordset[0].MODELCATID;
+				modelcatid = result.recordset[0].MODELTYPE;
+
+				var fileParams = { MODELID: req.query.id };
+
+				Mssql.SelectAllFileList(fileParams, function (file_result) {
+					//console.log(file_result);
+
+					if (file_result.rowsAffected != 0) {
+						JsFileList = file_result.recordset;
+					}
+
+					res.render('modeler', {
+						name: xmlData,
+						modelID: modelID,
+						JsmodelName: modelName,
+						JsmodelDetailName: modelDetailName,
+						JsFileList: JsFileList,
+						type: modelType,
+						catid: modelcatid,
+						enable : enable,
+						data: result_data.recordset,
+						sess: req.session.user.id
+					});
+
+				});
+			});
+		}else {
+
+			var params = { MODELID: req.query.id, CRETDTTM :req.query.creDate };
+			var enable = req.query.enable;
+
+			Mssql.SelectModelHistoryCRETDTTM(params, function (result) {
 				//console.log(result);
 
 				xmlData = result.recordset[0].MODEL_XML;
